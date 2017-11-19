@@ -40,5 +40,5 @@ e2.methodA();
 * You can override/shadow methods using prototypes
 
 ### Cons ###
-* The *this* mechanism is somewhat tricky to understand
+* The *this* mechanism is somewhat tricky to understand at the first place
 * The prototype definition is separated from the constructor definition
