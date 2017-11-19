@@ -1,6 +1,6 @@
 # Prototype Pattern #
 
-[Back to the ToC](../master)
+[Back to the ToC](../)
 
 The prototype pattern belongs to the category of those design patterns called *creational* and is based on the built-in *prototype* feature of the language. That pattern gives you the option to organize and structure your code into reusable containers having state and behavior, in an almost similar way classes are for the *classical object-oriented* languages.
 
@@ -45,4 +45,4 @@ e2.methodA();
 * The *this* mechanism is somewhat tricky to understand at the first place
 * The prototype definition is separated from the constructor definition
 
-[Back to the ToC](../master)
+[Back to the ToC](../)
