@@ -1,22 +1,25 @@
-function Entity(x, y) {
+// Use your own namespace to keep global scope clean
+var myNS = myNS || Object.create(null);
+
+myNS.Entity = function(x, y) {
   this.x = x;
   this.y = y;
 };
 
-Entity.prototype.methodA = function() {
+myNS.Entity.prototype.methodA = function() {
   return this.x + this.y;
 };
 
-Entity.prototype.methodB = function() {
+myNS.Entity.prototype.methodB = function() {
   return Math.min(this.x, this.y);
 };
 
-Entity.prototype.methodC = function(z) {
+myNS.Entity.prototype.methodC = function(z) {
   return Math.max(this.x, this.y, z);
 };
 
-let e1 = new Entity(266, 4),
-  e2 = new Entity(3, 145);
+let e1 = new myNS.Entity(266, 4),
+  e2 = new myNS.Entity(3, 145);
 
 let a1 = e1.methodA(),
   b1 = e1.methodB(),
