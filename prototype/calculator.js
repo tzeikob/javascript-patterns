@@ -1,37 +1,39 @@
-function Calculator() {
+var myNS = myNS || Object.create(null);
+
+myNS.Calculator = function Calculator() {
   this.result = 0;
 }
 
-Calculator.prototype.add = function(val) {
+myNS.Calculator.prototype.add = function(val) {
   this.result += val;
   return this.result;
 };
 
-Calculator.prototype.subtract = function(val) {
+myNS.Calculator.prototype.subtract = function(val) {
   this.result -= val;
   return this.result;
 };
 
-Calculator.prototype.multiply = function(val) {
+myNS.Calculator.prototype.multiply = function(val) {
   this.result *= val;
   return this.result;
 };
 
-Calculator.prototype.divide = function(val) {
+myNS.Calculator.prototype.divide = function(val) {
   this.result /= val;
   return this.result;
 };
 
-Calculator.prototype.sqrt = function() {
+myNS.Calculator.prototype.sqrt = function() {
   this.result = Math.sqrt(this.result);
   return this.result;
 };
 
-Calculator.prototype.clear = function() {
+myNS.Calculator.prototype.clear = function() {
   this.result = 0;
 };
 
-let calc = new Calculator();
+let calc = new myNS.Calculator();
 
 calc.add(18);
 calc.subtract(9);
