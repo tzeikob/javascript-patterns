@@ -42,7 +42,7 @@ var sqrt = myNS.module.methodC();
 console.log(sqrt); // 4
 ```
 
-[Go to the Source](../index.js)
+[Go to the Source](index.js)
 
 ## What to consider before use ##
 
