@@ -2,10 +2,12 @@
 var myNS = myNS || Object.create(null);
 
 myNS.Entity = function Entity(x, y) {
+  // Here you can set state to the object
   this.x = x;
   this.y = y;
 };
 
+// Here you can share behavior across all objects
 myNS.Entity.prototype.methodA = function methodA() {
   return this.x + this.y;
 };
