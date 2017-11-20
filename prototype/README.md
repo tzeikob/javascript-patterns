@@ -31,6 +31,8 @@ e1.methodA();
 e2.methodA();
 ```
 
+[Go to the Source](index.js)
+
 ## What to consider before use ##
 
 ### Pros ###
