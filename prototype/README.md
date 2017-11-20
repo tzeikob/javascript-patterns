@@ -1,4 +1,4 @@
-# Prototype Pattern #
+# The Prototype Pattern #
 
 [Back to the ToC](../../../)
 
