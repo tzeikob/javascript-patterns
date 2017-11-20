@@ -1,31 +1,31 @@
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
-myNS.Entity = function(x, y) {
+myNS.Entity = function Entity(x, y) {
   this.x = x;
   this.y = y;
 };
 
-myNS.Entity.prototype.methodA = function() {
+myNS.Entity.prototype.methodA = function methodA() {
   return this.x + this.y;
 };
 
-myNS.Entity.prototype.methodB = function() {
+myNS.Entity.prototype.methodB = function methodB() {
   return Math.min(this.x, this.y);
 };
 
-myNS.Entity.prototype.methodC = function(z) {
+myNS.Entity.prototype.methodC = function methodC(z) {
   return Math.max(this.x, this.y, z);
 };
 
-let e1 = new myNS.Entity(266, 4),
+var e1 = new myNS.Entity(266, 4),
   e2 = new myNS.Entity(3, 145);
 
-let a1 = e1.methodA(),
+var a1 = e1.methodA(),
   b1 = e1.methodB(),
   c1 = e1.methodC(1024);
 
-let a2 = e2.methodA(),
+var a2 = e2.methodA(),
   b2 = e2.methodB(),
   c2 = e2.methodC(-55);
 
