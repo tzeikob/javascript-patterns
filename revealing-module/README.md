@@ -1,4 +1,4 @@
-# The Module Pattern #
+# The Revealing Module Pattern #
 
 [Back to the ToC](../../../)
 
