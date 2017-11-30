@@ -2,7 +2,7 @@
 
 [Back to the ToC](../../../)
 
-The revealing module pattern belongs to the category of those design patterns called *creational*. That pattern is very similar to the [module pattern](../../../module-pattern/) that gives you the option to organize and structure your code into reusable containers having state and behavior, in a way they containerize private state in terms of encapsulation and exposing *public API* methods, but the revealing module pattern does this in a way that gives more cleaner and readable code, that would be the best practice in favor of large modules where maintenance is a priority.
+The revealing module pattern belongs to the category of those design patterns called *creational*. That pattern is very similar to the [module pattern](../../../module-pattern/) that gives you the option to organize and structure your code into reusable containers having state and behavior, in a way they containerize private state in terms of encapsulation and exposing *public API* methods, but the revealing module pattern does this in a way that gives more cleaner and readable code, that would be the best practice in large modules where maintenance is a priority.
 
 ## Usage ##
 
