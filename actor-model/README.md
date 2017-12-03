@@ -119,7 +119,7 @@ const model = function model() {
   };
 }();
 
-const counter = {
+const behavior = {
   init() {
     return { count: 0 };
   },
