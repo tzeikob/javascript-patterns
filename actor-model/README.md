@@ -1,6 +1,6 @@
 # The Actor Model #
 
-The Actor Model is more than a design pattern, it's rather a conceptual model was proposed in the 70's by Carl Hewitt in order to deal with concurrent computation in large applications. You can think of the *Actor* as the foundation on which you can build the structure of an application. Each actor has a public *unique address* and an *internal state* private to the outer world of its scope. In addition has a *behavior* map which defines what the actor can do. Each actor interacts with other actors only through *asynchronous* messages, they must be delivered asynchronously and executed in a synchronous manner by the receiver. Each time a message is processed by an actor, it is matched against its *behavior* map which is nothing more than a function that defines the action to be taken in reaction to the given message payload. Actor's response to a message may be,
+The Actor Model is more than a design pattern, it's rather a conceptual model was proposed in the 70's by Carl Hewitt in order to deal with concurrent computation in large applications. You can think of the *Actor* as the foundation on which you can build the structure of an application. Each actor has a public *unique address* and an *internal state* private to the outer world of its scope. In addition has a *behavior* map which defines what the actor can do. Each actor interacts with other actors only through *asynchronous* messages, they must be delivered asynchronously and executed in a synchronous manner by the receiver. Each time a message is processed by an actor, it is matched against its *behavior* map which is nothing more than an object that defines the method/action to be taken in reaction to the given message payload. Actor's response to a message may be,
 
 * create more actors,
 * send messages to other actors,
@@ -52,7 +52,7 @@ Actors are the foundation part of the application and they need to have access t
 * assign a unique address to the actor,
 * initiate its internal state using the behavior's initialization method,
 * attach the actor, so to able to receive messages,
-* return the unique address back to the application
+* return the unique address back to the application.
 
 ```
 function actor(behavior) {
@@ -157,10 +157,10 @@ model.send(a, {
 ## What to consider before use ##
 
 ### Pros ###
-* It provides the basics in order to play around with the Actor Model
+* It provides the basics in order to play around with the Actor Model.
 
 ### Cons ###
-* An application may contain a potentially large number of actors, so using closures to keep internal state may not be the best solution
-* It is easy to mess things up due to the immutability in JavaScript
+* An application may contain a potentially large number of actors, so using closures to keep internal state may not be the best solution.
+* It is easy to mess things up due to the immutability in JavaScript.
 
 [Back to the ToC](../../../)
