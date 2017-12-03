@@ -16,8 +16,8 @@ const model = function model() {
 
     // Attach actor into messaging by its address
     mailbox.on(address, function(payload) {
-      const action = behavior[payload.method];
-      state = action(state, payload.message) || state;
+      const method = behavior[payload.method];
+      state = method(state, payload.message) || state;
     });
 
     return address;
@@ -38,12 +38,12 @@ const counter = {
     return { count: 0 };
   },
 
-  increment(state, { value }) {
+  methodA(state, { value }) {
     let count = state.count + value;
     return { count };
   },
 
-  log(state) {
+  methodB(state) {
     console.log(state.count);
   }
 };
@@ -51,16 +51,16 @@ const counter = {
 const a = model.actor(counter);
 
 model.send(a, {
-  method: 'log'
+  method: 'methodB'
 }); // 0
 
 model.send(a, {
-  method: 'increment',
+  method: 'methodA',
   message: {
     value: 1
   }
 });
 
 model.send(a, {
-  method: 'log'
+  method: 'methodB'
 }); // 1

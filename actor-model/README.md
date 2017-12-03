@@ -1,8 +1,6 @@
 # The Actor Model #
 
-[Back to the ToC](../../../)
-
-The Actor Model it's more than a design pattern, it's rather a conceptual model was proposed in the 70's by Carl Hewitt in order to deal with concurrent computation in large applications. You can think of the *Actor* as the foundation on which you can build the structure of an application. Each actor has a public *unique address* and an *internal state* private to the outer world of its scope. In addition has a *behavior* map which defines what the actor can do. Each actor interacts with other actors only through *asynchronous* messages, they must be delivered asynchronously and executed in a synchronous manner by the receiver. Each time a message is processed by an actor, it is matched against its *behavior* map which is nothing more than a function that defines the action to be taken in reaction to the given message payload. Actor's response to a message may be,
+The Actor Model is more than a design pattern, it's rather a conceptual model was proposed in the 70's by Carl Hewitt in order to deal with concurrent computation in large applications. You can think of the *Actor* as the foundation on which you can build the structure of an application. Each actor has a public *unique address* and an *internal state* private to the outer world of its scope. In addition has a *behavior* map which defines what the actor can do. Each actor interacts with other actors only through *asynchronous* messages, they must be delivered asynchronously and executed in a synchronous manner by the receiver. Each time a message is processed by an actor, it is matched against its *behavior* map which is nothing more than a function that defines the action to be taken in reaction to the given message payload. Actor's response to a message may be,
 
 * create more actors,
 * send messages to other actors,
@@ -35,12 +33,12 @@ const behavior = {
     return { value: 0 };
   },
 
-  actionA(state, { amount }) {
+  methodA(state, { amount }) {
     let value = state.value + amount;
     return { value };
   },
 
-  actionB(state, { amount }) {
+  methodB(state, { amount }) {
     let value = state.value - amount;
     return { value };
   }
@@ -67,8 +65,8 @@ function actor(behavior) {
   }
 
   mailbox.on(address, function(payload) {
-    const action = behavior[payload.method];
-    state = action(state, payload.message) || state;
+    const method = behavior[payload.method];
+    state = method(state, payload.message) || state;
   });
 
   return address;
@@ -104,8 +102,8 @@ const model = function model() {
 
     // Attach actor into messaging by its address
     mailbox.on(address, function(payload) {
-      const action = behavior[payload.method];
-      state = action(state, payload.message) || state;
+      const method = behavior[payload.method];
+      state = method(state, payload.message) || state;
     });
 
     return address;
@@ -126,12 +124,12 @@ const counter = {
     return { count: 0 };
   },
 
-  increment(state, { value }) {
+  methodA(state, { value }) {
     let count = state.count + value;
     return { count };
   },
 
-  log(state) {
+  methodB(state) {
     console.log(state.count);
   }
 };
@@ -139,18 +137,18 @@ const counter = {
 const a = model.actor(counter);
 
 model.send(a, {
-  method: 'log'
+  method: 'methodB'
 }); // 0
 
 model.send(a, {
-  method: 'increment',
+  method: 'methodA',
   message: {
     value: 1
   }
 });
 
 model.send(a, {
-  method: 'log'
+  method: 'methodB'
 }); // 1
 ```
 
