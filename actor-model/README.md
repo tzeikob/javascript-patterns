@@ -6,6 +6,14 @@ The Actor Model is more than a design pattern, it's rather a conceptual model wa
 * send messages to other actors,
 * update internal state to handle the next message.
 
+In conclusion some after thoughts about actors and how they interact into a system of actors is that,
+
+* actors can execute in parallel,
+* actors don't share state each other,
+* actors communicate asynchronously and only through messages,
+* each actor has a queue to receive messages from other actors,
+* each message sent must be immutable.
+
 ## Implementation ##
 
 ### Messaging ###
@@ -154,7 +162,7 @@ model.send(a, {
 
 [Go to the Source](index.js)
 
-## What to consider before use ##
+## Considerations ##
 
 ### Pros ###
 * It provides the basics in order to play around with the Actor Model.
