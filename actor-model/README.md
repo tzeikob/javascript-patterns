@@ -162,6 +162,9 @@ model.send(a, {
 
 [Go to the Source](index.js)
 
+## Use Cases ##
+* [Calculator and storages](calculator.js)
+
 ## Considerations ##
 
 ### Pros ###
