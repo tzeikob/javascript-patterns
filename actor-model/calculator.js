@@ -102,8 +102,8 @@ model.send(service, {
 
 model.send(a, {
   method: 'log'
-}); //96
+}); // 96
 
 model.send(b, {
   method: 'log'
-}); //36
+}); // 36
