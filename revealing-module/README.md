@@ -1,6 +1,6 @@
 # The Revealing Module Pattern #
 
-[Back to the ToC](../../../)
+[Back to Home](../../../)
 
 The revealing module pattern belongs to the category of those design patterns called *creational*. That pattern is very similar to the [module pattern](../module/) that gives you the option to organize and structure your code into reusable containers having state and behavior, in a way they containerize private state in terms of encapsulation and exposing *public API* methods, but the revealing module pattern does this in a way that gives more cleaner and readable code, that would be the best practice in large modules where maintenance is a priority.
 
@@ -63,4 +63,4 @@ console.log(sqrt); // 4
 * Each module instance will create its own copies of functions in memory
 * May be difficult to debug or test internal functionality other than the public API
 
-[Back to the ToC](../../../)
+[Back to Home](../../../)
