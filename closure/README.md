@@ -1,4 +1,4 @@
-# The Actor Model #
+# The Closure Pattern #
 
 [Back to Home](../../../)
 
