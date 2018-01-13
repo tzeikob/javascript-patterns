@@ -1,38 +1,38 @@
 var myNS = myNS || Object.create(null);
 
 myNS.calculator = function calculator() {
-  var result = 0;
+  let result = 0;
 
-  function reset(val) {
+  const reset = function reset(val) {
     result = val;
   }
 
-  function add(val) {
+  const add = function add(val) {
     result += val;
     return result;
   }
 
-  function subtract(val) {
+  const subtract = function subtract(val) {
     result -= val;
     return result;
   }
 
-  function multiply(val) {
+  const multiply = function multiply(val) {
     result *= val;
     return result;
   }
 
-  function divide(val) {
+  const divide = function divide(val) {
     result /= val;
     return result;
   }
 
-  function sqrt() {
+  const sqrt = function sqrt() {
     result = Math.sqrt(result);
     return result;
   }
 
-  function clear() {
+  const clear = function clear() {
     reset(0);
   }
 
@@ -46,7 +46,7 @@ myNS.calculator = function calculator() {
   };
 }();
 
-var result = 0;
+let result = 0;
 
 result = myNS.calculator.add(18);
 result = myNS.calculator.subtract(9);

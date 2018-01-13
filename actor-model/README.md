@@ -99,7 +99,7 @@ const EventEmitter = require('events').EventEmitter;
 const model = function model() {
   const mailbox = new EventEmitter();
 
-  function actor(behavior) {
+  const actor = function actor(behavior) {
     // Assign a unique address
     const address = Symbol();
 
@@ -119,7 +119,7 @@ const model = function model() {
     return address;
   }
 
-  function send(address, payload) {
+  const send = function send(address, payload) {
     mailbox.emit(address, payload);
   }
 
@@ -144,7 +144,7 @@ const behavior = {
   }
 };
 
-const a = model.actor(counter);
+const a = model.actor(behavior);
 
 model.send(a, {
   method: 'methodB'

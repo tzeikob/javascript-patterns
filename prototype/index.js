@@ -20,14 +20,14 @@ myNS.Entity.prototype.methodC = function methodC(z) {
   return Math.max(this.x, this.y, z);
 };
 
-var e1 = new myNS.Entity(266, 4),
+let e1 = new myNS.Entity(266, 4),
   e2 = new myNS.Entity(3, 145);
 
-var a1 = e1.methodA(),
+let a1 = e1.methodA(),
   b1 = e1.methodB(),
   c1 = e1.methodC(1024);
 
-var a2 = e2.methodA(),
+let a2 = e2.methodA(),
   b2 = e2.methodB(),
   c2 = e2.methodC(-55);
 

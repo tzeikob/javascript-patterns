@@ -3,23 +3,23 @@ var myNS = myNS || Object.create(null);
 
 myNS.module = function module() {
   // Here you can define the private internal state
-  var x = 16;
-  var y = 23;
+  let x = 16;
+  let y = 23;
 
-  function methodD() {
+  const methodD = function methodD() {
     return Math.min(x, y);
   }
 
-  function methodA() {
+  const methodA = function methodA() {
     return x;
   }
 
-  function methodB() {
+  const methodB = function methodB() {
     return y;
   }
 
-  function methodC() {
-    var val = methodD();
+  const methodC = function methodC() {
+    let val = methodD();
     return Math.sqrt(val);
   }
 
@@ -31,5 +31,4 @@ myNS.module = function module() {
   };
 }();
 
-var sqrt = myNS.module.methodC();
-console.log(sqrt); // 4
+myNS.module.methodC(); // 4

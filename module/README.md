@@ -14,10 +14,10 @@ var myNS = myNS || Object.create(null);
 
 myNS.module = function module() {
   // Here you can define the private internal state
-  var x = 16;
-  var y = 23;
+  let x = 16;
+  let y = 23;
 
-  function methodD() {
+  const methodD = function methodD() {
     return Math.min(x, y);
   }
 
@@ -36,8 +36,7 @@ myNS.module = function module() {
   };
 }();
 
-var sqrt = myNS.module.methodC();
-console.log(sqrt); // 4
+myNS.module.methodC(); // 4
 ```
 
 [Go to Source](index.js)

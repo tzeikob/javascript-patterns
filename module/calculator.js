@@ -1,9 +1,9 @@
 var myNS = myNS || Object.create(null);
 
 myNS.calculator = function calculator() {
-  var result = 0;
+  let result = 0;
 
-  function reset(val) {
+  const reset = function reset(val) {
     result = val;
   }
 
@@ -34,7 +34,7 @@ myNS.calculator = function calculator() {
   };
 }();
 
-var result = 0;
+let result = 0;
 
 result = myNS.calculator.add(18);
 result = myNS.calculator.subtract(9);
