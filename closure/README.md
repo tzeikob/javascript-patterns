@@ -42,11 +42,11 @@ fn(); // 'I have access to inner, outer and global scope'
 ## Considerations ##
 
 ### Pros ###
-* It provides powerful option to encapsulate data and functionality in private.
-* Gives more flexibility and options in favor of code reuse in modules.
+* It provides a powerful option to encapsulate data and functionality in private.
+* Gives flexibility and more options in favor of code reusability especially in modules.
 
 ### Cons ###
-* Because a closure binds everything in the outer scope of a function tends to increase memory usage.
-* Sometimes may be hard to grasp on it if your not a beginner.
+* Because a closure binds everything in the outer scope of a function, tends to increase memory usage.
+* Sometimes may be hard to grasp on it if you are a beginner.
 
 [Back to Home](../../../)
