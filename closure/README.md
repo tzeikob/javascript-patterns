@@ -33,7 +33,7 @@ let fn = outer();
 fn(); // 'I have access to inner, outer and global scope'
 ```
 
-[Go to the Source](index.js)
+[Go to Source](index.js)
 
 ## Use Cases ##
 * [Counter](counter.js)

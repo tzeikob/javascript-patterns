@@ -91,7 +91,7 @@ function send(address, payload) {
 }
 ```
 
-## Example ##
+### Put all together ###
 
 ```
 const EventEmitter = require('events').EventEmitter;
@@ -162,7 +162,7 @@ model.send(a, {
 }); // 1
 ```
 
-[Go to the Source](index.js)
+[Go to Source](index.js)
 
 ## Use Cases ##
 * [Calculator and storages](calculator.js)
