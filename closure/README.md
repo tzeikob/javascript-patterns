@@ -2,7 +2,7 @@
 
 [Back to Home](../../../)
 
-The Closure is more than a simple design pattern it's a fundamental part of the language itself. You can thing of it like a powerful feature that gives you more options to *control* and *encapsulate* data and functionality in your application. A definition of what a closure is, could be the following,
+The closure is more than a simple design pattern it's a fundamental part of the language itself. You can thing of it like a powerful feature that gives you more options to *control* and *encapsulate* data and functionality in your application. A definition of what a closure is, could be the following,
 
 >A closure is an inner function that has access to the outer (enclosing) function’s variables-scope chain. The closure has three scope chains: it has access to its own scope (variables defined between its curly brackets), it has access to the outer function’s variables, and it has access to the global variables.
 
