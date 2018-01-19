@@ -7,6 +7,7 @@ A cheat sheet repository for JavaScript design patterns and best practices.
   * [Prototype Pattern](creational/prototype/)
   * [Module Pattern](creational/module/)
   * [Revealing Module Pattern](creational/revealing-module/)
+  * [Factory Pattern](creational/factory/)
   * [Class Pattern](creational/class/)
 * [Closure Pattern](closure/)
 * [Async Retry Pattern](async-retry/)
