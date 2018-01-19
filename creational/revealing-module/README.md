@@ -1,8 +1,8 @@
-# The Module Pattern #
+# The Revealing Module Pattern #
 
-[Back to Home](../../../)
+[Back to Home](../../../../)
 
-The module pattern belongs to the category of those design patterns called *creational*. That pattern gives you the option to organize and structure your code into reusable containers having state and behavior, in a way they containerize private state in terms of encapsulation and exposing *public API* methods through *object literal notation* and the use of *closures*.
+The revealing module pattern belongs to the category of those design patterns called *creational*. That pattern is very similar to the [module pattern](../module/) that gives you the option to organize and structure your code into reusable containers having state and behavior, in a way they containerize private state in terms of encapsulation and exposing *public API* methods, but the revealing module pattern does this in a way that gives more cleaner and readable code, that would be the best practice in large modules where maintenance is a priority.
 
 ## Implementation ##
 
@@ -21,18 +21,24 @@ myNS.module = function module() {
     return Math.min(x, y);
   }
 
-  // Here you can return the public API
+  const methodA = function methodA() {
+    return x;
+  }
+
+  const methodB = function methodB() {
+    return y;
+  }
+
+  const methodC = function methodC() {
+    let val = methodD();
+    return Math.sqrt(val);
+  }
+
+  // Here you can reveal the public API
   return {
-    methodA: function methodA() {
-      return x;
-    },
-    methodB: function methodB() {
-      return y;
-    },
-    methodC: function methodC() {
-      var val = methodD();
-      return Math.sqrt(val);
-    }
+    methodA,
+    methodB,
+    methodC
   };
 }();
 
@@ -50,10 +56,11 @@ myNS.module.methodC(); // 4
 * You can modularize your code into reusable objects.
 * You keep your global scope clean of variables and functions.
 * Expose only public API while hiding private internal state.
+* Cleaner way to expose and reveal only the public members.
 
 ### Cons ###
 * It's not easy to extend functionality.
 * Each module instance will create its own copies of functions in memory.
 * May be difficult to debug or test internal functionality other than the public API.
 
-[Back to Home](../../../)
+[Back to Home](../../../../)
