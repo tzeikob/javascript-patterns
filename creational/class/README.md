@@ -38,7 +38,6 @@ myNS.Entity = class Entity {
   }
 };
 
-
 let e1 = new myNS.Entity(266, 4),
   e2 = new myNS.Entity(3, 145);
 
