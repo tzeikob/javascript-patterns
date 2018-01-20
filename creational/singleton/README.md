@@ -13,7 +13,7 @@ You can thing of this pattern also as a *factory* but that factory would only cr
 var myNS = myNS || Object.create(null);
 
 myNS.module = function module() {
-  // Let create a dummy constructor
+  // Let's create a dummy constructor
   const Alpha = function Alpha() {
     this.value = Math.random();
   };
