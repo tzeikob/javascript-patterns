@@ -1,6 +1,6 @@
 var myNS = myNS || Object.create(null);
 
-myNS.module = function module() {
+myNS.service = function service() {
   const Repo = function Repo() {
     this.data = [
       {id: 'a', value: 'alfa'},
@@ -62,21 +62,21 @@ myNS.module = function module() {
     this.data.splice(index, 1);
   };
 
-  let singleton;
+  let instance;
 
   return {
     getInstance: function getInstance() {
-      if (!singleton) {
-        singleton = new Repo();
+      if (!instance) {
+        instance = new Repo();
       }
 
-      return singleton;
+      return instance;
     }
   };
 }();
 
-const repo = myNS.module.getInstance();
-const repo2 = myNS.module.getInstance();
+const repo = myNS.service.getInstance();
+const repo2 = myNS.service.getInstance();
 
 let results = repo.list();
 results.forEach(item => console.log(item)); // { id: 'a', value: 'alfa' }, { id: 'd', value: 'delta' }

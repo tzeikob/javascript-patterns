@@ -11,17 +11,17 @@ myNS.module = function module() {
     console.log(`A{ value: ${this.value} }`);
   };
 
-  // Initiate singleton to be undefined
-  let singleton;
+  // Initiate instance to be undefined
+  let instance;
 
   return {
     getInstance: function getInstance() {
-      if (!singleton) {
-        // Create the singleton once only
-        singleton = new Alpha();
+      if (!instance) {
+        // Create the instance once only
+        instance = new Alpha();
       }
 
-      return singleton;
+      return instance;
     }
   };
 }();
