@@ -56,10 +56,9 @@ if (a1 === a2) {
 ### Pros ###
 * You can modularize your code into reusable objects.
 * You keep your global scope clean of variables and functions.
-* Cleaner way to expose and reveal your domain model.
+* Inject modules in various places in your application context once only.
 
 ### Cons ###
-* Each module instance will create its own copies of functions in memory.
-* You need to cache each term especially when loading external resources like modules.
+* You need to be careful especially working with external resources like db connections etc.
 
 [Back to Home](../../../../)
