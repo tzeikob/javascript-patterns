@@ -10,6 +10,8 @@ A cheat sheet repository for JavaScript design patterns and best practices.
   * [Factory Pattern](creational/factory/)
   * [Singleton Pattern](creational/singleton/)
   * [Class Pattern](creational/class/)
+* Structural
+  * [Decorator](structural/decorator/)
 * [Closure Pattern](closure/)
 * [Async Retry Pattern](async-retry/)
 * [Actor Model](actor-model/)
