@@ -8,7 +8,7 @@ myNS.module = function module() {
 
   const methodD = function methodD() {
     return Math.min(x, y);
-  }
+  };
 
   // Here you can return the public API
   return {

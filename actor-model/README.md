@@ -117,11 +117,11 @@ const model = function model() {
     });
 
     return address;
-  }
+  };
 
   const send = function send(address, payload) {
     mailbox.emit(address, payload);
-  }
+  };
 
   return {
     actor,

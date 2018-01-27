@@ -5,36 +5,36 @@ myNS.calculator = function calculator() {
 
   const reset = function reset(val) {
     result = val;
-  }
+  };
 
   const add = function add(val) {
     result += val;
     return result;
-  }
+  };
 
   const subtract = function subtract(val) {
     result -= val;
     return result;
-  }
+  };
 
   const multiply = function multiply(val) {
     result *= val;
     return result;
-  }
+  };
 
   const divide = function divide(val) {
     result /= val;
     return result;
-  }
+  };
 
   const sqrt = function sqrt() {
     result = Math.sqrt(result);
     return result;
-  }
+  };
 
   const clear = function clear() {
     reset(0);
-  }
+  };
 
   return {
     add,

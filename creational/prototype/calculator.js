@@ -2,7 +2,7 @@ var myNS = myNS || Object.create(null);
 
 myNS.Calculator = function Calculator() {
   this.result = 0;
-}
+};
 
 myNS.Calculator.prototype.add = function add(val) {
   this.result += val;

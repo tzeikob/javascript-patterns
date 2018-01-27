@@ -5,7 +5,7 @@ myNS.calculator = function calculator() {
 
   const reset = function reset(val) {
     result = val;
-  }
+  };
 
   return {
     add: function add(val) {

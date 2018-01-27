@@ -19,20 +19,20 @@ myNS.module = function module() {
 
   const methodD = function methodD() {
     return Math.min(x, y);
-  }
+  };
 
   const methodA = function methodA() {
     return x;
-  }
+  };
 
   const methodB = function methodB() {
     return y;
-  }
+  };
 
   const methodC = function methodC() {
     let val = methodD();
     return Math.sqrt(val);
-  }
+  };
 
   // Here you can reveal the public API
   return {
