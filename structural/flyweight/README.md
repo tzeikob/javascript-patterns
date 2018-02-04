@@ -6,7 +6,7 @@ The flyweight pattern belongs to the category of those design patterns called *s
 
 ## Implementation ##
 
-The flyweight pattern makes easy to share data across objects giving you at the same time better management and smaller memory footprint. In order to use flyweight objects you have to figure out which properties of the object are actually non unique having many appearances across the objects. Replace that properties encapsulating them into a flyweight object that will be created through a *flyweight factory*.
+The flyweight pattern makes easy to share data across objects giving you at the same time better management and smaller memory footprint. In order to use flyweight objects you have to figure out which properties of the object are actually non unique having many appearances across the objects. Replace those properties encapsulating them into a flyweight object that will be created through a *flyweight factory*.
 
 ```
 // Use your own namespace to keep global scope clean
@@ -113,7 +113,7 @@ console.log(`Flyweights: ${myNS.factory.size()}`);
 * Smaller memory usage on a large amount of objects.
 
 ### Cons ###
-* Only for use case with large amount of objects.
-* Overhead in use cases with object having large number of properties.
+* Only for use cases with large amount of objects.
+* Overhead in use cases with objects having large number of properties.
 
 [Back to Home](../../../../)
