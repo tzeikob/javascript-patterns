@@ -13,6 +13,7 @@ A cheat sheet repository for JavaScript design patterns and best practices.
 * Structural
   * [Decorator](structural/decorator/)
   * [Facade](structural/facade/)
+  * [Flyweight](structural/flyweight/)
 * [Closure Pattern](closure/)
 * [Async Retry Pattern](async-retry/)
 * [Actor Model](actor-model/)
