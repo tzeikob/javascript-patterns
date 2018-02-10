@@ -16,6 +16,7 @@ A cheat sheet repository for JavaScript design patterns and best practices.
   * [Flyweight](structural/flyweight/)
 * Behavioral
   * [Observer](behavioral/observer/)
+  * [Mediator](behavioral/mediator/)
 * [Closure Pattern](closure/)
 * [Async Retry Pattern](async-retry/)
 * [Actor Model](actor-model/)
