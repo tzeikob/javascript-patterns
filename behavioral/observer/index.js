@@ -38,27 +38,27 @@ myNS.ObservableEntity.prototype.update = function update(value) {
 };
 
 // Let say you have an observer service accepting callbacks
-myNS.Service = function Service(cb) {
+myNS.Observer = function Observer(cb) {
   this.cb = cb;
 };
 
-myNS.Service.prototype.notify = function notify(context) {
+myNS.Observer.prototype.notify = function notify(context) {
   this.cb(context);
 };
 
 // Create some observer services
-let s1 = new myNS.Service((context) => {
+let o1 = new myNS.Observer((context) => {
   console.log(`Subject ${context.subject} updated at ${new Date()}`);
 });
 
-let s2 = new myNS.Service((context) => {
+let o2 = new myNS.Observer((context) => {
   console.log(`Subject ${context.subject} updated to ${context.payload}`);
 });
 
 // Attach the observers to an observable object
 let e = new myNS.ObservableEntity({id: '1', value: 1});
 
-e.attach(s1);
-e.attach(s2);
+e.attach(o1);
+e.attach(o2);
 
 e.update(10);
