@@ -2,11 +2,11 @@
 
 [Back to Home](../../../)
 
-The memo pattern is a technique to improve the performance of your code especially in situations when you need to execute some really heavy calculations which are *repetitive*. Let say you have a recursive function which gives you the *same result* each time you call it given the *same arguments*, in that case is a waste of resources to repeat each calculation you've already done before. The pattern is actually close related with the *memoization* a definition you can find below,
+The memo pattern is a technique to improve the performance of your code especially in situations when you need to execute some really heavy calculations which are *repetitive*. Let say you have a recursive function which gives you the *same result* each time you call it given the *same arguments*, in that case is a waste of resources to repeat each calculation you've already done before. The pattern is actually close related with the *memoization*, a definition of which you can find below,
 
 >Memoization is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again.
 
-In simple terms memoizing means keep or save something in memory, functions that can memoize can be faster and the reason is that in subsequently calls with previous values there is no need to re execute the function but instead fetch the result cached in its memory. One thing to be mentioned is that this technique is functional only for *pure* functions, a pure function is a function that returns always the same result given the same list of arguments.
+In simple terms memoizing means keep or save something in memory, functions that can memoize can be faster and the reason is that in subsequently calls with previous values there is no need to re-execute the function but instead fetch the result cached in its memory. One thing to be mentioned is that this technique is functional only for *pure* functions, a pure function is a function that returns always the same result given the same list of arguments.
 
 ## Implementation ##
 
