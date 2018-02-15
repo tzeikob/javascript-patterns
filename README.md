@@ -19,5 +19,6 @@ A cheat sheet repository for JavaScript design patterns and best practices.
   * [Mediator](behavioral/mediator/)
   * [Command](behavioral/command/)
 * [Closure](closure/)
+* [Memo](memo/)
 * [Async Retry](async-retry/)
 * [Actor Model](actor-model/)
