@@ -2,7 +2,7 @@
 var myNS = myNS || Object.create(null);
 
 myNS.Stack = function() {
-  // Use weak maps to encapsulate the items of each stack instance
+  // Use weak map to encapsulate the items of each stack instance
   let data = new WeakMap();
 
   class Stack {

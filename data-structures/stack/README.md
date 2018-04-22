@@ -1,6 +1,6 @@
 # The Stack #
 
-[Back to Home](../../../)
+[Back to Home](../../../../)
 
 A stack is an ordered collection of elements that follows the *LIFO* (Last In First Out) principle. The addition of new elements or the removal of existing ones takes place at the same time. The end of the stack is known as the top, and the opposite side is known as the base. The newest elements are near the top, and the oldest elements are near the base.
 
@@ -22,7 +22,7 @@ A stack apart from the *encapsulation* of its protected data must provide severa
 var myNS = myNS || Object.create(null);
 
 myNS.Stack = function() {
-  // Use weak maps to encapsulate the items of each stack instance
+  // Use weak map to encapsulate the items of each stack instance
   let data = new WeakMap();
 
   class Stack {
