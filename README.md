@@ -18,6 +18,8 @@ A cheat sheet repository for JavaScript design patterns and best practices.
   * [Observer](behavioral/observer/)
   * [Mediator](behavioral/mediator/)
   * [Command](behavioral/command/)
+* Data Structures
+    * [Stack](data-structures/stack/)
 * [Closure](closure/)
 * [Memo](memo/)
 * [Async Retry](async-retry/)
