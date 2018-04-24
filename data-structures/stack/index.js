@@ -38,7 +38,7 @@ myNS.Stack = function() {
     }
 
     toString() {
-      return `Stack: [${data.get(this).join(", ")}]`;
+      return `Stack: [${data.get(this).join(', ')}]`;
     }
   }
 

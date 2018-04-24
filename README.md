@@ -20,6 +20,7 @@ A cheat sheet repository for JavaScript design patterns and best practices.
   * [Command](behavioral/command/)
 * Data Structures
     * [Stack](data-structures/stack/)
+    * [Queue](data-structures/queue/)
 * [Closure](closure/)
 * [Memo](memo/)
 * [Async Retry](async-retry/)
