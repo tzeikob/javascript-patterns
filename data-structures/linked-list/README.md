@@ -22,6 +22,8 @@ In order to implement a linked list we need a *helper* class to represent the no
 var myNS = myNS || Object.create(null);
 
 myNS.LinkedList = function() {
+  const data = new WeakMap();
+
   class Node {
 
     constructor(item) {
@@ -33,17 +35,21 @@ myNS.LinkedList = function() {
   class LinkedList {
 
     constructor() {
-      this.head = null;
-      this.length = 0;
+      data.set(this, {
+        head: null,
+        length: 0
+      });
     }
 
     append(item) {
       let itemNode = new Node(item);
 
-      if (this.head === null) {
-        this.head = itemNode;
+      let list = data.get(this);
+
+      if (list.head === null) {
+        list.head = itemNode;
       } else {
-        let current = this.head;
+        let current = list.head;
 
         while (current.next !== null) {
           current = current.next;
@@ -52,7 +58,7 @@ myNS.LinkedList = function() {
         current.next = itemNode;
       }
 
-      this.length += 1;
+      list.length += 1;
 
       return this.size();
     }
@@ -60,11 +66,13 @@ myNS.LinkedList = function() {
     insert(item, position) {
       if (position >= 0 && position <= this.size()) {
         let node = new Node(item);
-        let current = this.head;
+
+        let list = data.get(this);
+        let current = list.head;
 
         if (position === 0) {
-          this.head = node;
-          this.head.next = current;
+          list.head = node;
+          list.head.next = current;
         } else {
           let index = 0;
           let previous;
@@ -80,7 +88,7 @@ myNS.LinkedList = function() {
           previous.next = node;
         }
 
-        this.length += 1;
+        list.length += 1;
 
         return true;
       } else {
@@ -90,15 +98,16 @@ myNS.LinkedList = function() {
 
     removeAt(position) {
       if (position >= 0 && position < this.size()) {
-        let current = this.head;
+        let list = data.get(this);
+        let current = list.head;
 
         if (position === 0) {
-          this.head = current.next;
+          list.head = current.next;
         } else {
           let index = 0;
-          let previous = null;
+          let previous;
 
-          while(index < position) {
+          while (index < position) {
             previous = current;
             current = current.next;
 
@@ -108,7 +117,7 @@ myNS.LinkedList = function() {
           previous.next = current.next;
         }
 
-        this.length -= 1;
+        list.length -= 1;
 
         return current.item;
       } else {
@@ -122,7 +131,8 @@ myNS.LinkedList = function() {
     }
 
     indexOf(item) {
-      let current = this.head;
+      let list = data.get(this);
+      let current = list.head;
       let index = 0;
 
       while (current !== null) {
@@ -142,16 +152,19 @@ myNS.LinkedList = function() {
     }
 
     clear() {
-      this.head = null;
+      let list = data.get(this);
+
+      list.head = null;
+      list.length = 0;
     }
 
     size() {
-      return this.length;
+      return data.get(this).length;
     }
 
     toString() {
       let items = [];
-      let current = this.head;
+      let current = data.get(this).head;
 
       while (current !== null) {
         items.push(current.item);
