@@ -81,7 +81,7 @@ myNS.LinkedList = function() {
     }
 
     removeAt(position) {
-      if (position >= 0 && position < this.size()) {
+      if (position > -1 && position < this.size()) {
         let list = data.get(this);
         let current = list.head;
 
@@ -174,6 +174,7 @@ myNS.LinkedList = function() {
 
 let ll = new myNS.LinkedList();
 
+ll.removeAt(0);
 ll.insert(6); // [6]
 ll.insert(9); // [6, 9]
 ll.insertAt(3, 1); // [6, 3, 9]
