@@ -208,7 +208,7 @@ ll.clear(); // []
 [Go to Source](index.js)
 
 ## Use Cases ##
-* [Double Linked List](double-linked-list.js)
+* [Check List](check-list.js)
 
 ## Considerations ##
 
