@@ -4,42 +4,28 @@ class Node {
 
   constructor(item) {
     this.item = item;
+    this.previous = null;
+    this.next = null;
+  }
+
+  dispose() {
+    this.item = null;
+    this.previous = null;
     this.next = null;
   }
 }
 
-class LinkedList {
+class DoubleLinkedList {
 
   constructor() {
     data.set(this, {
       head: null,
+      tail: null,
       length: 0
     });
   }
 
-  append(item) {
-    let itemNode = new Node(item);
-
-    let list = data.get(this);
-
-    if (list.head === null) {
-      list.head = itemNode;
-    } else {
-      let current = list.head;
-
-      while (current.next !== null) {
-        current = current.next;
-      }
-
-      current.next = itemNode;
-    }
-
-    list.length += 1;
-
-    return this.size();
-  }
-
-  insert(item, position) {
+  insertAt(item, position) {
     if (position >= 0 && position <= this.size()) {
       let node = new Node(item);
 
@@ -47,8 +33,19 @@ class LinkedList {
       let current = list.head;
 
       if (position === 0) {
-        list.head = node;
-        list.head.next = current;
+        if (list.head === null) {
+          list.head = node;
+          list.tail = node;
+        } else {
+          node.next = current;
+          current.previous = node;
+          list.head = node;
+        }
+      } else if (position === this.size()) {
+        current = list.tail;
+        current.next = node;
+        node.previous = current;
+        list.tail = node;
       } else {
         let index = 0;
         let previous;
@@ -61,7 +58,10 @@ class LinkedList {
         }
 
         node.next = current;
+        node.previous = previous;
+
         previous.next = node;
+        current.previous = node;
       }
 
       list.length += 1;
@@ -73,12 +73,22 @@ class LinkedList {
   }
 
   removeAt(position) {
-    if (position >= 0 && position < this.size()) {
+    if (position > -1 && position < this.size()) {
       let list = data.get(this);
       let current = list.head;
 
       if (position === 0) {
         list.head = current.next;
+
+        if (this.size() === 1) {
+          list.tail = null;
+        } else {
+          list.head.previous = null;
+        }
+      } else if (position === this.size() - 1) {
+        current = list.tail;
+        list.tail = current.previous;
+        list.tail.next = null;
       } else {
         let index = 0;
         let previous;
@@ -91,19 +101,17 @@ class LinkedList {
         }
 
         previous.next = current.next;
+        current.next.previous = previous;
       }
 
       list.length -= 1;
+      let item = current.item;
+      current.dispose();
 
-      return current.item;
+      return item;
     } else {
       return null;
     }
-  }
-
-  remove(item) {
-    let index = this.indexOf(item);
-    return this.removeAt(index);
   }
 
   indexOf(item) {
@@ -123,14 +131,40 @@ class LinkedList {
     return -1;
   }
 
+  lastIndexOf(item) {
+    let list = data.get(this);
+    let current = list.tail;
+    let index = this.size() - 1;
+
+    while (current !== null) {
+      if (item === current.item) {
+        return index;
+      }
+
+      index -= 1;
+      current = current.previous;
+    }
+
+    return -1;
+  }
+
   isEmpty() {
     return this.size() === 0;
   }
 
   clear() {
     let list = data.get(this);
+    let current = list.head;
+
+    while(current != null) {
+      let previous = current;
+      current = current.next;
+
+      previous.dispose();
+    }
 
     list.head = null;
+    list.tail = null;
     list.length = 0;
   }
 
@@ -151,4 +185,4 @@ class LinkedList {
   }
 }
 
-module.exports = LinkedList;
+module.exports = DoubleLinkedList;
