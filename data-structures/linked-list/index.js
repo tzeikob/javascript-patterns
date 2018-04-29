@@ -10,6 +10,11 @@ myNS.LinkedList = function() {
       this.item = item;
       this.next = null;
     }
+
+    dispose() {
+      this.item = null;
+      this.next = null;
+    }
   }
 
   class LinkedList {
@@ -21,13 +26,12 @@ myNS.LinkedList = function() {
       });
     }
 
-    append(item) {
-      let itemNode = new Node(item);
-
+    insert(item) {
+      let node = new Node(item);
       let list = data.get(this);
 
       if (list.head === null) {
-        list.head = itemNode;
+        list.head = node;
       } else {
         let current = list.head;
 
@@ -35,7 +39,7 @@ myNS.LinkedList = function() {
           current = current.next;
         }
 
-        current.next = itemNode;
+        current.next = node;
       }
 
       list.length += 1;
@@ -43,7 +47,7 @@ myNS.LinkedList = function() {
       return this.size();
     }
 
-    insert(item, position) {
+    insertAt(item, position) {
       if (position >= 0 && position <= this.size()) {
         let node = new Node(item);
 
@@ -51,8 +55,8 @@ myNS.LinkedList = function() {
         let current = list.head;
 
         if (position === 0) {
+          node.next = current;
           list.head = node;
-          list.head.next = current;
         } else {
           let index = 0;
           let previous;
@@ -64,8 +68,8 @@ myNS.LinkedList = function() {
             index += 1;
           }
 
-          node.next = current;
           previous.next = node;
+          node.next = current;
         }
 
         list.length += 1;
@@ -98,8 +102,10 @@ myNS.LinkedList = function() {
         }
 
         list.length -= 1;
+        let item = current.item;
+        current.dispose();
 
-        return current.item;
+        return item;
       } else {
         return null;
       }
@@ -133,6 +139,14 @@ myNS.LinkedList = function() {
 
     clear() {
       let list = data.get(this);
+      let current = list.head;
+
+      while(current != null) {
+        let previous = current;
+        current = current.next;
+
+        previous.dispose();
+      }
 
       list.head = null;
       list.length = 0;
@@ -160,11 +174,12 @@ myNS.LinkedList = function() {
 
 let ll = new myNS.LinkedList();
 
-ll.append(6); // [6]
-ll.append(6); // [6, 9]
-ll.insert(3, 1); // [6, 3, 9]
+ll.insert(6); // [6]
+ll.insert(9); // [6, 9]
+ll.insertAt(3, 1); // [6, 3, 9]
+ll.insert(6); // [6, 3, 9, 6]
 
-ll.removeAt(2); // [6, 3]
-ll.remove(6); // [3]
+ll.removeAt(1); // [6, 9, 6]
+ll.remove(6); // [9, 6]
 
 ll.clear(); // []
