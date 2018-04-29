@@ -22,6 +22,7 @@ A cheat sheet repository for JavaScript design patterns and best practices.
     * [Stack](data-structures/stack/)
     * [Queue](data-structures/queue/)
     * [Linked List](data-structures/linked-list/)
+    * [Set](data-structures/set/)
 * [Closure](closure/)
 * [Memo](memo/)
 * [Async Retry](async-retry/)
