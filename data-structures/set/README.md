@@ -2,7 +2,7 @@
 
 [Back to Home](../../../../)
 
-A set is a collection of unordered elements, but unlike arrays a set consists only of unique elements. Each set can be subject of mathematical operations like *union*, *intersection*, *difference* and so on. A set without element is also known as *null set* or *empty set*.
+A set is a collection of unordered elements, but unlike arrays a set consists only of unique elements. Each set can be subject of mathematical operations like *union*, *intersection*, *difference* and so on. A set without elements is also known as a *null set* or an *empty set*.
 
 ## Implementation ##
 
@@ -13,7 +13,7 @@ In order to implement a set we need a *helper* class to be used as the container
 * check if a given element exists in the set
 * check if the set is empty of elements
 * ask for the size of the set as the number of its elements
-* get the values of the set as an arrays
+* get the values of the set as an array
 * clear the set of its elements
 * print the elements of the set into a string
 
@@ -82,8 +82,8 @@ myNS.Set = function() {
 
 let s = new myNS.Set();
 
-let o1 = {id: 1, name: "Bob", toString() {return this.id}};
-let o2 = {id: 2, name: "Alice", toString() {return this.id}};
+let o1 = {id: 1, name: "Bob"};
+let o2 = {id: 2, name: "Alice"};
 
 s.add(o1); // [{id: 1, name: "Bob"}]
 s.add(o1); // [{id: 1, name: "Bob"}]
