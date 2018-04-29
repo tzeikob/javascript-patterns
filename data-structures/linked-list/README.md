@@ -216,6 +216,7 @@ ll.clear(); // []
 ### Pros ###
 * In contrast with arrays removing an element you don't have to shift elements.
 * Linked lists are a best choice if you need a connection between the elements.
+* If you need to add/remove a lot of elements linked lists are a better option to arrays.
 
 ### Cons ###
 * In order to get access to an element you must iterate the list until you find that element.
