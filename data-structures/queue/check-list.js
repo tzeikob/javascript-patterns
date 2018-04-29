@@ -1,23 +1,21 @@
 const Queue = require('./queue');
 
-let data = new WeakMap();
-
 class CheckList {
 
   constructor() {
-    data.set(this, new Queue());
+    this.tasks = new Queue();
   }
 
   add(task) {
-    data.get(this).enqueue(task);
+    this.tasks.enqueue(task);
   }
 
   check() {
-    return data.get(this).dequeue();
+    return this.tasks.dequeue();
   }
 
   log() {
-    console.log(data.get(this).toString());
+    console.log(this.tasks.toString());
   }
 }
 
