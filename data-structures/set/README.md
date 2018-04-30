@@ -22,6 +22,7 @@ In order to implement a set we need a *helper* class to be used as the container
 var myNS = myNS || Object.create(null);
 
 myNS.Set = function() {
+  // Use weak map to encapsulate the items of each set instance
   const data = new WeakMap();
 
   class Set {

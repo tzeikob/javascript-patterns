@@ -2,6 +2,7 @@
 var myNS = myNS || Object.create(null);
 
 myNS.Set = function() {
+  // Use weak map to encapsulate the items of each set instance
   const data = new WeakMap();
 
   class Set {

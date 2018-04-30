@@ -22,6 +22,7 @@ In order to implement a linked list we need a *helper* class to represent the no
 var myNS = myNS || Object.create(null);
 
 myNS.LinkedList = function() {
+  // Use weak map to encapsulate the items of each linked list instance
   const data = new WeakMap();
 
   class Node {
