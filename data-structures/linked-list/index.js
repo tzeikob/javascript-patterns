@@ -12,6 +12,7 @@ myNS.LinkedList = function() {
       this.next = null;
     }
 
+    // Dispose references to help garbage collector
     dispose() {
       this.item = null;
       this.next = null;
@@ -104,11 +105,13 @@ myNS.LinkedList = function() {
 
         list.length -= 1;
         let item = current.item;
+
+        // Dispose memory space to help garbage collector
         current.dispose();
 
         return item;
       } else {
-        return null;
+        return undefined;
       }
     }
 
@@ -146,6 +149,7 @@ myNS.LinkedList = function() {
         let previous = current;
         current = current.next;
 
+        // Wipe out each entry reference
         previous.dispose();
       }
 

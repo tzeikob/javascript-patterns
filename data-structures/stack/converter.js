@@ -26,6 +26,4 @@ class Converter {
   }
 }
 
-let converter = new Converter(16);
-
-converter.parse(1624)); // 658
+module.exports = Converter;

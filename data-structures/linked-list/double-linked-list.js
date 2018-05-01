@@ -110,7 +110,7 @@ class DoubleLinkedList {
 
       return item;
     } else {
-      return null;
+      return undefined;
     }
   }
 

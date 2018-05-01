@@ -8,6 +8,7 @@ myNS.Stack = function() {
   class Stack {
 
     constructor() {
+      // User an array to store the items
       data.set(this, []);
     }
 

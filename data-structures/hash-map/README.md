@@ -24,9 +24,10 @@ In order to implement a hash map we need a *helper* class to be used as the cont
 var myNS = myNS || Object.create(null);
 
 myNS.HashMap = function() {
-  // Use weak map to encapsulate the items of each hash map instance
+  // Use weak map to encapsulate the entries of each hash map instance
   const data = new WeakMap();
 
+  // Use a strong hash function to avoid key collisions
   const hash = function hash(key) {
     let code = 5381;
     for (let i = 0; i < key.length; i++) {
@@ -36,6 +37,7 @@ myNS.HashMap = function() {
     return code % 1013;
   }
 
+  // Use a helper class to store each map entry
   class Entry {
 
     constructor(key, value) {
@@ -51,6 +53,7 @@ myNS.HashMap = function() {
   class HashMap {
 
     constructor() {
+      // Use an array to store the entries
       data.set(this, []);
     }
 
@@ -60,6 +63,7 @@ myNS.HashMap = function() {
       let hashCode = hash(key);
       let entry = m[hashCode];
 
+      // Update entry or create a new one
       if (entry) {
         entry.value = value;
       } else {
@@ -87,6 +91,7 @@ myNS.HashMap = function() {
       let entry = m[hashCode];
 
       if (entry) {
+        // Restore to undefined to mark space as free
         m[hashCode] = undefined;
         return true;
       } else {
@@ -112,15 +117,8 @@ myNS.HashMap = function() {
     size() {
       let m = data.get(this);
 
-      let length = m.reduce((counter, entry) => {
-        if (entry !== undefined) {
-          return counter + 1;
-        }
-
-        return counter;
-      }, 0);
-
-      return length;
+      // Filter out not used hash code indexes
+      return m.filter(e => e !== undefined).length;
     }
 
     keys() {

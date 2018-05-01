@@ -1,6 +1,6 @@
 let data = new WeakMap();
 
-class Queue {
+class PriorityQueue {
 
   constructor() {
     data.set(this, []);
@@ -53,4 +53,4 @@ class Queue {
   }
 }
 
-module.exports = Queue;
+module.exports = PriorityQueue;

@@ -28,6 +28,7 @@ myNS.Queue = function() {
   class Queue {
 
     constructor() {
+      // Use an array to store the items
       data.set(this, []);
     }
 
@@ -79,7 +80,7 @@ q.clear(); // []
 [Go to Source](index.js)
 
 ## Use Cases ##
-* [Check List](check-list.js)
+* [Priority Queue](priority-queue.js)
 
 ## Considerations ##
 

@@ -8,6 +8,7 @@ myNS.Queue = function() {
   class Queue {
 
     constructor() {
+      // Use an array to store the items
       data.set(this, []);
     }
 

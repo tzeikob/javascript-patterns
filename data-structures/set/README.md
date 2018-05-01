@@ -28,6 +28,7 @@ myNS.Set = function() {
   class Set {
 
     constructor() {
+      // Use an array to store the items
       data.set(this, []);
     }
 
@@ -47,6 +48,8 @@ myNS.Set = function() {
       }
 
       let values = data.get(this);
+
+      // Splice array item to free up space
       let index = values.indexOf(item);
       values.splice(index, 1);
 

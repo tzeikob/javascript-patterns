@@ -53,17 +53,4 @@ class SetOperator {
   }
 }
 
-let sa = new Set();
-sa.add(1);
-sa.add(2);
-sa.add(3);
-
-let sb = new Set();
-sb.add(2);
-sb.add(3);
-sb.add(4);
-
-SetOperator.union(sa, sb); // [1, 2, 3, 4]
-SetOperator.intersection(sa, sb); // [2, 3]
-SetOperator.difference(sa, sb); // [1]
-SetOperator.subset(new Set()); // false
+module.exports = SetOperator;
