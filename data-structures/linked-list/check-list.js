@@ -22,9 +22,26 @@ class CheckList {
 
 let cl = new CheckList();
 
-let t1 = {id: 'Task 1', toString() {return this.id}};
-let t2 = {id: 'Task 2', toString() {return this.id}};
-let t3 = {id: 'Task 3', toString() {return this.id}};
+let t1 = {
+  id: 'Task 1',
+  toString() {
+    return this.id
+  }
+};
+
+let t2 = {
+  id: 'Task 2',
+  toString() {
+    return this.id
+  }
+};
+
+let t3 = {
+  id: 'Task 3',
+  toString() {
+    return this.id
+  }
+};
 
 cl.add(t1, 0); // [Task 1]
 cl.add(t2, 0); // [Task 2, Task 1]

@@ -8,7 +8,7 @@ The facade pattern belongs to the category of those design patterns called *stru
 
 One of the most famous facades out there is the *JQuery library*, which actually hides all the difficulties and the peculiarities the DOM object brings us. A facade like this simplifies the interface in order to work more easily and only with the features we need and not more than that.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 

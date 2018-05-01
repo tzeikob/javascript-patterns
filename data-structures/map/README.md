@@ -19,7 +19,7 @@ In order to implement a map we need a *helper* class to be used as the container
 * clear the map of its entries
 * print the entries of the map into a string
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 

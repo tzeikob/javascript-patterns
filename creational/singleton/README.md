@@ -8,7 +8,7 @@ The singleton pattern belongs to the category of those design patterns called *c
 
 You can thing of this pattern also as a *factory* but that factory would only create one instance of the module and expose it to your application context once, so you end up actually using the same singleton object no matter who many times you requesting the module ahead of time and in different places of your application. The only thing you should do is to expose a public *get instance* method which is responsible to create the singleton at the very first time and then return that one object each time you call it in the future.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -22,17 +22,17 @@ myNS.module = function module() {
     console.log(`A{ value: ${this.value} }`);
   };
 
-  // Initiate singleton to be undefined
-  let singleton;
+  // Initiate instance to be undefined
+  let instance;
 
   return {
     getInstance: function getInstance() {
-      if (!singleton) {
-        // Create the singleton once only
-        singleton = new Alpha();
+      if (!instance) {
+        // Create the instance once only
+        instance = new Alpha();
       }
 
-      return singleton;
+      return instance;
     }
   };
 }();

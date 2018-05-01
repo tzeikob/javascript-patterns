@@ -40,7 +40,7 @@ const calculator = {
     };
   },
 
-  add(state, { address, x, y }) {
+  add(state, {address, x, y}) {
     const result = x + y;
 
     // Give the result back to the actor made the request
@@ -66,7 +66,7 @@ const storage = {
     };
   },
 
-  update(state, { value }) {
+  update(state, {value}) {
     return {
       value
     };

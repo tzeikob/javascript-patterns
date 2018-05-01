@@ -17,7 +17,7 @@ In order to implement a linked list we need a *helper* class to represent the no
 * ask for the size of the list as the number of its elements
 * print the elements of the list into a string
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -162,7 +162,7 @@ myNS.LinkedList = function() {
       let list = data.get(this);
       let current = list.head;
 
-      while(current != null) {
+      while (current != null) {
         let previous = current;
         current = current.next;
 

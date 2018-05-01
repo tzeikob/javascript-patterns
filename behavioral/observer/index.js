@@ -34,7 +34,10 @@ myNS.ObservableEntity.prototype.notify = function notify(context) {
 // Override the behavior of the entity
 myNS.ObservableEntity.prototype.update = function update(value) {
   myNS.Entity.prototype.update.call(this, value);
-  this.notify({subject: this.id, payload: this.value});
+  this.notify({
+    subject: this.id,
+    payload: this.value
+  });
 };
 
 // Let say you have an observer service accepting callbacks
@@ -56,7 +59,10 @@ let o2 = new myNS.Observer((context) => {
 });
 
 // Attach the observers to an observable object
-let e = new myNS.ObservableEntity({id: '1', value: 1});
+let e = new myNS.ObservableEntity({
+  id: '1',
+  value: 1
+});
 
 e.attach(o1);
 e.attach(o2);

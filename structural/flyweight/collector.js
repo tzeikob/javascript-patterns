@@ -19,7 +19,7 @@ myNS.factory = function factory() {
   const get = function get(title, employee, priority, completed) {
     const signature = String(title) + String(employee) + String(priority) + String(completed);
 
-    if(!items[signature]) {
+    if (!items[signature]) {
       items[signature] = new myNS.FlyweightTask(title, employee, priority, completed);
       count++;
     }

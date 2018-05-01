@@ -1,6 +1,6 @@
 // A dummy promise to resolve only non-negative values
 const request = function request(value) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     if (value >= 0) {
       resolve(value);
     } else {
@@ -11,7 +11,7 @@ const request = function request(value) {
 
 // A dummy promise to emulate pause for some time in secs
 const pause = function pause(secs) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     setTimeout(resolve, secs * 1000);
   });
 };
@@ -38,9 +38,9 @@ const task = async function task(retries) {
 };
 
 task(3)
-.then(function (value) {
-  console.log(`Task succeed, resolved value: ${value}`);
-})
-.catch(function (err) {
-  console.log(`Task failed, ${err.message}`);
-});
+  .then(function(value) {
+    console.log(`Task succeed, resolved value: ${value}`);
+  })
+  .catch(function(err) {
+    console.log(`Task failed, ${err.message}`);
+  });

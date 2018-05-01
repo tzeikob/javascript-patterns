@@ -30,7 +30,8 @@ myNS.domain = function domain() {
     {
       name: 'task',
       source: Task
-    }];
+    }
+  ];
 
   const vocab = {};
 

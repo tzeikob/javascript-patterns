@@ -8,7 +8,7 @@ The command pattern belongs to the category of those design patterns called *beh
 
 The command design pattern allows you to get less fragile implementations by building functionality on an existing implementation like a repository service. An important thing is that with this patterns you're able to keep track on each command executed which gives you the ability to undo or rollback into previous state.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 

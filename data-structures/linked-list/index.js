@@ -142,7 +142,7 @@ myNS.LinkedList = function() {
       let list = data.get(this);
       let current = list.head;
 
-      while(current != null) {
+      while (current != null) {
         let previous = current;
         current = current.next;
 

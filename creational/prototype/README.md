@@ -8,7 +8,7 @@ The prototype pattern belongs to the category of those design patterns called *c
 
 The prototype is a *built-in* ready to use feature of the JavaScript language, which can be used in combination with the *this* mechanism in order to base an object on a shared functionality across other objects created by the same *constructor* function. The main idea behind the prototype is that each object created, is automatically linked to the prototype object of the constructor function created by. So by extending that prototype object you can share functionality across all objects. You can thing this more like a *delegation* model, where each object has its own state and when gets a request for something it doesn't have it delegates that request to the prototype object.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 

@@ -53,8 +53,15 @@ let auditor = new myNS.Auditor((context) => {
   }
 });
 
-let u1 = new myNS.User({id: '1', name: 'Bob'});
-let u2 = new myNS.User({id: '2', name: 'Alice'});
+let u1 = new myNS.User({
+  id: '1',
+  name: 'Bob'
+});
+
+let u2 = new myNS.User({
+  id: '2',
+  name: 'Alice'
+});
 
 u1.attach(auditor);
 u2.attach(auditor);

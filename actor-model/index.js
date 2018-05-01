@@ -35,12 +35,16 @@ const model = function model() {
 
 const behavior = {
   init() {
-    return { count: 0 };
+    return {
+      count: 0
+    };
   },
 
-  methodA(state, { value }) {
+  methodA(state, {value}) {
     let count = state.count + value;
-    return { count };
+    return {
+      count
+    };
   },
 
   methodB(state) {

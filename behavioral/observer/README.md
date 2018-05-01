@@ -8,7 +8,7 @@ The observer pattern belongs to the category of those design patterns called *be
 
 In the observer pattern a group of objects is watching another single object known as the *focal point*. In order to get a more clear picture of what this is about, think of that group as a collection of services like logging, auditing etc. Each one of those services is called *observer* and can be used and coupled within an object having some behavior. Each time that object has something to report it should iterate through its observer list and fire up the notification method they provide, so each observer gets back a notification call.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -45,7 +45,10 @@ myNS.ObservableEntity.prototype.notify = function notify(context) {
 // Override the behavior of the entity
 myNS.ObservableEntity.prototype.update = function update(value) {
   myNS.Entity.prototype.update.call(this, value);
-  this.notify({subject: this.id, payload: this.value});
+  this.notify({
+    subject: this.id,
+    payload: this.value
+  });
 };
 
 // Let say you have an observer service accepting callbacks
@@ -67,7 +70,10 @@ let o2 = new myNS.Observer((context) => {
 });
 
 // Attach the observers to an observable object
-let e = new myNS.ObservableEntity({id: '1', value: 1});
+let e = new myNS.ObservableEntity({
+  id: '1',
+  value: 1
+});
 
 e.attach(o1);
 e.attach(o2);

@@ -8,7 +8,7 @@ The mediator pattern belongs to the category of those design patterns called *be
 
 The mediator design pattern can be better described as a *publisher/subscriber pattern* in which a subject object, which is responsible to broadcast data, should notify a mediator service which in turn should notify a group of subscribers attached to the broadcast messages of the former.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -44,7 +44,10 @@ myNS.mediator = function mediator() {
       channels[name] = [];
     }
 
-    channels[name].push({ subscriber, cb });
+    channels[name].push({
+      subscriber,
+      cb
+    });
   };
 
   const publish = function publish(name, message, ...rest) {
@@ -69,11 +72,11 @@ let p = new myNS.Publisher('p', myNS.mediator);
 let s1 = new myNS.Subscriber('s1');
 let s2 = new myNS.Subscriber('s2');
 
-myNS.mediator.subscribe(p.name, s1, function (message, ...rest) {
+myNS.mediator.subscribe(p.name, s1, function(message, ...rest) {
   console.log(this.name, message, rest);
 });
 
-myNS.mediator.subscribe(p.name, s2, function (message, ...rest) {
+myNS.mediator.subscribe(p.name, s2, function(message, ...rest) {
   console.log(this.name, message, rest);
 });
 

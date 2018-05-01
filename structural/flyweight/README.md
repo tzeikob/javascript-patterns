@@ -8,7 +8,7 @@ The flyweight pattern belongs to the category of those design patterns called *s
 
 The flyweight pattern makes easy to share data across objects giving you at the same time better management and smaller memory footprint. In order to use flyweight objects you have to figure out which properties of the object are actually non unique having many appearances across the objects. Replace those properties encapsulating them into a flyweight object that will be created through a *flyweight factory*.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -35,7 +35,7 @@ myNS.factory = function factory() {
     // Create a flyweight once by its unique data signature
     const signature = String(x) + String(y) + String(z);
 
-    if(!items[signature]) {
+    if (!items[signature]) {
       items[signature] = new myNS.Flyweight(x, y, z);
       count++;
     }
@@ -58,11 +58,11 @@ myNS.collector = function collector() {
   const items = {};
   let count = 0;
 
-  const add = function add(entity) {
-    items[entity.key] = entity;
+  const add = function add(item) {
+    items[item.key] = item;
     count++;
 
-    return entity;
+    return item;
   };
 
   const get = function get(key) {

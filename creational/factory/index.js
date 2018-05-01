@@ -27,7 +27,8 @@ myNS.factory = function factory() {
     {
       name: 'beta',
       source: Beta
-    }];
+    }
+  ];
 
   // Cache dictionary items into a public vocabulary
   const vocab = {};

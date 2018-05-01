@@ -8,7 +8,7 @@ The factory pattern belongs to the category of those design patterns called *cre
 
 You can thing of this pattern also as a *factory* of different kind of objects aka *domain*, where you can use it like an isolated module which actually exposes to you all the objects of your model around a single name space. Nothing prevents you from creating multiple instances of a factory, but each one of that instances will have its own internal state, so it's smart to use that pattern as a *singleton* object.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -38,7 +38,8 @@ myNS.factory = function factory() {
     {
       name: 'beta',
       source: Beta
-    }];
+    }
+  ];
 
   // Cache dictionary items into a public vocabulary
   const vocab = {};

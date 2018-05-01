@@ -65,11 +65,11 @@ myNS.controller = function controller() {
 
 let s1 = new myNS.Sensor('s1', 6, myNS.controller);
 
-let d1 = new myNS.Device('d1', function (value) {
+let d1 = new myNS.Device('d1', function(value) {
   console.log(this.name, value);
 });
 
-let d2 = new myNS.Device('d2', function (value) {
+let d2 = new myNS.Device('d2', function(value) {
   console.log(this.name, value);
 });
 

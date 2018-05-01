@@ -12,7 +12,7 @@ Another way to define a closure is to say that a closure is the ability of a fun
 
 We know that each time a function is called a new scope is created and bound to it known as its local scope, but actually this only the half truth. There is more to that and that's, each time a function is declared is *capturing* (closing) around the scope of the function it was declared within. We know that functions are objects so each time you declare a new function that object keeps a reference to that scope, creating a closure around it. So each time the function is called still has access to those scopes even when called outside of the its *syntax scope*.
 
-```
+```JavaScript
 let g = 'global';
 
 const outer = function outer() {

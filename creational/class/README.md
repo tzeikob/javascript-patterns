@@ -8,7 +8,7 @@ The class pattern belongs to the category of those design patterns called *creat
 
 The class is actually nothing more than a *syntactic sugar* upon the [prototype](../prototype) pattern, which can be used in combination with the *this* mechanism in order to base an object on a shared functionality across other objects created by the same *constructor* function. On a top of that you can have member methods as well as static ones and extend base classes into a more concrete and less generic ones creating a short of inheritance in favor of reusability.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 

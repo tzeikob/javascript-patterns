@@ -33,7 +33,10 @@ myNS.mediator = function mediator() {
       channels[name] = [];
     }
 
-    channels[name].push({ subscriber, cb });
+    channels[name].push({
+      subscriber,
+      cb
+    });
   };
 
   const publish = function publish(name, message, ...rest) {
@@ -58,11 +61,11 @@ let p = new myNS.Publisher('p', myNS.mediator);
 let s1 = new myNS.Subscriber('s1');
 let s2 = new myNS.Subscriber('s2');
 
-myNS.mediator.subscribe(p.name, s1, function (message, ...rest) {
+myNS.mediator.subscribe(p.name, s1, function(message, ...rest) {
   console.log(this.name, message, rest);
 });
 
-myNS.mediator.subscribe(p.name, s2, function (message, ...rest) {
+myNS.mediator.subscribe(p.name, s2, function(message, ...rest) {
   console.log(this.name, message, rest);
 });
 

@@ -24,7 +24,7 @@ myNS.factory = function factory() {
     // Create a flyweight once by its unique data signature
     const signature = String(x) + String(y) + String(z);
 
-    if(!items[signature]) {
+    if (!items[signature]) {
       items[signature] = new myNS.Flyweight(x, y, z);
       count++;
     }

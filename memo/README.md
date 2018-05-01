@@ -12,7 +12,7 @@ In simple terms memoizing means keep or save something in memory, functions that
 
 You can think of the memo pattern as a way to *cache* the results of a function, you know that each time you call it with the same arguments the result would be the same, so why not to cache it for future uses. In order to keep and save the cache of the function you need to create a [closure](../closure/) around it, so you can access it within the function.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 

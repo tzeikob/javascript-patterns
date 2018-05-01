@@ -10,7 +10,7 @@ class Converter {
   parse(num) {
     let stack = new Stack();
 
-    while(num > 0) {
+    while (num > 0) {
       let rem = Math.floor(num % this.base);
       stack.push(rem);
       num = Math.floor(num / this.base);
@@ -18,7 +18,7 @@ class Converter {
 
     let result = '';
 
-    while(!stack.isEmpty()) {
+    while (!stack.isEmpty()) {
       result += this.digits[stack.pop()];
     }
 

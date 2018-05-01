@@ -17,7 +17,7 @@ A stack apart from the *encapsulation* of its protected data must provide severa
 * clear the stack of its elements
 * get the size of the stack as the number of its elements
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 

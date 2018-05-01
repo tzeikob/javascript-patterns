@@ -17,7 +17,7 @@ In order to implement a set we need a *helper* class to be used as the container
 * clear the set of its elements
 * print the elements of the set into a string
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -83,8 +83,15 @@ myNS.Set = function() {
 
 let s = new myNS.Set();
 
-let o1 = {id: 1, name: "Bob"};
-let o2 = {id: 2, name: "Alice"};
+let o1 = {
+  id: 1,
+  name: "Bob"
+};
+
+let o2 = {
+  id: 2,
+  name: "Alice"
+};
 
 s.add(o1); // [{id: 1, name: "Bob"}]
 s.add(o1); // [{id: 1, name: "Bob"}]

@@ -8,7 +8,7 @@ The decorator pattern belongs to the category of those design patterns called *s
 
 You can thing of this pattern also as an inheritance pattern using the built-in [prototype](../../creational/prototype) feature, imagine you have a task object that pretty much encapsulates the state and the behavior of a regular assignment job but at some point you may need to add more features and functionality to it. In order to do that without breaking the existing code you have to extend it using prototypes.
 
-```
+```JavaScript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 

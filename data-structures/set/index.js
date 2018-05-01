@@ -63,8 +63,15 @@ myNS.Set = function() {
 
 let s = new myNS.Set();
 
-let o1 = {id: 1, name: "Bob"};
-let o2 = {id: 2, name: "Alice"};
+let o1 = {
+  id: 1,
+  name: "Bob"
+};
+
+let o2 = {
+  id: 2,
+  name: "Alice"
+};
 
 s.add(o1); // [{id: 1, name: "Bob"}]
 s.add(o1); // [{id: 1, name: "Bob"}]

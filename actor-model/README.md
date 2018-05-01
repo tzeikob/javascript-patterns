@@ -22,7 +22,7 @@ In conclusion some after thoughts about actors and how they interact into a syst
 
 In order to implement the Actor Model you must have in advance an asynchronous messaging controller or emitter, who will be responsible for each message delivery between the actors. The messaging system can use the actor's unique address in order to specify the target of the delivery.
 
-```
+```JavaScript
 const mailbox = new EventEmitter();
 
 mailbox.on('actor-address', function(payload) {});
@@ -37,7 +37,7 @@ The next big thing is to define the behavior of the actors they can adopt in ord
 * each other method must have as input the current state and an optional object of data to work with,
 * and return the updated state, so any following message has access to the next state.
 
-```
+```JavaScript
 const behavior = {
   init() {
     return { value: 0 };
@@ -64,7 +64,7 @@ Actors are the foundation part of the application and they need to have access t
 * attach the actor, so to able to receive messages,
 * return the unique address back to the application.
 
-```
+```JavaScript
 function actor(behavior) {
   const address = Symbol();
 
@@ -85,7 +85,7 @@ function actor(behavior) {
 
 Each time an actor sends a message to another actor, it must provide, along with the actor's address, a payload that contains the name of the method that needs to be executed and optional data if applicable.
 
-```
+```JavaScript
 function send(address, payload) {
   mailbox.emit(address, payload);
 }
@@ -93,7 +93,7 @@ function send(address, payload) {
 
 ### Put all together ###
 
-```
+```JavaScript
 const EventEmitter = require('events').EventEmitter;
 
 const model = function model() {
@@ -131,12 +131,16 @@ const model = function model() {
 
 const behavior = {
   init() {
-    return { count: 0 };
+    return {
+      count: 0
+    };
   },
 
-  methodA(state, { value }) {
+  methodA(state, {value}) {
     let count = state.count + value;
-    return { count };
+    return {
+      count
+    };
   },
 
   methodB(state) {

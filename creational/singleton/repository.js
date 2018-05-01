@@ -2,46 +2,54 @@ var myNS = myNS || Object.create(null);
 
 myNS.service = function service() {
   const Repo = function Repo() {
-    this.data = [
-      {id: 'a', value: 'alfa'},
-      {id: 'd', value: 'delta'}
+    this.data = [{
+        id: 'a',
+        value: 'alfa'
+      },
+      {
+        id: 'd',
+        value: 'delta'
+      }
     ];
   };
 
   Repo.prototype.get = function get(id) {
-    let item = this.data.find(item => {
-      return item.id === id;
-    });
+    let item = this.data.find(item => id === item.id);
 
     if (!item) {
       return null;
     }
 
-    return {id: item.id, value: item.value};
+    return {
+      id: item.id,
+      value: item.value
+    };
   };
 
   Repo.prototype.list = function list() {
     return this.data.map(item => {
-      return {id: item.id, value: item.value};
+      return {
+        id: item.id,
+        value: item.value
+      };
     });
   };
 
   Repo.prototype.save = function save(id, value) {
-    let index = this.data.findIndex(item => {
-      return item.id === id;
-    });
+    let index = this.data.findIndex(item => id === item.id);
 
     if (index !== -1) {
       throw new Error(`Cannot save, item with id already exists: ${id}`);
     }
 
-    this.data.push({id, value});
+    this.data.push({
+      id,
+      value
+    });
   };
 
   Repo.prototype.update = function update(id, value) {
-    let item = this.data.find(item => {
-      return item.id === id;
-    });
+    let item = this.data.find(item => id === item.id);
 
     if (!item) {
       throw new Error(`Cannot update, item not found: ${id}`);
@@ -51,11 +59,9 @@ myNS.service = function service() {
   };
 
   Repo.prototype.remove = function remove(id) {
-    let index = this.data.findIndex(item => {
-      return item.id === id;
-    });
+    let index = this.data.findIndex(item => id === item.id);
 
-    if(index === -1) {
+    if (index === -1) {
       throw new Error(`Cannot remove, item not found: ${id}`);
     }
 
