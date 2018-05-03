@@ -24,6 +24,7 @@ A cheat sheet repository for JavaScript design patterns and best practices.
   * [Linked List](data-structures/linked-list/)
   * [Set](data-structures/set/)
   * [Map](data-structures/map/)
+  * [Hash Map](data-structures/hash-map/)
 * [Closure](closure/)
 * [Memo](memo/)
 * [Async Retry](async-retry/)
