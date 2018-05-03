@@ -2,18 +2,18 @@
 
 [Back to Home](../../../../)
 
-A binary tree is a collection of node elements, but unlike arrays or lists the entries are not placed contiguously in memory, instead pointers are used to retain connections. In binary trees each node must have maximum two *child nodes* and no more. A tree node consist of a *key* as the actual value of the node, and the two pointers referencing to it's children, the *left*  and the *right* child, that way we build the tree structure. In trees we use the term *root* to denote the top most node entry, which is kind of the same thing like the *head* in linked lists, we need it in order to keep track of the rest tree nodes. One thing to be aware of is, that a key should be stored only once, that's it only one tree node can have a certain key across all the nodes in the tree.
+A binary tree is a collection of node elements, but unlike arrays or lists the entries are not placed contiguously in memory, instead pointers are used to retain connections. In binary trees each node must have maximum two *child nodes* and no more. A tree node consist of a *key* as the actual value of the node, and the two pointers referencing to its children, the *left*  and the *right* child, that way we build the tree structure. In trees we use the term *root* to denote the top most node entry, which is kind of the same thing like the *head* in linked lists, we need it in order to keep track of the rest tree nodes. One thing to be aware of is, that a key should be stored only once, that's it only one tree node can have a certain key across all the nodes in the tree.
 
 ## Implementation ##
 
 In order to implement a binary tree we need a *helper* class to represent the nodes, each node must store the key as a value and two links, one to the left hand-side child and another to point to the right hand-side child. The operations a binary tree should provide are the following ones,
 
-* insert an element given its key value
-* remove an element given its key value
-* find the min key in the tree
-* find the max key in the tree
-* traverse tree keys in order, pre and post order
-* search if key exists in the tree
+* insert a node given a key value
+* remove a node given its key value
+* find the minimum key in the tree
+* find the maximum key in the tree
+* traverse the nodes of the tree in order, pre and post order
+* search if a key exists in the tree
 
 ```JavaScript
 // Use your own namespace to keep global scope clean
