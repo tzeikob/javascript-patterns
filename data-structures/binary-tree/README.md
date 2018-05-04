@@ -97,7 +97,7 @@ const searchMax = function searchMax(subject) {
 
 #### Search if a key exists in the tree ####
 
-Given a key value we can traverse the tree nodes downward the same way we do in addition until we actually visti a node that has the actually key in question.
+Given a key value we can traverse the tree nodes downward the same way we do in addition until we actually visit a node that has the actually key in question.
 
 ```JavaScript
 const match = function match(subject, key) {
