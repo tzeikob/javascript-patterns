@@ -12,7 +12,7 @@ The first thing to do is to prepare the code to protect the *internal state* of 
 const data = new WeakMap();
 ```
 
-### The Node helper ###
+### The node helper class ###
 
 In order to implement a binary tree we need a *helper* class to represent the nodes, as we already mentioned each node must keep the key as a value and two pointers, one to the left hand-side child and another to the right hand-side child. The very first time a node is created only the *key* property is initialized both the *left* and *right* pointers are left null. The key value can be any ordinal value like a primitive value or a custom object as long as a *valueOf* method is provided returning the actual ordinal number that object is represented of. One important thing is that we provide a method to *dispose* the internal state of a node by unlinking all the external pointers and references in order to help garbage collector in cases like node removals.
 
@@ -32,7 +32,7 @@ class Node {
 }
 ```
 
-### Operations ###
+### The tree operations ###
 
 Before we start implementing the binary tree class we need some private helper functions to support all the operations a binary tree should provide, which are the following ones,
 
@@ -115,7 +115,9 @@ const match = function match(subject, key) {
 
 #### Remove a node given its key value ####
 
-The removal of a tree node in a more complex operation than the others, the first thing to do is to find the node which is actually the subject for the removal. Having the tree node that must be dropped, we need take some side-effect actions in order to retain the structure of the tree after the removal. We should take a different approach depending on the state of the node to be dropped and its descendants. If the node is a *leaf node* (both the left and right descendants are null) we only need to dispose the node and return null. If the node has only one of its descendants equal to null, then we only need to replace this node reference with the descendant reference that it's not null. The more complex case is where both the descendants are not equal to null, in which case we shall find the minimum right hand-side node of the subject node and use that value to update the subject key value. Then we should drop that minimum node found before and use its parent as the right descendant of the subject node.
+The removal of a tree node in a more complex operation than the others, the first thing to do is to find the node which is actually the subject for the removal. Having the tree node that must be dropped, we need take some side-effect actions in order to retain the structure of the tree after the removal. We should take a different approach depending on the state of the node to be dropped and its descendants. If the node is a *leaf node* (both the left and right descendants are null) we only need to dispose the node and return null.
+
+If the node has only one of its descendants equal to null, then we only need to replace this node reference with the descendant reference that it's not null. The more complex case is where both the descendants are not equal to null, in which case we shall find the minimum right hand-side node of the subject node and use that value to update the subject key value. Then we should drop that minimum node found before and use its parent as the right descendant of the subject node.
 
 ```JavaScript
 const drop = function drop(subject, key) {
@@ -167,7 +169,7 @@ const iterate = function iterate(subject, callback) {
 }
 ```
 
-### The Binary Tree class ###
+### The binary tree class ###
 
 In order to keep track on the internal state of a binary tree, we only need to store a reference to the *root* node of the tree. The exposed methods for insert, remove of nodes along with the others like min, max and traverse are using the recursive operations mentioned above.
 
@@ -225,7 +227,7 @@ class BinaryTree {
 }
 ```
 
-## Binary Tree in Action ##
+Now we can put all together and see the binary tree in action with some real data.
 
 ```JavaScript
 let bt = new BinaryTree();
