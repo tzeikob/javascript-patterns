@@ -6,141 +6,200 @@ A hash map is a collection of unordered *key-value* entries also known as *hash 
 
 ## Implementation ##
 
-In order to implement a hash map we need a *helper* class to be used as the container of the element entries, and that will be the *Array* class. In addition we're gonna use another helper class known as *Entry* in order to keep track on the *key-value* pair for each element in the map. So it's our responsibility to protect the map's data in order to make sure a key used only once. The operations a hash map should provide are the following ones,
-
-* set a value to the map under a given key
-* get a value by the given key from the map
-* delete a value by the given key from the map
-* check if a given key exists in the map
-* check if the map is empty of entries
-* ask for the size of the map as the number of its entries
-* get the keys of the map as an array
-* get the values of the map as an array
-* clear the map of its entries
-* print the entries of the map into a string
+The first thing to do is to prepare the code to protect the *internal state* of each has map instance, so it is not publicly exposed in other parts of the code. We are gonna use a *WeakMap* container to *cache* the internal state of each map using the instance reference itself as the key.
 
 ```JavaScript
-// Use your own namespace to keep global scope clean
-var myNS = myNS || Object.create(null);
+const data = new WeakMap();
+```
 
-myNS.HashMap = function() {
-  // Use weak map to encapsulate the entries of each hash map instance
-  const data = new WeakMap();
+### The entry helper class ###
 
-  // Use a strong hash function to avoid key collisions
-  const hash = function hash(key) {
-    let code = 5381;
-    for (let i = 0; i < key.length; i++) {
-      code = code * 33 + key.charCodeAt(i);
-    }
+In order to implement a hash map we need a *helper* class known as *Entry* in order to keep track on the *key-value* pair for each element in the map.
 
-    return code % 1013;
+
+```JavaScript
+class Entry {
+  constructor(key, value) {
+    this.key = key;
+    this.value = value;
   }
 
-  // Use a helper class to store each map entry
-  class Entry {
+  toString() {
+    return `{${this.key}: ${this.value}}`;
+  }
+}
+```
 
-    constructor(key, value) {
-      this.key = key;
-      this.value = value;
-    }
+### The hash function ###
 
-    toString() {
-      return `{${this.key}: ${this.value}}`;
-    }
+In hash maps the location in which an entry should be stored is actually the outcome of a *hash function* passing the key value of the entry. For each entry we expect to get a unique index from the hash function, that index will be the position of the entry into the container of the data structure.
+
+```JavaScript
+const hash = function hash(key) {
+  let code = 5381;
+
+  for (let i = 0; i < key.length; i++) {
+    code = code * 33 + key.charCodeAt(i);
   }
 
-  class HashMap {
+  return code % 1013;
+}
+```
 
-    constructor() {
-      // Use an array to store the entries
-      data.set(this, []);
-    }
+### The hash map class ###
 
-    set(key, value) {
-      let m = data.get(this);
+We are gonna use a class in order to implement the hash map data structure and the first thing to do is to encapsulate the hash map's data within a *WeakMap* container using the map instance itself as the key. The data of each hash map instance is nothing more than a regular *Array* who's indexes will be used in order to hash entries into the map.
 
-      let hashCode = hash(key);
-      let entry = m[hashCode];
-
-      // Update entry or create a new one
-      if (entry) {
-        entry.value = value;
-      } else {
-        m[hashCode] = new Entry(key, value);
-      }
-    }
-
-    get(key) {
-      let m = data.get(this);
-
-      let hashCode = hash(key);
-      let entry = m[hashCode];
-
-      if (entry) {
-        return entry.value;
-      } else {
-        return undefined;
-      }
-    }
-
-    delete(key) {
-      let m = data.get(this);
-
-      let hashCode = hash(key);
-      let entry = m[hashCode];
-
-      if (entry) {
-        // Restore to undefined to mark space as free
-        m[hashCode] = undefined;
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    has(key) {
-      let m = data.get(this);
-      let hashCode = hash(key);
-
-      return m[hashCode] !== undefined;
-    }
-
-    isEmpty() {
-      return this.size() === 0;
-    }
-
-    clear() {
-      data.set(this, []);
-    }
-
-    size() {
-      let m = data.get(this);
-
-      // Filter out not used hash code indexes
-      return m.filter(e => e !== undefined).length;
-    }
-
-    keys() {
-      let m = data.get(this);
-      return m.filter(e => e !== undefined).map(e => e.key);
-    }
-
-    values() {
-      let m = data.get(this);
-      return m.filter(e => e !== undefined).map(e => e.value);
-    }
-
-    toString() {
-      let m = data.get(this);
-      return `HashMap: [${m.filter(e => e !== undefined).join(', ')}]`;
-    }
+```JavaScript
+class HashMap {
+  constructor() {
+    data.set(this, []);
   }
+}
+```
 
-  return HashMap;
-}();
+### The hash map operations ###
 
-let hm = new myNS.HashMap();
+Now we have the class of a hash map we need to implement the basic operations, which should be the following ones,
+
+* set an entry value under a given key
+* get an entry value given the key
+* delete an entry value given the key
+* check if a given key exists in the map
+* ask for the size of the map
+* get the keys and values of the map
+* clear the map of its entry values
+* print the entries of the map
+
+before we start implementing each operation, we shall make sure each entry takes its own unique index into the hash map's container. So we need to take care of a strong hash function to be used within the operations.
+
+#### Set an entry value under a given key ####
+
+Having a key we should pass it through the hash function in order to get the index into which the entry value will be stored into the hash map container. If a entry value found into the hash map we only need to update its value, otherwise we must create a new entry and save it under the given hash index.
+
+```JavaScript
+set(key, value) {
+  let m = data.get(this);
+
+  let hashCode = hash(key);
+  let entry = m[hashCode];
+
+  if (entry) {
+    entry.value = value;
+  } else {
+    m[hashCode] = new Entry(key, value);
+  }
+}
+```
+
+#### Get an entry value given the key ####
+
+Having a key we can ask to get the entry value from the hash map, if that entry exists we return its value, otherwise will return undefined.
+
+```JavaScript
+get(key) {
+  let m = data.get(this);
+
+  let hashCode = hash(key);
+  let entry = m[hashCode];
+
+  if (entry) {
+    return entry.value;
+  } else {
+    return undefined;
+  }
+}
+```
+
+#### Delete an entry value given the key ####
+
+Given a key we can check if an entry value exists in the map, in such a case the only thing to do is to assign the undefined value to the index that key value is hashing to.
+
+```JavaScript
+delete(key) {
+  let m = data.get(this);
+
+  let hashCode = hash(key);
+  let entry = m[hashCode];
+
+  if (entry) {
+    m[hashCode] = undefined;
+    return true;
+  } else {
+    return false;
+  }
+}
+```
+
+#### Check if a given key exists in the map ####
+
+To check if an entry value exists in the hash map we only need to pass the given key through the hash function and check if the value into the corresponding position is not equal to undefined.
+
+```JavaScript
+has(key) {
+  let m = data.get(this);
+  let hashCode = hash(key);
+
+  return m[hashCode] !== undefined;
+}
+```
+
+#### Ask for the size of the map ####
+
+To calculate the total number of entry values stored into the hash map we should filter out all the positions into the container being equal to undefined and count the total length on it.
+
+```JavaScript
+size() {
+  let m = data.get(this);
+  return m.filter(e => e !== undefined).length;
+}
+
+isEmpty() {
+  return this.size() === 0;
+}
+```
+
+#### Get the keys and values of the map ####
+
+We known so far that filtering out all the positions within the hash map's container, that are equal to undefined, we can map the rest in order to collect the keys or the values of the hash map.
+
+```JavaScript
+keys() {
+  let m = data.get(this);
+  return m.filter(e => e !== undefined).map(e => e.key);
+}
+
+values() {
+  let m = data.get(this);
+  return m.filter(e => e !== undefined).map(e => e.value);
+}
+```
+
+#### Clear the map of its entry values ####
+
+To clear the hash map of its entries we only need to reset the container of the entries into a new empty array.
+
+```JavaScript
+clear() {
+  data.set(this, []);
+}
+```
+
+#### Print the entries of the map ####
+
+In the same way just filter out the positions equal to undefined and join all the rest entries into a string, where each entry should be separated by a comma.
+
+```JavaScript
+toString() {
+  let m = data.get(this);
+  return `HashMap: [${m.filter(e => e !== undefined).join(', ')}]`;
+}
+```
+
+We can now put all together and use the hash map into some real data.
+
+```JavaScript
+let hm = new HashMap();
 
 hm.set('bob', 'bob@mail.com'); // [{bob: bob@mail.com}]
 hm.set('alice', 'alice@mail.com'); // [{bob: bob@mail.com}, {alice: alice@mail.com}]
@@ -157,9 +216,6 @@ hm.has('bob'); // false
 ```
 
 [Go to Source](index.js)
-
-## Use Cases ##
-* [Catalog](catalog.js)
 
 ## Considerations ##
 
