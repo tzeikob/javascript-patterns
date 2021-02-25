@@ -34,5 +34,7 @@ JavaScript Patterns is a collection of design patterns and best practices for th
 
 ## Resources ##
 
-* [JavaScript Patterns, 2010](https://www.oreilly.com/library/view/javascript-patterns/9781449399115/)
-* [Learning JavaScript Data Structures and Algorithms, 2nd Ed. 2016](https://www.packtpub.com/product/learning-javascript-data-structures-and-algorithms-second-edition/9781785285493)
+Below you can find resources and books about design patterns and best practices in the JavaScript community.
+
+* [JavaScript Patterns](https://www.oreilly.com/library/view/javascript-patterns/9781449399115/)
+* [Learning JavaScript Data Structures and Algorithms, 2nd Ed.](https://www.packtpub.com/product/learning-javascript-data-structures-and-algorithms-second-edition/9781785285493)
