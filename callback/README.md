@@ -83,7 +83,7 @@ function compute (num, callback) {
 compute(2, function callback (error, result) {
   // Error comes first
   if (error) {
-    console.log(error);
+    console.error(error);
   } else {
     console.log(result);
   }
