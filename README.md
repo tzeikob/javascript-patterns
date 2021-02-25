@@ -1,6 +1,6 @@
 # JavaScript Patterns #
 
-A cheat sheet repository for JavaScript design patterns and best practices.
+JavaScript Patterns is a collection of well documented design patterns and best coding practices for the JavaScript programming language.
 
 ## Table of Contents ##
 * [Creational](creational/)
@@ -30,3 +30,8 @@ A cheat sheet repository for JavaScript design patterns and best practices.
 * [Memo](memo/)
 * [Async Retry](async-retry/)
 * [Actor Model](actor-model/)
+
+## Resources ##
+
+* [JavaScript Patterns, 2010](https://www.oreilly.com/library/view/javascript-patterns/9781449399115/)
+* [Learning JavaScript Data Structures and Algorithms, 2nd Ed. 2016](https://www.packtpub.com/product/learning-javascript-data-structures-and-algorithms-second-edition/9781785285493)
