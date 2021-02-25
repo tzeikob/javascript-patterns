@@ -1,6 +1,6 @@
 # JavaScript Patterns #
 
-JavaScript Patterns is a collection of well documented design patterns and best coding practices for the JavaScript programming language.
+JavaScript Patterns is a collection of design patterns and best practices for the JavaScript programming language.
 
 ## Table of Contents ##
 * [Creational](creational/)
