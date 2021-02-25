@@ -3,6 +3,7 @@
 JavaScript Patterns is a collection of design patterns and best practices for the JavaScript programming language.
 
 ## Table of Contents ##
+* [Callback](callback/)
 * [Creational](creational/)
   * [Prototype](creational/prototype/)
   * [Module](creational/module/)
