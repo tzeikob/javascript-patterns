@@ -3,22 +3,22 @@
 A cheat sheet repository for JavaScript design patterns and best practices.
 
 ## Table of Contents ##
-* Creational
+* [Creational](creational/)
   * [Prototype](creational/prototype/)
   * [Module](creational/module/)
   * [Revealing Module](creational/revealing-module/)
   * [Factory](creational/factory/)
   * [Singleton](creational/singleton/)
   * [Class](creational/class/)
-* Structural
+* [Structural](structural/)
   * [Decorator](structural/decorator/)
   * [Facade](structural/facade/)
   * [Flyweight](structural/flyweight/)
-* Behavioral
+* [Behavioral](behavioral/)
   * [Observer](behavioral/observer/)
   * [Mediator](behavioral/mediator/)
   * [Command](behavioral/command/)
-* Data Structures
+* [Data Structures](data-structures/)
   * [Stack](data-structures/stack/)
   * [Queue](data-structures/queue/)
   * [Linked List](data-structures/linked-list/)
