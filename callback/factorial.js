@@ -1,10 +1,14 @@
 function factorial (num, cb) {
   setTimeout(() => {
     try {
-      if (num === 0) {
-        return 1;
+      if (typeof num !== "number") {
+        throw new Error("Number must be an integer value");
       }
     
+      if (num < 0) {
+        throw new Error("Number must be a non-negative integer value");
+      }
+
       let result = 1;
       for (let i = 1; i <= num; i++) {
         result *= i;
@@ -19,8 +23,8 @@ function factorial (num, cb) {
 
 const result = factorial(11, (error, result) => {
   if (error) {
-    throw error;
+    console.error(error);
+  } else {
+    console.log(result); // 39916800
   }
-
-  console.log(result); // 39916800
 });

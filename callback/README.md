@@ -46,7 +46,7 @@ concat("Hello", "World", function callback (result) {
 
 > Note: we are using the `setTimeout` function in order to mimic the execution of an asynchronous operation in a future event loop cycle.
 
-### Callback which returns value back ###
+### Callback which returns a value back ###
 
 The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the values of a collection. In such cases a callback is given a value and returns it back modified instead of just handle it.
 
@@ -101,7 +101,10 @@ compute(2, function callback (error, result) {
 To sum up, a callback called synchronously blocks the current code until the operation completes, where an asynchronously called callback returns control back immediately and completes, given the result, at a later event loop cycle. In any use case mentioned above, there is no syntactic difference which means that the intent of the callback should always be explained in the documentation of the API.
 
 ## Implementations ##
-* [factorial](factorial.js)
+
+Below you can find various trivial or real-world implementations of this pattern:
+
+* [factorial](factorial.js): calculate the factorial of a given non-negative integer number.
 * [mapper](mapper.js)
 
 ## Considerations ##
