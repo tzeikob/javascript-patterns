@@ -113,13 +113,12 @@ class Observable {
   ...
 
   removeListener (event, listener) {
-    setTimeout(() => {
-      try {
-        // Find the listener and remove from the map
-      } catch (error) {
-        this.emit("error", error);
-      }
-    });
+    const listeners = this.listeners[event];
+    
+    if (listeners) {
+      // Find the listener and remove it from the map
+      ...
+    }
   }
 }
 ```
