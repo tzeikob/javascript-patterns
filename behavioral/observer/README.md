@@ -102,3 +102,24 @@ Below you can find various trivial or real-world implementations of this pattern
 * [thermometer](thermometer.js): a trivial implementation of an observable thermometer.
 
 ## Considerations ##
+
+### Avoid memory leaks of dangling listeners ###
+
+The observer pattern is a very powerful mechanism which if not taken seriously it might introduce some kind of degradation in the performance of your application. Each time a new listener is attached to an observable occupies memory because of the surrounding closure, that portion of allocation must be released when the listener not needed anymore. So we always must provide a method to remove registered listener from an observable object. In order to remove a listener we must provide both the event type and the listener callback.
+
+```javascript
+class Observable {
+
+  ...
+
+  removeListener (event, listener) {
+    setTimeout(() => {
+      try {
+        // Find the listener and remove from the map
+      } catch (error) {
+        this.emit("error", error);
+      }
+    });
+  }
+}
+```

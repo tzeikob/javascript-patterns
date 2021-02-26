@@ -45,6 +45,15 @@ class Thermometer {
       }
     });
   }
+
+  removeListener (event, listener) {
+    const listeners = this.listeners[event];
+    
+    if (listeners) {
+      const index = listeners.findIndex(l => l === listener);
+      listeners.splice(index, 1);
+    }
+  }
 }
 
 const t = new Thermometer();
@@ -53,12 +62,19 @@ t.update(10);
 
 t.on("increase", (temp, delta) => console.log(`Temperature increased up to ${temp} with a delta ${delta}`))
   .on("decrease", (temp, delta) => console.log(`Temperature decreased to ${temp} with a delta ${delta}`))
-  .on("error", error => console.error(`An error occurred updating the temperature: ${error.message}`));
+  .on("error", error => console.error(`An error occurred updating the temperature: ${error.message}`))
+  .on("increase", (temp, delta) => console.log(`With the temperature increased by ${delta} is getting warmer`));
 
 t.update(-15);
 t.update(8);
 t.update(8);
+t.update(40);
 
+// Async output:
 // Temperature increased up to 10 with a delta 10
+// With the temperature increased by 10 is getting warmer
 // Temperature decreased to -15 with a delta -25
 // Temperature increased up to 8 with a delta 23
+// With the temperature increased by 23 is getting warmer
+// Temperature increased up to 40 with a delta 32
+// With the temperature increased by 32 is getting warmer
