@@ -86,7 +86,7 @@ class Observable {
       try {
         this.emit("success", 1);
       } catch (error) {
-        this.emit("error", new Error("Oops"));
+        this.emit("error", error);
       }
     });
   }
