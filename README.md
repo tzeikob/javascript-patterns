@@ -16,7 +16,7 @@ JavaScript Patterns is a collection of design patterns and best practices for th
   * [Facade](structural/facade/)
   * [Flyweight](structural/flyweight/)
 * [Behavioral](behavioral/)
-  * [Observer](behavioral/observer/)
+  * [Observer*](behavioral/observer/)
   * [Mediator](behavioral/mediator/)
   * [Command](behavioral/command/)
 * [Data Structures](data-structures/)
