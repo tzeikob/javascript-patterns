@@ -6,6 +6,8 @@ A callback is nothing more than a function, which in JavaScript is considered a 
 
 As callback is just a function, it can be passed to another function and invoked with the result when the operation in that function completes. It doesn't need to be an asynchronous operation though, callbacks can be used both in synchronous and asynchronous operations.
 
+### Callback in a synchronous operation ###
+
 In a synchronous operation, a callback should be implemented like so:
 
 ```javascript
@@ -21,6 +23,8 @@ concat("Hello", "World", function callback (result) {
   console.log(result);
 });
 ```
+
+### Callback in an asynchronous operation ###
 
 In an asynchronous operation though, a callback should be used like so:
 
@@ -41,6 +45,8 @@ concat("Hello", "World", function callback (result) {
 ```
 
 > Note: we are using the `setTimeout` function in order to mimic the execution of an asynchronous operation in a future event loop cycle.
+
+### Callback which returns value back ###
 
 The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the values of a collection. In such cases a callback is given a value and returns it back modified instead of just handle it.
 
@@ -64,6 +70,8 @@ const mapped = map(values, function callback (value) {
   return value * 2;
 });
 ```
+
+### Error handling in a callback ###
 
 Always have the callback argument as the last argument in the function, this way your code will be more readable and consistent with the rest of the community. Another important thing is to be consistent with error handling in callbacks and have any error comes first when propagating errors back like so:
 
@@ -110,7 +118,7 @@ function compute (num, callback) {
     factorial(num, (result) => {
       cache[num] = result; // Next time call back synchronously
 
-      callback(result); // Call back asynchronously
+      callback(result); // Call back asynchronously once
     });
   }
 }
