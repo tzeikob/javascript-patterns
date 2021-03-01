@@ -4,22 +4,22 @@ JavaScript Patterns is a collection of design patterns and best practices for th
 
 ## Table of Contents ##
 * [Callback*](callback/)
-* [Creational](creational/)
+* Creational
   * [Prototype](creational/prototype/)
   * [Module](creational/module/)
   * [Revealing Module](creational/revealing-module/)
   * [Factory](creational/factory/)
   * [Singleton](creational/singleton/)
   * [Class](creational/class/)
-* [Structural](structural/)
+* Structural
   * [Decorator](structural/decorator/)
   * [Facade](structural/facade/)
   * [Flyweight](structural/flyweight/)
-* [Behavioral](behavioral/)
+* Behavioral
   * [Observer*](behavioral/observer/)
   * [Mediator](behavioral/mediator/)
   * [Command](behavioral/command/)
-* [Data Structures](data-structures/)
+* Data Structures
   * [Stack](data-structures/stack/)
   * [Queue](data-structures/queue/)
   * [Linked List](data-structures/linked-list/)
