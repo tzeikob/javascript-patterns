@@ -60,10 +60,21 @@ const t = new Thermometer();
 
 t.update(10);
 
-t.on("increase", (temp, delta) => console.log(`Temperature increased up to ${temp} with a delta ${delta}`))
-  .on("decrease", (temp, delta) => console.log(`Temperature decreased to ${temp} with a delta ${delta}`))
-  .on("error", error => console.error(`An error occurred updating the temperature: ${error.message}`))
-  .on("increase", (temp, delta) => console.log(`With the temperature increased by ${delta} is getting warmer`));
+t.on("increase", (temp, delta) => {
+  console.log(`Temperature increased up to ${temp} with a delta ${delta}`)
+});
+
+t.on("decrease", (temp, delta) => {
+  console.log(`Temperature decreased to ${temp} with a delta ${delta}`)
+});
+
+t.on("error", error => {
+  console.error(`An error occurred updating the temperature: ${error.message}`)
+});
+
+t.on("increase", (temp, delta) => {
+  console.log(`With the temperature increased by ${delta} is getting warmer`)
+});
 
 t.update(-15);
 t.update(8);
