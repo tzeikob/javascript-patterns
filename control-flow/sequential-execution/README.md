@@ -109,3 +109,37 @@ function operation (tasks, value, callback) {
 ```
 
 Keep in mind that we are passing information from a task to the next task by updating the current value variable with the result of each task at a time, this way we can share data between tasks. Bear in mind that we can use custom objects in the place of the value variable if we need to be more flexible according to our requirements.
+
+## Considerations ##
+
+### Avoid the callback hell anti-pattern ###
+
+By using in-place anonymous function definitions where we have to place a callback is considered a very bad practice. The reason is that this will eventually result in the chaos of an unreadable code (pyramid of doom), hard to maintain, debug and test. So avoid doing the following when you have to control the execution of asynchronous tasks:
+
+```javascript
+task1(input, (error, result) => {
+  if (error) {
+    return console.log(error);
+  }
+
+  task2(result, (error, result) => {
+    if (error) {
+      return console.log(error);
+    }
+
+    task3(result, (error, result) => {
+      if (error) {
+        return console.log(error);
+      }
+
+      return result;
+    });
+  });
+});
+```
+
+Instead try to split your code into named function definitions per task, this way you can test and debug easier every part of the execution in isolation. In addition following this approach you can avoid unnecessary closures in order to pass and share data across all the tasks (what if a task needs the result of the first task?).
+
+### Use recursion with caution ###
+
+Even thought using recursion in the iteration pattern might seem so powerful, you should take care and make a good use of this feature in order to avoid unexpected results such as stack overflows.
