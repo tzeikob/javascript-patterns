@@ -91,10 +91,10 @@ function compute (num, callback) {
 compute(2, function callback (error, result) {
   // Error comes first
   if (error) {
-    console.error(error);
-  } else {
-    console.log(result);
+    return console.error(error);
   }
+
+  console.log(result);
 });
 ```
 
@@ -116,14 +116,15 @@ Try to avoid inconsistencies in the behavior of a function which is using a call
 ```javascript
 function compute (num, callback) {
   if (cache[num]) {
-    callback(cache[num]); // Call back synchronously
-  } else {
-    factorial(num, (result) => {
-      cache[num] = result; // Next time call back synchronously
-
-      callback(result); // Call back asynchronously once
-    });
+    return callback(cache[num]); // Call back synchronously
   }
+
+
+  factorial(num, (result) => {
+    cache[num] = result; // Next time call back synchronously
+
+    callback(result); // Call back asynchronously once
+  });
 }
 ```
 
@@ -134,13 +135,13 @@ Once you first compute the factorial of a number the next time you request the s
 ```javascript
 function compute (num, callback) {
   if (cache[num]) {
-    setTimeout(() => callback(cache[num])); // Call always back asynchronously
-  } else {
-    factorial(num, (result) => {
-      cache[num] = result;
-
-      callback(result); // Call back asynchronously
-    });
+    return setTimeout(() => callback(cache[num])); // Call always back asynchronously
   }
+  
+  factorial(num, (result) => {
+    cache[num] = result;
+
+    callback(result); // Call back asynchronously
+  });
 }
 ```

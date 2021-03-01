@@ -23,8 +23,8 @@ function factorial (num, cb) {
 
 const result = factorial(11, (error, result) => {
   if (error) {
-    console.error(error);
-  } else {
-    console.log(result); // 39916800
+    return console.error(error);
   }
+
+  console.log(result); // 39916800
 });
