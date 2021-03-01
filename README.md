@@ -38,3 +38,4 @@ Below you can find resources and books about design patterns and best practices 
 
 * [JavaScript Patterns](https://www.oreilly.com/library/view/javascript-patterns/9781449399115/)
 * [Learning JavaScript Data Structures and Algorithms, 2nd Ed.](https://www.packtpub.com/product/learning-javascript-data-structures-and-algorithms-second-edition/9781785285493)
+* [Node.js Design Patterns, 3rd Ed.](https://www.packtpub.com/product/node-js-design-patterns-third-edition/9781839214110)
