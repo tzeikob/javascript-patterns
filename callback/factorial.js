@@ -21,10 +21,13 @@ function factorial (num, cb) {
   });
 }
 
-const result = factorial(11, (error, result) => {
+factorial(11, (error, result) => {
   if (error) {
     return console.error(error);
   }
 
-  console.log(result); // 39916800
+  console.log(result);
 });
+
+// Async output
+// 39916800
