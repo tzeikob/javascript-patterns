@@ -47,5 +47,5 @@ reduce(tasks, (error, result) => {
   console.log(result);
 });
 
-// Async output:
+// Async random output:
 // { numbers: [ 1, 4, 3 ], value: 8 }
