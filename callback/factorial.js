@@ -29,5 +29,5 @@ factorial(11, (error, result) => {
   console.log(result);
 });
 
-// Async output
+// Async output:
 // 39916800

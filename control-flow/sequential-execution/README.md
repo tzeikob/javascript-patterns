@@ -115,6 +115,12 @@ function operation (tasks, value, callback) {
 
 Keep in mind that we are passing information from a task to the next task by updating the current value variable with the result of each task at a time, this way we can share data between tasks. Bear in mind that we can use custom objects in the place of the value variable if we need to be more flexible according to our requirements.
 
+## Implementations ##
+
+Below you can find various trivial or real-world implementations of this pattern:
+
+* [text-counter](text-counter.js): a trivial example of counting chars, words and spaces in a phrase
+
 ## Considerations ##
 
 ### Avoid the callback hell anti-pattern ###
