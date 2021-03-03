@@ -52,6 +52,11 @@ function task3 (input, callback) {
     }
   });
 }
+
+// Launch the execution
+task1(input, (error, result) => {
+  ...
+});
 ```
 
 > Note: we are using the `setTimeout` method in order to mimic asynchronous tasks.
