@@ -99,7 +99,7 @@ To sum up, an observable must encapsulate a map of listeners (observers) per eve
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [thermometer](thermometer.js): a trivial implementation of an observable thermometer.
+* [thermometer](thermometer.js): a trivial implementation of an observable thermometer
 
 ## Considerations ##
 

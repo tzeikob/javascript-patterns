@@ -104,8 +104,8 @@ To sum up, a callback called synchronously blocks the current code until the ope
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [factorial](factorial.js): calculate the factorial of a given non-negative integer number.
-* [mapper](mapper.js): a trivial implementation of the `Array.prototype.map` method.
+* [factorial](factorial.js): calculate the factorial of a given non-negative integer number
+* [mapper](mapper.js): a trivial implementation of the `Array.prototype.map` method
 
 ## Considerations ##
 
