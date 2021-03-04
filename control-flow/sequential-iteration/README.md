@@ -33,7 +33,8 @@ function operation (tasks, value, callback) {
   function iterate (index) {
     // Check if we reached completion
     if (index === tasks.length) {
-      return callback(null, value);
+      // Call back always asynchronously
+      return setTimeout(() => callback(null, value));
     }
 
     // Execute the next task

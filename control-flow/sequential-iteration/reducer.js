@@ -17,7 +17,7 @@ function reduce (tasks, cb) {
 
   function iterate (index) {
     if (index === tasks.length) {
-      return cb(null, context);
+      return setTimeout(() => cb(null, context));
     }
 
     const task = tasks[index];
