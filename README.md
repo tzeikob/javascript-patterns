@@ -33,9 +33,9 @@ JavaScript Patterns is a collection of design patterns and best practices for th
   * [Hash Map](data-structures/hash-map/)
   * [Binary Tree](data-structures/binary-tree/)
 * Advanced
-  * [Memo](memo/)
-  * [Async Retry](async-retry/)
-  * [Actor Model](actor-model/)
+  * [Memo](advanced/memo/)
+  * [Async Retry](advanced/async-retry/)
+  * [Actor Model](advanced/actor-model/)
 
 ## Resources ##
 
