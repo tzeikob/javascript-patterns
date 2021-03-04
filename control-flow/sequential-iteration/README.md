@@ -6,7 +6,7 @@ The **sequential iteration** pattern is a special form of the **sequential execu
 
 What makes this pattern special about sequential execution is that the tasks aren't known from the very beginning. In a sequential control flow of asynchronous tasks, tasks could be either known beforehand or unknown and provided in a more dynamic way as a collection of tasks. Sequential iteration is more about implementations belong to the latter case.
 
-In such a case it could be impossible to hard code the invocation of each task, so we have to follow a different approach. The solution is to use a more dynamic iteration pattern along with the powerful recursion mechanism. Let's say with have a definition of an asynchronous task which accepts only an initial input value in order to compute an outcome.
+In such a case it could be impossible to hard code the invocation of each task, so we have to follow a different approach. The solution is to use a more dynamic iteration pattern along with the powerful recursion mechanism. Let's say we have a definition of an asynchronous task which accepts only an initial input value in order to compute an outcome.
 
 ```javascript
 function task (input, callback) {
