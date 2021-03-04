@@ -3,7 +3,9 @@
 JavaScript Patterns is a collection of design patterns and best practices for the JavaScript programming language.
 
 ## Table of Contents ##
-* [Callback*](callback/)
+* Foundational
+  * [Closure](foundational/closure/)
+  * [Callback*](foundational/callback/)
 * Control Flow*
   * [Sequential Execution](control-flow/sequential-execution/)
 * Creational
@@ -29,10 +31,10 @@ JavaScript Patterns is a collection of design patterns and best practices for th
   * [Map](data-structures/map/)
   * [Hash Map](data-structures/hash-map/)
   * [Binary Tree](data-structures/binary-tree/)
-* [Closure](closure/)
-* [Memo](memo/)
-* [Async Retry](async-retry/)
-* [Actor Model](actor-model/)
+* Advanced
+  * [Memo](memo/)
+  * [Async Retry](async-retry/)
+  * [Actor Model](actor-model/)
 
 ## Resources ##
 
