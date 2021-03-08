@@ -76,6 +76,68 @@ operation(tasks, input, (error, results) => {
 
 Which one of the tasks will call back the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
 
+### Limited parallel execution ###
+
+In the **limited parallel execution** given a collection of asynchronous tasks, instead of invoking all them at once, we should start by spawning a limited number of tasks in parallel and keep invoking more tasks as soon as there is room left by any previous completed task.
+
+How many tasks can running in parallel is restricted by the limit of concurrency, so we need a variable to store the maximum number of tasks should run in parallel along with another variable responsible to keep the actual number of running tasks at any given time and an index to mark the next task to be invoked. Then we should make sure that the total number of running tasks are below that limit and at the same time checking if any error is thrown or the total number of tasks are complete in order to invoke the completion callback. Along with the **done** function here, we will need another function called **next** which both should be responsible to handle the invocation of the next tasks in limited batches.
+
+```javascript
+function operation (tasks, concurrency, callback) {
+  let completed = 0; // Total completed tasks
+  let rejected = false; // Indicate if a task thrown an error
+
+  let running = 0; // Total running tasks
+  let index = 0; // Index of the next task to invoke
+
+  const results = [];
+
+  function done (error, result) {
+    if (error) {
+      if (rejected) {
+        return; // Don't call back if execution rejected by another task
+      }
+
+      // Inform all tasks about rejection and call back early
+      rejected = true;
+      return callback(error);
+    }
+
+    completed++; // Count another task as completed
+    results.push(result); // Store the task's completion result
+
+    // Call completion back once all tasks are completed
+    if (completed === tasks.length && !rejected) {
+      callback(null, results);
+    }
+
+    running--; // Mark a spot as free in concurrency
+    next(); // Trigger the next iteration
+  }
+
+  function next () {
+    // Call next task if there is room in concurrency
+    while(running < concurrency && index < tasks.length) {
+      // Get the task to invoke and mark the next one
+      const task = tasks[index];
+      index++;
+
+      task(done); // Invoke the task
+
+      running++; // Mark that a spot is occupied in concurrency
+    }
+  }
+
+  next(); // Launch iteration
+}
+
+operation(tasks, concurrency, (error, results) => {
+  ...
+});
+```
+
+We can see this pattern as a combination of an iterative process of parallel tasks running in batches, where the goal is to split the overhead of running too many tasks in parallel and avoid running out of resources.
+
 ## Implementations ##
 
 Below you can find various trivial or real-world implementations of this pattern:
