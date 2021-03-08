@@ -1,4 +1,4 @@
-const rand = (max) => {
+function rand (max) {
   return (cb) => {
     setTimeout(() => {
       try {

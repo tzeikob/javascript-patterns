@@ -24,7 +24,7 @@ function task (input, callback) {
 }
 ```
 
-> Note: we are using the `setTimeout` method in order to mimic the asynchronous execution of a task.
+> NOTE: We are using the `setTimeout` method in order to mimic the asynchronous execution of a task.
 
 Now assume we are in another function where we have a collection of such tasks, at that point we need to start the invocation of the first in the order task and propagate the execution in a sequential manner until we execute all tasks. Along with the collection of tasks we have an initial input and the callback to be invoked at completion. We can use recursion in order to achieve this result.
 

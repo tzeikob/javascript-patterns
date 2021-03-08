@@ -8,9 +8,9 @@ The **parallel execution** pattern belongs to the category of those design patte
 
 In the **unlimited parallel execution** we have a collection of asynchronous tasks invoked all at once waiting for all of them to complete by counting every time the callback of a task is invoked.
 
-In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error on the other hand in the case of all tasks are completed the completion callback should be called **once** with any collected results.
+In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error, on the other hand in the case of all tasks are completed the completion callback should be called **once** with any collected results.
 
-In order to achieve this we can make use of a function, called **done** by convention, which should be bound around a **closure** of various utility variables helps us to handle the flow of the execution. Let's say we have an asynchronous task given a input context along with a callback function, that function will be the done function.
+In order to achieve this we can make use of a function, called **done** by convention, which should be bound around a **closure** of various utility variables, which help us to handle the flow of the execution. Let's say we have an asynchronous task given a input context along with a callback function, that function is expected to be the done function.
 
 ```javascript
 function task (input, callback) {
@@ -28,7 +28,7 @@ function task (input, callback) {
 }
 ```
 
-> Note: we are using the `setTimeout` method in order to mimic the asynchronous execution of a task.
+> NOTE: We are using the `setTimeout` method in order to mimic the asynchronous execution of a task.
 
 Now assume we have a function expecting a collection of such asynchronous tasks meant to be executed in a parallel way, this function's responsibility is to declare a couple of variables which will be shared via a closure to each task's scope in the execution. That's it, we want any tasks to have access to those variables and we'll achieve this via the done function passed to each task as a callback.
 
@@ -57,7 +57,7 @@ function operation (tasks, input, callback) {
     }
   }
 
-  // Spawn every task in parallel
+  // Spawn every task in parallel given the done function
   tasks.forEach(task => task(input, done));
 }
 
@@ -67,6 +67,6 @@ operation(tasks, input, (error, results) => {
 });
 ```
 
-> Note: we don't take special care to store the results in the order each task has been given.
+> NOTE: We don't take special care here, to store the results in the order each task has been given.
 
 Which one of the tasks will call back the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
