@@ -28,7 +28,7 @@ function reducer (tasks, input, cb) {
       return cb(error);
     }
 
-    completed += 1;
+    completed++;
     context.numbers.push(result);
     context.total += result;
 
