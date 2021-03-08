@@ -75,3 +75,9 @@ operation(tasks, input, (error, results) => {
 > NOTE: We don't take special care here, to store the results in the order each task has been given.
 
 Which one of the tasks will call back the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
+
+## Implementations ##
+
+Below you can find various trivial or real-world implementations of this pattern:
+
+* [reducer](reducer.js): a trivial example of a parallel reducer of random integer numbers
