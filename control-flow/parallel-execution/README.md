@@ -32,19 +32,24 @@ function task (input, callback) {
 
 Now assume we have a function expecting a collection of such asynchronous tasks meant to be executed in a parallel way, this function's responsibility is to declare a couple of variables which will be shared via a closure to each task's scope in the execution. That's it, we want any tasks to have access to those variables and we'll achieve this via the done function passed to each task as a callback.
 
-In the simplest implementation we'll only need two variables, one to watch the total completed tasks and another one to monitor any possible thrown error. Now, within the done function we should read each one of those variables and decide what to do. By convention when a task calls the done function with an error we should return early calling the completion callback, if many tasks calls with an error the first one wins. In the other case where every task completes the last one should call the completion callback along with any collected results.
+In the simplest implementation we'll only need two variables, one to watch the total completed tasks and another one to check if a rejection error has been thrown. Now, within the done function we should read each one of those variables and decide what to do. By convention when a task calls the done function with an error we should return early calling the completion callback, if many tasks calls with an error the first one wins. In the other case where every task completes the last one should call the completion callback along with any collected results.
 
 ```javascript
 function operation (tasks, input, callback) {
   // Shared utility variables
   let completed = 0;
-  let errorOccurred = false;
+  let rejected = false;
+
   let results = [];
 
   function done (error, result) {
     if (error) {
-      // Inform all tasks and return early
-      errorOccurred = true; 
+      if (rejected) {
+        return; // Don't call back if execution rejected by another task
+      }
+
+      // Inform all tasks about rejection and call back early
+      rejected = true;
       return callback(error);
     }
 
