@@ -69,7 +69,7 @@ class Observable {
 }
 ```
 
-> Note: we are using the `setTimeout` function to mimic an asynchronous operation.
+> NOTE: We are using the `setTimeout` function to mimic an asynchronous operation.
 
 ### Error handling in observable ###
 
