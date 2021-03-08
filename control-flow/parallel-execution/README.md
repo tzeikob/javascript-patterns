@@ -81,3 +81,9 @@ Which one of the tasks will call back the completion callback is subject to a si
 Below you can find various trivial or real-world implementations of this pattern:
 
 * [reducer](reducer.js): a trivial example of a parallel reducer of random integer numbers
+
+## Considerations ##
+
+### Race conditions ###
+
+In parallel programming the most critical part is to keep consistency to the shared context between every task, as JavaScript engine implementations are single-threaded environments there is not need to use techniques such as locks, mutuxes and the like. But the possibility of race conditions is **not guaranteed** to not happen even in such a single thread context. So you have to double check the computations taking place within a task running in parallel and the delay it takes to return its result to the others.
