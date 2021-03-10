@@ -116,7 +116,7 @@ function operation (tasks, input, concurrency, callback) {
 
   function next () {
     // Call next task if there is room in concurrency
-    while(running < concurrency && index < tasks.length) {
+    while (running < concurrency && index < tasks.length) {
       // Get the task to invoke and mark the next one
       const task = tasks[index];
       index++;
@@ -142,7 +142,8 @@ We can see this pattern as a combination of an iterative process of parallel tas
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [reducer](reducer.js): a trivial example of a parallel reducer of random integer numbers
+* [reducer](reducer.js): a trivial example of an unlimited parallel reducer of random integer numbers
+* [limited-reducer.js](limited-reducer.js): a trivial example of a limited parallel reducer of random integer numbers
 
 ## Considerations ##
 
