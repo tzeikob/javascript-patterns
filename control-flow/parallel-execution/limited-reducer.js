@@ -1,6 +1,5 @@
 function rand (max) {
   return (cb) => {
-    console.log("Ex: " + max);
     setTimeout(() => {
       try {
         const result = Math.floor(Math.random() * max) + 1;
