@@ -42,12 +42,12 @@ function reducer (tasks, input, cb) {
 
 const tasks = [rand(2), rand(4), rand(6)];
 
-reducer(tasks, 0, (error, results) => {
+reducer(tasks, 0, (error, result) => {
   if (error) {
     return console.error(error);
   }
 
-  console.log(results);
+  console.log(result);
 });
 
 // Async random output:
