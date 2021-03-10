@@ -26,7 +26,7 @@ function task (input, callback) {
 }
 ```
 
-> NOTE: We are using the `setTimeout` method in order to mimic the asynchronous execution of a task.
+> We are using the `setTimeout` method in order to mimic the asynchronous execution of a task.
 
 Now assume we have a function expecting a collection of such asynchronous tasks meant to be executed in a parallel way, this function's responsibility is to declare a couple of variables which will be shared via a closure to each task's scope in the execution. That's it, we want any tasks to have access to those variables and we'll achieve this via the done function passed to each task as a callback.
 
@@ -69,7 +69,7 @@ operation(tasks, input, (error, results) => {
 });
 ```
 
-> NOTE: We don't take special care here, to store the results in the order each task has been given.
+> We don't take special care here, to store the results in the order each task has been given.
 
 Which one of the tasks will call back the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
 

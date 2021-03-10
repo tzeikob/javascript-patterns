@@ -44,7 +44,7 @@ concat("Hello", "World", function callback (result) {
 });
 ```
 
-> NOTE: We are using the `setTimeout` function in order to mimic the execution of an asynchronous operation in a future event loop cycle.
+> We are using the `setTimeout` function in order to mimic the execution of an asynchronous operation in a future event loop cycle.
 
 ### Callback which returns a value back ###
 
@@ -128,7 +128,7 @@ function compute (num, callback) {
 }
 ```
 
-> NOTE: We are skipping the error handling for simplicity and readability.
+> We are skipping the error handling for simplicity and readability.
 
 Once you first compute the factorial of a number the next time you request the same number's factorial, the call to the callback will be synchronous. Instead try to stick with either synchronous or asynchronous behavior in any function expecting a callback.
 

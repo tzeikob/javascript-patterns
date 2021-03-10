@@ -55,7 +55,7 @@ task1(input, (error, result) => {
 });
 ```
 
-> NOTE: We are using the `setTimeout` method in order to mimic the asynchronous execution of a task.
+> We are using the `setTimeout` method in order to mimic the asynchronous execution of a task.
 
 Bear in mind that we are using an output argument in the call of a task, this way we can share previous computed data to tasks down into the chain of execution without polluting the top scope via closures. The convention here is that the output of a task should be considered the input of the next in the line task, that input/output could be any type of value including custom objects.
 
