@@ -112,7 +112,7 @@ Below you can find various trivial or real-world implementations of this pattern
 
 ### Avoid memory leaks of dangling listeners ###
 
-The observer pattern is a very powerful mechanism which if not taken seriously it might introduce some kind of degradation in the performance of your application. Each time a new listener is attached to an observable occupies memory because of the surrounding closure, that portion of allocation must be released when the listener not needed anymore. So we always must provide a method to remove registered listener from an observable object. In order to remove a listener we must provide both the event type and the listener callback.
+The observer pattern is a very powerful mechanism which if not taken seriously it might introduce some kind of degradation in the performance of your application. Each time a new listener is attached to an observable occupies memory because of the surrounding closure, that portion of allocation must be released when the listener not needed anymore. So we always must provide a method to remove registered listeners from an observable object. In order to remove a listener we must provide both the event type and the listener callback.
 
 ```javascript
 class Observable {
@@ -126,6 +126,43 @@ class Observable {
       ...
     }
   }
+}
+```
+
+### Emit asynchronously to avoid swallowing listeners ###
+
+What do we mean by swallowing listeners is that if we try to emit an event within a synchronous context there is possibility to miss listeners registered after the emission of the event. Let's say we need to emit an event each time we construct an observable, anyone could think that the following code should do the job:
+
+```javascript
+class Observable {
+  constructor () {
+    this.emit("create");
+  }
+
+  ...
+}
+```
+
+but what is happening when we call the following code is that we will miss the `create` event so the listener is never getting called.
+
+```javascript
+const observable = new Observale(); // Synchronously emits the `create` event
+
+observable.on("create", () => {
+  console.log("A new observable is created");
+}); // This listener is never called
+```
+
+What we need to do is to always emit events asynchronously in the next event loop cycle in order to let the listeners to be registered within the same event loop cycle and be available for invocation.
+
+```javascript
+class Observable {
+  constructor () {
+    // Emit the event in the next event loop cycle
+    setTimeout(() => this.emit("create"));
+  }
+
+  ...
 }
 ```
 
