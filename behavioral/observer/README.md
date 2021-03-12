@@ -43,7 +43,7 @@ class Observable {
 } 
 ```
 
-> We could call the listener with `this` instead of `null` in case we need to access the observable within the listener's code for farther use via the `this` operator.
+> We could call the listener with `this` instead of `null` in case we need to access the observable within the listener's code for further use via the `this` operator.
 
 ### An observable must have a purpose ###
 
