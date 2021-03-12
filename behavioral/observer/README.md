@@ -69,6 +69,28 @@ class Observable {
 
 > We are using the `setTimeout` function to mimic the execution of an asynchronous operation.
 
+### Register event listeners ###
+
+Having the observable class we can now create an instance of it and register event listeners by using the `on` method given the event type and the listener.
+
+```javascript
+const observable = new Observable();
+
+observable.on("data", (value) => {
+  ...
+});
+
+observable.on("success", (value) => {
+  ...
+});
+
+observable.on("error", (error) => {
+  ...
+});
+```
+
+> Because the observable's `on` method is implemented such to return the observable object, we can use chaining as well.
+
 ### Error handling in observable ###
 
 A special care must be taken regarding the error handling in the observer pattern. Every time an error is caught in an operation of an observable we must emit with the special event type of `error`. The emission by convention must be triggered along with a given valid `Error` object and not any primitive or custom object value.
