@@ -1,32 +1,30 @@
 # The Observer Pattern #
 
-The observer pattern belongs to the category of those design patterns called **behavioral**. That pattern allows you to manage a collection of objects called **listeners**, so they can be triggered by another object, called the **subject** or the **observable**. According to this pattern an observable should emit various events and call every registered listener for each corresponding event in order other parts of the application to get notified.
+The observer pattern belongs to the category of those design patterns called **behavioral**. This pattern allows you to manage a collection of callbacks called **listeners**, so they can be triggered by another object, called the **subject** or the **observable**. According to this pattern an observable should emit various events during an operation and call every registered listener for each of event in order other parts of the code to get notified.
 
 ## Explanation ##
 
-In the observer pattern an observable is an object also known as the focal point, so we can define an observable as a class having an empty list of observers or listeners as they commonly called. The list of listeners should be a map of keys where each key is an event type which is expected to store the list of listener callbacks meant for this event only.
+In the observer pattern an observable is an object also known as the **focal point**, so we can define an observable as a class having initially an empty collection of listeners. This collection is expected to be a map, where the keys are the event types and for each event type we are about to keep an ordered list of listeners meant to be triggered each time a specific event emits.
 
 ### Attach listeners to an observable ###
 
 ```javascript
 class Observable {
-
   constructor () {
-    // Map of listener lists per event
+    // A map of listeners per event
     this.listeners = {};
   }
 }
 ```
 
-The way to attach a listener to an observable is straightforward, we should provide the event type along with the listener callback and append it to the list of listeners of the given event type. The order the listeners are attached must be attained in the whole life-cycle of the observable object.
+The way to attach a listener to an observable is straightforward, we should provide the event type along with the listener and append it to the list of listeners for that specific event type. The order the listeners are attached must be attained in the whole life-cycle of the observable so they can be called in order.
 
 ```javascript
 class Observable {
-
   ...
 
   on (event, listener) {
-    // Map the event listener in order
+    // Register the listener for the given event
     this.listeners[event].push(listener);
 
     return this;
@@ -36,14 +34,14 @@ class Observable {
 
 ### Emit events from an observable ###
 
-By this time we need a mechanism in order to broadcast events so we can triggered every listener for the given event type is being emitted. Having the map of listener lists per event we only need to iterator through and call them in the specified order along with any data arguments. The data arguments must come in the form of separated arguments according to our requirements and use case.
+By this time we need a mechanism in order to broadcast events, so every listener is triggered for its corresponding event is being emitted. Having the map of listeners per event we only need to iterate through and call them in the specified order along with any data arguments. The data arguments could be any valid value and can be given either as separated arguments or collected in a single custom object passing them as a single argument.
 
 ```javascript
 class Observable {
-
   ...
 
   emit (event, ...args) {
+    // Trigger the listeners for the given event
     this.listeners[event].forEach(listener => {
       listener.call(null, ...args);
     });
@@ -53,23 +51,27 @@ class Observable {
 
 ### An observable must have a purpose ###
 
-An observable must have a purpose, it must provide at least one asynchronous operation. It doesn't must to be an asynchronous operation, even though it only make sense to have an asynchronous observable. Within each operation the observable must use the `emit` method in order to notify every listener given this event type along with any data arguments.
+An observable must have a purpose, it must provide at least one asynchronous operation. It doesn't have to be an asynchronous operation, even though it only makes sense to have an asynchronous observable. Within each operation the observable must use the `emit` method in order to call every listener given this event type along with any data arguments.
 
 ```javascript
 class Observable {
-
   ...
 
   operation () {
     setTimeout(() => {
-      // Let's say we emit the success of the operation
-      this.emit("success", 1);
+      // Execute any business logic
+      const valueA = ...
+      const valueB = ...
+      ...
+
+      // Emit the success of the operation
+      this.emit("success", valueA, valueB, ...);
     });
   }
 }
 ```
 
-> We are using the `setTimeout` function to mimic an asynchronous operation.
+> We are using the `setTimeout` function to mimic the execution of an asynchronous operation.
 
 ### Error handling in observable ###
 
@@ -77,23 +79,26 @@ A special care must be taken regarding the error handling in the observer patter
 
 ```javascript
 class Observable {
-
   ...
 
   operation () {
     setTimeout(() => {
-      // Let's say we caught a error
       try {
-        this.emit("success", 1);
+        // Execute any business logic
+        const valueA = ...
+        const valueB = ...
+        ...
+
+        this.emit("success", valueA, valueB, ...);
       } catch (error) {
-        this.emit("error", error);
+        this.emit("error", error); // Emit the thrown error
       }
     });
   }
 }
 ```
 
-To sum up, an observable must encapsulate a map of listeners (observers) per event type according to our requirements and broadcast events so the listeners mapped by the emitted event are executed. A special event is the error which must be triggered any time an exception is thrown. All those broadcasts and emissions must be happen within an asynchronous operation so no listeners are swallowed by operations executed before the listeners being registered.
+To sum up, an observable must encapsulate a map of listeners (observers) per event type according to our requirements and broadcast events so the listeners mapped by the emitted event are executed. A special event is the error which must be triggered any time an exception is thrown. All those broadcasts and emissions must happen within an asynchronous operation so no listeners are swallowed by operations executed before the listeners being registered.
 
 ## Implementations ##
 
@@ -109,14 +114,13 @@ The observer pattern is a very powerful mechanism which if not taken seriously i
 
 ```javascript
 class Observable {
-
   ...
 
   removeListener (event, listener) {
     const listeners = this.listeners[event];
     
     if (listeners) {
-      // Find the listener and remove it from the map
+      // Find the listener and remove it
       ...
     }
   }

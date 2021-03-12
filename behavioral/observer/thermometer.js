@@ -1,5 +1,4 @@
 class Thermometer {
-
   constructor () {
     this.previous = 0;
     this.temperature = 0;
