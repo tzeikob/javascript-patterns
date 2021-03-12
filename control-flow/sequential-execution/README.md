@@ -1,6 +1,6 @@
 # The Sequential Execution Pattern #
 
-The **sequential execution** pattern belongs to the category of those design patterns called **async control flow** patterns. That pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** given an input and passing and output to the next task.
+The **sequential execution** pattern belongs to the category of those design patterns called **async control flow** patterns. That pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** given an input and passing an output to the next task.
 
 ## Explanation ##
 
@@ -59,17 +59,11 @@ task1(input, (error, result) => {
 
 Bear in mind that we are using an output argument in the call of a task, this way we can share previous computed data to tasks down into the chain of execution without polluting the top scope via closures. The convention here is that the output of a task should be considered the input of the next in the line task, that input/output could be any type of value including custom objects.
 
-## Implementations ##
-
-Below you can find various trivial or real-world implementations of this pattern:
-
-* [text-counter](text-counter.js): a trivial example of counting chars, words and spaces in a phrase
-
 ## Considerations ##
 
 ### Avoid the callback hell anti-pattern ###
 
-By using in-place anonymous function definitions where we have to place a callback is considered a very bad practice. The reason is that this will eventually result in the chaos of an unreadable code (pyramid of doom), hard to maintain, debug and test. So avoid doing the following when you have to control the execution of asynchronous tasks:
+By using in-place anonymous function definitions where we have to place a callback is considered a very bad practice when you have a list of tasks must be executed one after the other. The reason is that this will eventually result in the chaos of an unreadable code (pyramid of doom), hard to maintain, debug and test. So avoid doing the following when you have to control the execution of asynchronous tasks.
 
 ```javascript
 task1(input, (error, result) => {
@@ -93,4 +87,10 @@ task1(input, (error, result) => {
 });
 ```
 
-Instead try to split your code into named function definitions per task, this way you can test and debug easier every part of the execution in isolation. In addition, following this approach you can avoid unnecessary closures in order to pass and share data across all the tasks in case a task down the chain needs some results from a task completed before.
+Instead try to split your code into named function definitions per task, this way you can test and debug easier every part of the execution in isolation. In addition, following this approach you can avoid unnecessary closures in order to pass and share data across all the tasks in case a task needs some results from a task completed before.
+
+## Implementations ##
+
+Below you can find various trivial or real-world implementations of this pattern:
+
+* [text-counter](text-counter.js): a trivial example of counting chars, words and spaces in a phrase
