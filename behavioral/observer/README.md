@@ -49,6 +49,8 @@ class Observable {
 } 
 ```
 
+> We could call the listener with `this` instead of `null` in case we need to access the observable within the listener's code for farther use via the `this` operator.
+
 ### An observable must have a purpose ###
 
 An observable must have a purpose, it must provide at least one asynchronous operation. It doesn't have to be an asynchronous operation, even though it only makes sense to have an asynchronous observable. Within each operation the observable must use the `emit` method in order to call every listener given this event type along with any data arguments.
@@ -125,4 +127,34 @@ class Observable {
     }
   }
 }
+```
+
+### Get access to the observable within listeners ###
+
+A really reasonable request could be to give access to the observable's state within the code of each registered listener. We can do this by just calling each listener with the `this` like so,
+
+```javascript
+class Observable {
+  ...
+
+  emit (event, ...args) {
+    // Trigger the listeners for the given event
+    this.listeners[event].forEach(listener => {
+      // Set the observable as the `this` in listener's code
+      listener.call(this, ...args);
+    });
+  }
+} 
+```
+
+now there is a caveat here, when you register a listener to the observable you have to use a **function expression** instead of an arrow function otherwise the `this` within the listener's code will point to where the `this` is referring in the outer lexical scope and not the observable.
+
+```javascript
+const observable = new Observable();
+
+observable.on("success", function (data) {
+  // Get access to the observable's state via this
+  const value = this.value;
+  ...
+});
 ```
