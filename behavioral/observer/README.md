@@ -118,12 +118,6 @@ class Observable {
 
 To sum up, an observable must encapsulate a map of listeners (observers) per event type according to our requirements and broadcast events so the listeners mapped by the emitted event are executed. A special event is the error which must be triggered any time an exception is thrown. All those broadcasts and emissions must happen within an asynchronous operation so no listeners are swallowed by operations executed before the listeners being registered.
 
-## Implementations ##
-
-Below you can find various trivial or real-world implementations of this pattern:
-
-* [thermometer](thermometer.js): a trivial implementation of an observable thermometer
-
 ## Considerations ##
 
 ### Avoid memory leaks of dangling listeners ###
@@ -211,3 +205,9 @@ observable.on("success", function (data) {
   ...
 });
 ```
+
+## Implementations ##
+
+Below you can find various trivial or real-world implementations of this pattern:
+
+* [thermometer](thermometer.js): a trivial implementation of an observable thermometer
