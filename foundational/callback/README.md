@@ -8,78 +8,81 @@ As callback is just a function, it can be passed to another function and invoked
 
 ### Callback in a synchronous operation ###
 
-In a synchronous operation, a callback should be implemented like so:
+In a synchronous operation, the callback patterns should be implemented like so,
 
 ```javascript
-function concat (a, b, callback) {
-  // Complete the operation
-  const result = `${a} ${b}`;
+function operation (input, callback) {
+  // Execute any business logic
+  const result = ...
 
   // Call back with the result
   callback(result);
 };
 
-concat("Hello", "World", function callback (result) {
+operation(input, function callback (result) {
   console.log(result);
 });
 ```
 
+where input can be any valid value or either a list of separated input values followed be the callback which always should come last.
+
 ### Callback in an asynchronous operation ###
 
-In an asynchronous operation though, a callback should be used like so:
+In an asynchronous operation though, a callback should always be called asynchronously in order to be invoked in the next event loop cycles.
 
 ```javascript
-function concat (a, b, callback) {
+function operation (input, callback) {
   setTimeout(() => {
-    // Complete the operation
-    const result = `${a} ${b}`;
+    // Execute any business logic
+    const result = ...
 
     // Call back with the result
     callback(result);
   });
 };
 
-concat("Hello", "World", function callback (result) {
+operation(input, function callback (result) {
   console.log(result);
 });
 ```
 
-> We are using the `setTimeout` function in order to mimic the execution of an asynchronous operation in a future event loop cycle.
+> We are using the `setTimeout` function in order to mimic the execution of an asynchronous operation.
 
 ### Callback which returns a value back ###
 
 The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the values of a collection. In such cases a callback is given a value and returns it back modified instead of just handle it.
 
 ```javascript
-function map (values, callback) {
-  const mapped = [];
+function operator (values, callback) {
+  const results = [];
 
   for (let i = 0; i < values.length; i++) {
     // Call with the value and return it back
-    const value = callback(values[i]);
+    const result = callback(values[i]);
 
-    mapped.push(value);
+    results.push(result);
   }
 
-  return mapped;
+  return results;
 }
 
 const values = [1, 2, 3, 4, 5];
 
-const mapped = map(values, function callback (value) {
+const results = operation(values, function callback (value) {
   return value * 2;
 });
 ```
 
 ### Error handling in a callback ###
 
-Always have the callback argument as the last argument in the function, this way your code will be more readable and consistent with the rest of the community. Another important thing is to be consistent with error handling in callbacks and have any error comes first when propagating errors back like so:
+Another important thing is to be consistent with error handling in callbacks and have any error come first when propagating errors back.
 
 ```javascript
-function compute (num, callback) {
+function operation (input, callback) {
   setTimeout(() => {
     try {
-      const result = num * 2;
+      // Execute business logic
+      const result = ...
       
       callback(null, result); // Calling back with the result
     } catch (error) {
@@ -88,8 +91,8 @@ function compute (num, callback) {
   });
 }
 
-compute(2, function callback (error, result) {
-  // Error comes first
+operation(input, function callback (error, result) {
+  // Error must always come first
   if (error) {
     return console.error(error);
   }
@@ -98,14 +101,7 @@ compute(2, function callback (error, result) {
 });
 ```
 
-To sum up, a callback called synchronously blocks the current code until the operation completes, where an asynchronously called callback returns control back immediately and completes, given the result, at a later event loop cycle. In any use case mentioned above, there is no syntactic difference which means that the intent of the callback should always be explained in the documentation of the API.
-
-## Implementations ##
-
-Below you can find various trivial or real-world implementations of this pattern:
-
-* [factorial](factorial.js): calculate the factorial of a given non-negative integer number
-* [mapper](mapper.js): a trivial implementation of the `Array.prototype.map` method
+To sum up, a callback called synchronously blocks the current code until the operation completes, where an asynchronously called callback returns control back immediately and completes, given the result, at a later event loop cycle. In any use case mentioned above, there is no syntactic difference which means that the intent of the callback should always be explained in the documentation of the API about the synchronous or asynchronous manner the callback is called.
 
 ## Considerations ##
 
@@ -119,7 +115,6 @@ function compute (num, callback) {
     return callback(cache[num]); // Call back synchronously
   }
 
-
   factorial(num, (result) => {
     cache[num] = result; // Next time call back synchronously
 
@@ -128,7 +123,7 @@ function compute (num, callback) {
 }
 ```
 
-> We are skipping the error handling for simplicity and readability.
+> We are skipping the error handling here just for simplicity and readability.
 
 Once you first compute the factorial of a number the next time you request the same number's factorial, the call to the callback will be synchronous. Instead try to stick with either synchronous or asynchronous behavior in any function expecting a callback.
 
@@ -145,3 +140,10 @@ function compute (num, callback) {
   });
 }
 ```
+
+## Implementations ##
+
+Below you can find various trivial or real-world implementations of this pattern:
+
+* [factorial](factorial.js): calculate the factorial of a given non-negative integer number
+* [mapper](mapper.js): a trivial implementation of the `Array.prototype.map` method
