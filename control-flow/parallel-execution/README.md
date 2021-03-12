@@ -10,7 +10,7 @@ In a such a parallel execution context we should take special care to handle the
 
 One use case of this pattern is the **unlimited parallel execution**, where we have a collection of asynchronous tasks invoked all at once waiting for all of them to complete by counting every time the callback of a task is invoked.
 
-In order to achieve this we can make use of a function, called **done** by convention, which should be bound around a **closure** of various utility variables, which help us to handle the flow of the execution. Let's say we have an asynchronous task given a input context along with a callback function, that function is expected to be the done function.
+In order to achieve this we can make use of a function, called `done` by convention, which should be bound around a **closure** of various utility variables, which help us to handle the flow of the execution. Let's say we have an asynchronous task given a input context along with a callback function, that function is expected to be the done function.
 
 ```javascript
 function task (input, callback) {
@@ -37,7 +37,7 @@ In the simplest implementation we'll only need two variables, one to watch the t
 ```javascript
 function operation (tasks, input, callback) {
   let completed = 0; // Total completed tasks
-  let rejected = false; // Indicate if a task thrown an error
+  let rejected = false; // Indicate if another task thrown an error
 
   const results = [];
 
@@ -71,7 +71,7 @@ operation(tasks, input, (error, results) => {
 });
 ```
 
-> Note that we don't take special care here, to store the results in the order each task has been given.
+> Note that we don't take special care here, but in real-world it's reasonable to store the results in the order each task has been given.
 
 Which one of the tasks will call back the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
 
@@ -79,7 +79,7 @@ Which one of the tasks will call back the completion callback is subject to a si
 
 Another use case is the **limited parallel execution**, where given a collection of asynchronous tasks instead of invoking all them at once we start by spawning a limited number of tasks in parallel and keep invoking more tasks as soon as there is left room in the execution by any previous completed task.
 
-How many tasks can running in parallel is restricted by the limit of concurrency, so we need a variable to store the maximum number of tasks should run in parallel along with another variable responsible to keep the actual number of running tasks at any given time and an index to mark the next task to be invoked. Then we should make sure that the total number of running tasks are below that limit and at the same time checking if any error is thrown or the total number of tasks are completed. Along with the **done** function here, we will need another function called **next** which both should be responsible to handle the invocation of the next tasks in limited batches.
+How many tasks can running in parallel is restricted by the limit of concurrency, so we need a variable to store the maximum number of tasks should run in parallel along with another variable responsible to keep the actual number of running tasks at any given time and an index to mark the next task to be invoked. Then we should make sure that the total number of running tasks are below that limit and at the same time checking if any error is thrown or the total number of tasks are completed. Along with the `done` function here, we will need another function called `next` which both should be responsible to handle the invocation of the next tasks in limited batches.
 
 ```javascript
 function operation (tasks, input, concurrency, callback) {
@@ -117,7 +117,7 @@ function operation (tasks, input, concurrency, callback) {
   function next () {
     // Call next task if there is room in concurrency
     while (running < concurrency && index < tasks.length) {
-      // Get the task to invoke and mark the next one
+      // Get the task to invoke and mark the next to be ready
       const task = tasks[index];
       index++;
 
@@ -138,15 +138,15 @@ operation(tasks, input, concurrency, (error, results) => {
 
 We can see this pattern as a combination of an iterative process of parallel tasks running in batches, where the goal is to split the overhead of running too many tasks in parallel and avoid running out of resources.
 
+## Considerations ##
+
+### Race conditions ###
+
+In parallel programming the most critical part is to keep consistency to the shared context between every task. Event though JavaScript engine implementations are single-threaded environments and there is not need to use techniques such as locks, mutexes and the like, the possibility of race conditions is **not guaranteed** to not happen. So you have to double check the computations taking place within a task running in parallel and the delay it takes to return its result to the others as this is often the reason of such race conditions.
+
 ## Implementations ##
 
 Below you can find various trivial or real-world implementations of this pattern:
 
 * [reducer](reducer.js): a trivial example of an unlimited parallel reducer of random integer numbers
 * [limited-reducer.js](limited-reducer.js): a trivial example of a limited parallel reducer of random integer numbers
-
-## Considerations ##
-
-### Race conditions ###
-
-In parallel programming the most critical part is to keep consistency to the shared context between every task. Event though JavaScript engine implementations are single-threaded environments and there is not need to use techniques such as locks, mutexes and the like, the possibility of race conditions is **not guaranteed** to not happen. So you have to double check the computations taking place within a task running in parallel and the delay it takes to return its result to the others as this is often the reason of such race conditions.

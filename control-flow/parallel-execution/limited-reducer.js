@@ -46,6 +46,7 @@ function reducer (tasks, input, concurrency, cb) {
     while (running < concurrency && index < tasks.length) {
       const task = tasks[index];
       index++;
+      
       task(done);
 
       running++;
