@@ -8,7 +8,7 @@ In a sequential control flow of asynchronous tasks, tasks could be known beforeh
 
 ### Sequential execution with callbacks ###
 
-Let's start by making the assumption that a sequential execution of tasks should be started given two arguments, an **input** of any type and the **completion callback**. Each task in execution is responsible to invoked the next in order task passing both the completion callback along with any result computed so far. In the case of an error is thrown at any given time, the execution should be canceled immediately by invoking the completion callback with the error. One critical rule is that the completion callback should be called only once and either with an error only or the result.
+Let's start by making the assumption that a sequential execution of tasks should be started given two arguments, an **input** of any type and the **completion callback**. Each task in execution is responsible to invoke the next in order task passing both the completion callback along with any result computed so far. In the case of an error is thrown at any given time, the execution should be canceled immediately by invoking the completion callback with the error. One critical rule is that the completion callback should be called only once and either with an error only or the result.
 
 In order to keep our code as clean as possible we can split the execution of each task in a separate function instead of hard coding invocations within the lexical scope of a single function. Now assume we have a generic asynchronous function called `operation` which just expects two arguments, an `input` and a `callback`, the following code is an implementation of a sequential execution of three tasks using this asynchronous operation.
 
@@ -72,7 +72,9 @@ A more elegant approach to implement this pattern is to use promises which will 
 
 ```javascript
 // An operation returns as a promise
-function operation (input) {...};
+function operation (input) {
+  return new Promise((resolve, reject) => {...});
+};
 
 const task1 = (input) => operation(input);
 const task2 = (input) => operation(input);
@@ -94,7 +96,7 @@ task1(input)
   });
 ```
 
-By chaining each promise returned from a task we are making sure that the execution is running in a strictly sequential order. Any rejected promise during the execution will be caught by the error handler defined in the `catch` method, this way error handling is now easier to implement leading us to a more maintainable code.
+By chaining each promise returned from a task we are making sure that the execution is running in a strictly sequential order. Any rejected promise during the execution will be caught by the error handler defined in the `catch` method, something that is making our code more maintainable and reliable against bugs introduced during development.
 
 ## Considerations ##
 

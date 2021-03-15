@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-function salt(password, rounds, cb) {
+function generateSalt(password, rounds, cb) {
   bcrypt.genSalt(rounds, (error, salt) => {
     if (error) {
       return cb(error);
@@ -34,7 +34,7 @@ function validate(password, hash, cb) {
   });
 }
 
-salt("secret", 10, (error, hash) => {
+generateSalt("secret", 10, (error, hash) => {
   if (error) {
     return console.error(error);
   }
