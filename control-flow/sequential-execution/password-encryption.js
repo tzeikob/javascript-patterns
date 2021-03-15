@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
 
-function encryption(password, rounds, cb) {
+function encryption (password, rounds, cb) {
   generateSalt(password, rounds, cb);
 }
 
-function generateSalt(password, rounds, cb) {
+function generateSalt (password, rounds, cb) {
   bcrypt.genSalt(rounds, (error, salt) => {
     if (error) {
       return cb(error);
@@ -14,7 +14,7 @@ function generateSalt(password, rounds, cb) {
   });
 }
 
-function encrypt(password, salt, cb) {
+function encrypt (password, salt, cb) {
   bcrypt.hash(password, salt, (error, hash) => {
     if (error) {
       return cb(error);
@@ -24,7 +24,7 @@ function encrypt(password, salt, cb) {
   });
 }
 
-function validate(password, hash, cb) {
+function validate (password, hash, cb) {
   bcrypt.compare(password, hash, (error, valid) => {
     if (error) {
       return cb(error);
