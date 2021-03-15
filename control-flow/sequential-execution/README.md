@@ -66,6 +66,36 @@ task1(input, (error, result) => {
 
 Bear in mind that we are using an input argument in the call of a task, this way we can share previous computed data to tasks down into the chain of execution without polluting the top scope via closures. The convention here is that the output of a task should be considered the input of the next in the line task, that input/output could be any type of value including custom objects.
 
+### Sequential execution with promises ###
+
+A more elegant approach to implement this pattern is to use promises which will give us more readable and less error-prone code in comparison to callbacks. Apart from readability one drawback in callbacks implementation is that's so easy to call the completion callback twice or even more times by accident, which will introduce serious problems in any application. In promises this is not the case because every promise is guaranteed to be resolved only **once** either fulfilled or rejected. So let's say we have the same operation function and tasks as before but this time instead of using async callback the operation returns a promise,
+
+```javascript
+// An operation returns as a promise
+function operation (input) {...};
+
+const task1 = (input) => operation(input);
+const task2 = (input) => operation(input);
+const task3 = (input) => operation(input);
+```
+
+the code to implement the sequential execution of those three asynchronous tasks is now just a matter of a few lines of code.
+
+```javascript
+// Launch the execution
+task1(input)
+  .then((result) => task2(result))
+  .then((result) => task3(result))
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+By chaining each promise returned from a task we are making sure that the execution is running in a strictly sequential order. Any rejected promise during the execution will be caught by the error handler defined in the `catch` method, this way error handling is now easier to implement leading us to a more maintainable code.
+
 ## Considerations ##
 
 ### Avoid the callback hell anti-pattern ###
@@ -107,3 +137,4 @@ Instead try to split your code into named function definitions per task, this wa
 Below you can find various trivial or real-world implementations of this pattern:
 
 * [password-encryption](password-encryption.js): random salt encryption of a password with callbacks
+* [triple-encryption](triple-encryption.js): triple encryption of a text with promises
