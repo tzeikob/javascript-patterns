@@ -16,6 +16,11 @@ In order to keep our code as clean as possible we can split the execution of eac
 // An asynchronous operation
 function operation (input, callback) {...}
 
+function execution (input, callback) {
+  // Call the first task for execution
+  task1(input, callback);
+}
+
 function task1 (input, callback) {
   // Execute asynchronous operation
   operation(input, (error, result) => {
@@ -53,7 +58,7 @@ function task3 (input, callback) {
 }
 
 // Launch the execution of tasks
-task1(input, (error, result) => {
+execution(input, (error, result) => {
   if (error) {
     return console.error(error);
   }
