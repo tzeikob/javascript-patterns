@@ -9,8 +9,8 @@ In such a use case it could be impossible to hard code the invocation of each ta
 Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts that collection of tasks along with an initial `value` and a `completion callback`, within that function we will use a helper function called `iterate` which will be responsible to manage the sequential execution. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the result of each task, this way we can share data between tasks.
 
 ```javascript
-function execution (tasks, value, callback) {
-  let input = value; // Set the input of the first task
+function execution (tasks, input, callback) {
+  let value; // Declare the completion value
 
   function iterate (index) {
     // Call back at completion
@@ -42,7 +42,7 @@ function execution (tasks, value, callback) {
 }
 ```
 
-> The input of each task could be the result of the previous in order task.
+> The result of each task is expected be the input of the next in order task.
 
 This function calls recursion in order to invoke each task by using an `index` value pointing to the next task in execution. When the index reaches the total number of tasks the execution should be considered completed and the completion callback is called back with the resulting value. Bear in mind that if an error is thrown at any given time, the execution should be terminated and immediately call the completion callback along with the thrown error. Now assume we have a given collection of asynchronous tasks, this is how we will execute them in sequential order.
 
@@ -56,7 +56,7 @@ const tasks = [
 ];
 
 // Launch the execution of tasks
-execution(tasks, value, (error, result) => {
+execution(tasks, input, (error, result) => {
   if (error) {
     return console.error(error);
   }
@@ -65,7 +65,7 @@ execution(tasks, value, (error, result) => {
 });
 ```
 
-Note that we can use custom objects in the place of the `value` variable if we need to be more flexible, what is the best practice depends on the requirements of our application.
+Note that we can use custom objects in the place of the `input` variable if we need to be more flexible, what is the best practice depends on the requirements of our application.
 
 ## Considerations ##
 
@@ -77,4 +77,5 @@ Even thought using recursion in the iteration pattern might seem so powerful, yo
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [reducer](reducer.js): a trivial example of a reducer of random integer numbers
+* [reducer](reducer.js): reduce random integer numbers with callbacks
+* [file-encryption](file-encryption.js): encrypt the content of a file with callbacks
