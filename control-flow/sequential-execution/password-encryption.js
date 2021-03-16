@@ -45,3 +45,6 @@ encryption("secret", 10, (error, hash) => {
 
   console.log(hash);
 });
+
+// Async output:
+// $2b$10$YdpHArdPZFMqbUqOcTAG..Vd9kVynRvIvL8Z7aLbfaZIipURY0dN6
