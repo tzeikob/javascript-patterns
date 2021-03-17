@@ -4,13 +4,15 @@ The **sequential iteration** pattern is a special form of the **sequential execu
 
 ## Explanation ##
 
-In such a use case it could be impossible to hard code the invocation of each task, so we have to follow a different approach. The solution is to use a more dynamic iterative process powered with the enormous recursion mechanism.
+In such a use case it could be impossible to hard code the invocation of each task, so we have to follow a different approach. The solution is to use a more dynamic iterative process. The sequential iteration pattern can be implemented using either old school **callbacks** along with recursion or the more development friendly **promises**, where either implementation should give us the same execution.
+
+### Sequential iteration with callbacks ###
 
 Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts that collection of tasks along with an initial `input` and a `completion callback`, within that function we will use a helper function called `iterate` which will be responsible to manage the sequential execution. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the result of each task, this way we can share data between tasks.
 
 ```javascript
 function execution (tasks, input, callback) {
-  let value; // Store and share the completion value
+  let value; // Completion value
 
   function iterate (index) {
     // Call back at completion
@@ -66,6 +68,47 @@ execution(tasks, input, (error, result) => {
 ```
 
 Note that we can use custom objects in the place of the `input` variable if we need to be more flexible, what is the best practice depends on the requirements of our application.
+
+### Sequential iteration with promises ###
+
+A more elegant way to implement this pattern is to use **chaining promises** which will give us more readable and less verbose code in comparison to callbacks. In promises we know that a promise will resolve only **once** either fulfilled or rejected, so why not to wrap each task in a promise and chain them so to get that strictly sequential flow. So let's say we have the same tasks as before but this time instead of using async callback they return a promise.
+
+```javascript
+const tasks = [
+  function tasks1 (input) {
+    return new Promise((resolve, reject) => {...})
+  },
+
+  function tasks2 (input) {...},
+  function tasks3 (input) {...},
+  ...
+];
+```
+
+Knowing that the `then` method of a promise returns another promise, we can use it to get the sequential execution of those tasks by chaining them. We will use the `Array.prototype.reduce` method on the given array of `tasks` to iteratively chain each task to the next one. Bear in mind that the value a promise resolves to will be the input to the next promise, that way each task gets as input the result of the previous.
+
+```javascript
+function execution (tasks, input) {
+  // Starting point in the chain of promises
+  const promise = Promise.resolve();
+
+  // Chain each task to the next
+  tasks.reduce((previous, task) => {
+    return previous.then(task);
+  }, Promise.resolve());
+
+  return promise;
+}
+
+// Launch the execution
+execution(tasks, input)
+  .then((result) => {...})
+  .catch((error) => {...});
+```
+
+> The resolved value of each promise (task) will be the input value of the next promise (task).
+
+After we finish the iteration we only have to return the chainable promise back to the caller where we use another `then` to handle the completion value. As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any error thrown within the chain of promises will be caught here. So using promises we can skip boilerplate parts and get cleaner and less verbose code which is easier to maintain.
 
 ## Considerations ##
 
