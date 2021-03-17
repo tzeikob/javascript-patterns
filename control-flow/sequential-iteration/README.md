@@ -71,7 +71,7 @@ Note that we can use custom objects in the place of the `input` variable if we n
 
 ### Sequential iteration with promises ###
 
-A more elegant way to implement this pattern is to use **chaining promises** which will give us more readable and less verbose code in comparison to callbacks. In promises we know that a promise will resolve only **once** either fulfilled or rejected, so why not to wrap each task in a promise and chain them so to get that strictly sequential flow. So let's say we have the same tasks as before but this time instead of using async callback they return a promise.
+A more elegant way to implement this pattern is to use **chaining promises** which will give us more readable and less verbose code in comparison to callbacks. In promises we know that a promise will resolve only **once** either fulfilled or rejected, so why not to wrap each task in a promise and chain them so to get that strictly sequential flow. Let's say we have the same tasks as before but this time instead of using async callback they return a promise.
 
 ```javascript
 const tasks = [
@@ -89,13 +89,13 @@ Knowing that the `then` method of a promise returns another promise, we can use 
 
 ```javascript
 function execution (tasks, input) {
-  // Starting point in the chain of promises
-  const promise = Promise.resolve();
+  // Make input first promise in the chain
+  input = Promise.resolve(input);
 
-  // Chain each task to the next
-  tasks.reduce((previous, task) => {
+  // Chain tasks in sequential order
+  const promise = tasks.reduce((previous, task) => {
     return previous.then(task);
-  }, Promise.resolve());
+  }, input);
 
   return promise;
 }
@@ -108,7 +108,7 @@ execution(tasks, input)
 
 > The resolved value of each promise (task) will be the input value of the next promise (task).
 
-After we finish the iteration we only have to return the chainable promise back to the caller where we use another `then` to handle the completion value. As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any error thrown within the chain of promises will be caught here. So using promises we can skip boilerplate parts and get cleaner and less verbose code which is easier to maintain.
+After we finish the iteration we only have to return the last in chain promise back to the caller where we use another `then` to handle the completion value. As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any error thrown within the chain of promises will be caught here. So using promises we can skip boilerplate code and get cleaner and less verbose syntax which is easier to maintain.
 
 ## Considerations ##
 
