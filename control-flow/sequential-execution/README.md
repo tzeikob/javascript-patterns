@@ -4,7 +4,7 @@ The **sequential execution** pattern belongs to the category of those design pat
 
 ## Explanation ##
 
-In a sequential control flow of asynchronous tasks, tasks could be known beforehand or unknown given in a more dynamic way like a collection of tasks. Here we will talk about the former as the latter is a special use case of the sequential execution (sequential iteration) and is explained in a separate pattern. The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
+The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
 
 ### Sequential execution with callbacks ###
 

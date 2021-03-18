@@ -1,6 +1,6 @@
 # The Sequential Iteration Pattern #
 
-The **sequential iteration** pattern is a special form of the **sequential execution** pattern, thus belongs to the category of the **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** of tasks. What makes this pattern special about sequential execution is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like a collection of tasks.
+The **sequential iteration** pattern is a special form of the [sequential execution](../sequential-execution/README.md) pattern, thus belongs to the category of the **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** of tasks. What makes this pattern special about sequential execution is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like a collection of tasks.
 
 ## Explanation ##
 
@@ -108,7 +108,7 @@ execution(tasks, input)
 
 > The resolved value of each promise (task) will be the input value of the next promise (task).
 
-After we finish the iteration we only have to return the last in chain promise back to the caller where we use another `then` to handle the completion value. As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any error thrown within the chain of promises will be caught here. So using promises we can skip boilerplate code and get cleaner and less verbose syntax which is easier to maintain.
+After we finish the iteration we only have to return the last in chain promise back to the caller where we use another `then` to handle the completion value. As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any rejected promise in the chain will be caught here as an error. So using promises we can skip boilerplate code and get cleaner and less verbose syntax which is easier to maintain.
 
 ## Considerations ##
 
