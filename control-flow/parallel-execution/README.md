@@ -6,7 +6,7 @@ The **parallel execution** pattern belongs to the category of those design patte
 
 In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error and the execution shall be considered as rejected. On the other hand in the case all tasks are completed successfully, the completion callback should be called **once** along with any collected results.
 
-Let's say we have an `execution` function expecting a collection of asynchronous `tasks` along with an `input` and the `completion callback`. This function's responsibility is to handle the invocation of each task in a parallel and to achieve that we're using two variables in order to keep the state of the execution at any given time, one variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered canceled.
+Let's say we have an `execution` function expecting a collection of asynchronous `tasks` along with an `input` and the `completion callback`. This function's responsibility is to handle the invocation of each task in parallel and to achieve that we're using two variables in order to keep the state of the execution at any given time, one variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered canceled.
 
 ```javascript
 function execution (tasks, input, callback) {
