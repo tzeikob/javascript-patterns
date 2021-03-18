@@ -1,4 +1,4 @@
-function map(values, cb) {
+function map (values, cb) {
   const mapped = [];
 
   for (let i = 0; i < values.length; i++) {

@@ -156,7 +156,7 @@ class Observable {
 but what is happening when we call the following code is that we will miss the `create` event so the listener is never getting called.
 
 ```javascript
-const observable = new Observale(); // Synchronously emits the `create` event
+const observable = new Observable(); // Synchronously emits the `create` event
 
 observable.on("create", () => {
   console.log("A new observable is created");

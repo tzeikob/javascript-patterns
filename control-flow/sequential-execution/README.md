@@ -1,6 +1,6 @@
 # The Sequential Execution Pattern #
 
-The **sequential execution** pattern belongs to the category of those design patterns called **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means that every task should be executed as part of a **chain** or **pipeline** of tasks.
+The sequential execution pattern belongs to the category of those design patterns called **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means that every task should be executed as part of a **chain** or **pipeline** of tasks.
 
 ## Explanation ##
 

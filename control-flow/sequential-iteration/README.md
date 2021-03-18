@@ -1,6 +1,6 @@
 # The Sequential Iteration Pattern #
 
-The **sequential iteration** pattern is a special form of the [sequential execution](../sequential-execution/README.md) pattern, thus belongs to the category of the **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** of tasks. What makes this pattern special about sequential execution is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like a collection of tasks.
+The sequential iteration pattern is a special form of the [sequential execution](../sequential-execution/README.md) pattern, thus belongs to the category of the **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** of tasks. What makes this pattern special about sequential execution is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like a collection of tasks.
 
 ## Explanation ##
 

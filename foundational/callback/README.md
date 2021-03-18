@@ -1,6 +1,6 @@
 # The Callback Pattern #
 
-A **callback** is nothing more than a function, which in JavaScript is considered a **first-class** object. Functions can be assigned to variables, passed as arguments in other functions and even returned by functions. In both the synchronous and asynchronous world of JavaScript this is considered a foundational concept, because either we can pass functionality to be executed at the same cycle of the event loop or at a future event loop cycle without blocking the current code.
+A callback is nothing more than a function, which in JavaScript is considered a **first-class** object. Functions can be assigned to variables, passed as arguments in other functions and even returned by functions. In both the synchronous and asynchronous world of JavaScript this is considered a foundational concept, because either we can pass functionality to be executed at the same cycle of the event loop or at a future event loop cycle without blocking the current code.
 
 ## Explanation ##
 
@@ -53,7 +53,7 @@ operation(input, function callback (result) {
 The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the values of a collection. In such cases a callback is given a value and returns it back modified instead of just handle it.
 
 ```javascript
-function operator (values, callback) {
+function operation (values, callback) {
   const results = [];
 
   for (let i = 0; i < values.length; i++) {

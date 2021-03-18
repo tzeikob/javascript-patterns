@@ -1,6 +1,6 @@
 # The Parallel Execution Pattern #
 
-The **parallel execution** pattern belongs to the category of those design patterns called **async control flow** patterns. In use cases where we don't need to execute asynchronous tasks in sequential order one after the other, we can spawn the execution of each task in **parallel** and wait to be notified when all of them are done. By convention when we are referring to a parallel execution we actually mean that the tasks are executed concurrently, which is a more accurate term.
+The parallel execution pattern belongs to the category of those design patterns called **async control flow** patterns. In use cases where we don't need to execute asynchronous tasks in sequential order one after the other, we can spawn the execution of each task in **parallel** and wait to be notified when all of them are done. By convention when we are referring to a parallel execution we actually mean that the tasks are executed concurrently, which is a more accurate term.
 
 ## Explanation ##
 
