@@ -1,24 +1,10 @@
-function rand (max) {
-  return (cb) => {
-    setTimeout(() => {
-      try {
-        const result = Math.floor(Math.random() * max) + 1;
-
-        cb(null, result);
-      } catch (error) {
-        cb(error);
-      }
-    }, max * 1000);
-  }
-}
-
 function reducer (tasks, input, concurrency, cb) {
   let completed = 0;
   let rejected = false;
   let running = 0;
   let index = 0;
 
-  const context = { numbers: [], total: input };
+  const output = { numbers: [], total: input };
 
   function done (error, result) {
     if (error) {
@@ -31,11 +17,11 @@ function reducer (tasks, input, concurrency, cb) {
     }
 
     completed++;
-    context.numbers.push(result);
-    context.total += result;
+    output.numbers.push(result);
+    output.total += result;
 
     if (completed === tasks.length && !rejected) {
-      cb(null, context);
+      cb(null, output);
     }
 
     running--;
@@ -56,6 +42,20 @@ function reducer (tasks, input, concurrency, cb) {
   next();
 }
 
+function rand (max) {
+  return (cb) => {
+    setTimeout(() => {
+      try {
+        const result = Math.floor(Math.random() * max) + 1;
+
+        cb(null, result);
+      } catch (error) {
+        cb(error);
+      }
+    });
+  }
+}
+
 const tasks = [rand(2), rand(2), rand(2), rand(2), rand(2)];
 
 reducer(tasks, 0, 3, (error, result) => {
@@ -66,5 +66,5 @@ reducer(tasks, 0, 3, (error, result) => {
   console.log(result);
 });
 
-// Async random output:
+// Async output:
 // { numbers: [ 1, 2, 2, 2, 1 ], total: 8 }

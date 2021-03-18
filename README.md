@@ -10,6 +10,7 @@ JavaScript Patterns is a collection of design patterns and best practices for th
   * [Sequential Execution](control-flow/sequential-execution/)
   * [Sequential Iteration](control-flow/sequential-iteration/)
   * [Parallel Execution](control-flow/parallel-execution/)
+  * [Limited Parallel Execution](control-flow/limited-parallel-execution/)
 * Creational
   * [Prototype](creational/prototype/)
   * [Module](creational/module/)
