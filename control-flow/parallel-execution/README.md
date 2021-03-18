@@ -1,45 +1,23 @@
 # The Parallel Execution Pattern #
 
-The **parallel execution** pattern belongs to the category of those design patterns called **async control flow** patterns. Apart from the sequential execution there are cases in which we don't need tasks to be executed in a strict order in a flow of one after the other. So we can spawn the execution of task in a **parallel** manner, better called **concurrent**, and wait to be notified when all of them are done.
+The **parallel execution** pattern belongs to the category of those design patterns called **async control flow** patterns. In use cases where we don't need to execute asynchronous tasks in sequential order one after the other, we can spawn the execution of each task in **parallel** and wait to be notified when all of them are done. By convention when we are referring to a parallel execution we actually mean that the tasks are executed concurrently, which is a more accurate term.
 
 ## Explanation ##
 
-In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error, on the other hand in the case of all tasks are completed the completion callback should be called **once** along with any collected results.
+In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error and the execution shall be considered as rejected. On the other hand in the case all tasks are completed successfully, the completion callback should be called **once** along with any collected results. This pattern can be differentiated into two distinct sub-patterns, one referring to parallel execution of unlimited number of tasks and the other as parallel execution of limited number of tasks in batches.
 
 ### Unlimited parallel execution ###
 
-One use case of this pattern is the **unlimited parallel execution**, where we have a collection of asynchronous tasks invoked all at once waiting for all of them to complete by counting every time the callback of a task is invoked.
+This pattern referring to the use case where we have a collection of asynchronous tasks invoked all at once waiting for all of them to complete by counting every time the callback of a task is invoked.
 
-In order to achieve this we can make use of a function, called `done` by convention, which should be bound around a **closure** of various utility variables, which help us to handle the flow of the execution. Let's say we have an asynchronous task given a input context along with a callback function, that function is expected to be the done function.
-
-```javascript
-function task (input, callback) {
-  setTimeout(() => {
-    try {
-      // Execute the task's business logic
-      const output = ...
-
-      // Call back with the completion output value
-      callback(null, output);
-    } catch (error) {
-      callback(error);
-    }
-  });
-}
-```
-
-> We are using the `setTimeout` method in order to mimic the asynchronous execution of a task.
-
-Now assume we have a function expecting a collection of such asynchronous tasks meant to be executed in a parallel way, this function's responsibility is to declare a couple of variables which will be shared via a closure to each task's scope in the execution. That's it, we want any tasks to have access to those variables and we'll achieve this via the done function passed to each task as a callback.
-
-In the simplest implementation we'll only need two variables, one to watch the total completed tasks and another one to check if a rejection error has been thrown. Now, within the done function we should read each one of those variables and decide what to do. By convention when a task calls the done function with an error we should return early calling the completion callback, if many tasks thrown an error as well the first one wins. In the other case where every task completes the last one should call the completion callback along with any collected results.
+Assume we have an `execution` function expecting a collection of asynchronous `tasks` along with an `input` and the `completion callback`. This function's responsibility is to handle the invocation of each task in a parallel and to achieve that is using two variables in order to keep the state of the execution at any given time, one variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered canceled.
 
 ```javascript
-function operation (tasks, input, callback) {
+function execution (tasks, input, callback) {
   let completed = 0; // Total completed tasks
   let rejected = false; // Indicate if another task thrown an error
 
-  const results = [];
+  const results = []; // Store the result of each task
 
   function done (error, result) {
     if (error) {
@@ -61,19 +39,37 @@ function operation (tasks, input, callback) {
     }
   }
 
-  // Spawn every task in parallel given the done function
+  // Spawn all tasks with the done as callback
   tasks.forEach(task => task(input, done));
 }
+```
+
+> The result of each task is collected in the shared via closure variable called `results`.
+
+Now since this function invokes all the tasks at once we have to control somehow the completion or rejection of the execution. We can do this by using a helper function called `done` which will be passed as the callback to each task at invocation, that's it the callback of each task is this same function. When a task completes either rejected or fulfilled this function is called back along with the error or the result. Within the code of this function we are checking if the task thrown an error and if such we mark the execution as rejected and return early with the error, otherwise we collect the result and check if this task was the last one in order to call back along with the list of collected results. Having the execution function is now easy to invoke it passing a list of tasks along with an input and a completion callback.
+
+```javascript
+// A collection of asynchronous tasks
+const tasks = [
+  function task1 (input, callback) {...},
+  function task2 (input, callback) {...},
+  function task3 (input, callback) {...},
+  ...
+];
 
 // Launch the execution
-operation(tasks, input, (error, results) => {
-  ...
+execution(tasks, input, (error, results) => {
+  if (error) {
+    return console.error(error);
+  }
+
+  console.log(results);
 });
 ```
 
 > Note that we don't take special care here, but in real-world it's reasonable to store the results in the order each task has been given.
 
-Which one of the tasks will call back the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
+On thing to keep in mind is that, which one of the tasks will call back the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
 
 ### Limited parallel execution ###
 
@@ -148,5 +144,5 @@ In parallel programming the most critical part is to keep consistency to the sha
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [reducer](reducer.js): a trivial example of an unlimited parallel reducer of random integer numbers
+* [reducer](reducer.js): reduce random integer numbers
 * [limited-reducer.js](limited-reducer.js): a trivial example of a limited parallel reducer of random integer numbers

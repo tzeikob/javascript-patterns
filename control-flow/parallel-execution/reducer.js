@@ -1,22 +1,8 @@
-function rand (max) {
-  return (cb) => {
-    setTimeout(() => {
-      try {
-        const result = Math.floor(Math.random() * max) + 1;
-
-        cb(null, result);
-      } catch (error) {
-        cb(error);
-      }
-    });
-  }
-}
-
 function reducer (tasks, input, cb) {
   let completed = 0;
   let rejected = false;
 
-  let context = { numbers: [], total: input };
+  let output = { numbers: [], total: input };
 
   function done (error, result) {
     if (error) {
@@ -29,15 +15,29 @@ function reducer (tasks, input, cb) {
     }
 
     completed++;
-    context.numbers.push(result);
-    context.total += result;
+    output.numbers.push(result);
+    output.total += result;
 
     if (completed === tasks.length && !rejected) {
-      cb(null, context);
+      cb(null, output);
     }
   }
 
   tasks.forEach(task => task(done));
+}
+
+function rand (max) {
+  return (cb) => {
+    setTimeout(() => {
+      try {
+        const result = Math.floor(Math.random() * max) + 1;
+
+        cb(null, result);
+      } catch (error) {
+        cb(error);
+      }
+    });
+  }
 }
 
 const tasks = [rand(2), rand(4), rand(6)];
