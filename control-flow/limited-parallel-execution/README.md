@@ -4,7 +4,9 @@ The limited parallel execution pattern belongs to the category of those design p
 
 ## Explanation ##
 
-In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error and the execution shall be considered as rejected. On the other hand in the case all tasks are completed successfully, the completion callback should be called **once** along with any collected results.
+In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error and the execution shall be considered as rejected. On the other hand in the case all tasks are completed successfully, the completion callback should be called **once** along with any collected results. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
+
+### Limited parallel execution with callbacks ###
 
 Assume we have an `execution` function which expects a collection of asynchronous `tasks` along with an `input`, the `concurrency` limit and the `completion callback`. The concurrency limit is the maximum number of tasks which can be running in parallel at any given time in execution. Along with the already known `completed` and `rejected` variables which are used in the parallel execution pattern, here we have two more variables. The variable `running` responsible to keep the actual number of running tasks at any given time and an `index` to point to the next task in invocation.
 
@@ -82,6 +84,85 @@ execution(tasks, input, concurrency, (error, results) => {
 ```
 
 We can thought the limited parallel execution as a room within tasks can be run in parallel, but the space is bounded to accept only a limited number of tasks. Every time a task in the room completes another task from the collection drops in and starts executing. The goal is to split the overhead of running too many tasks in parallel and avoid running out of resources.
+
+### Limited parallel execution with promises ###
+
+The same pattern could be implemented with promises but taking a slightly different approach, especially when handling the resolution of each spawn task. Assuming we have the same `execution` function expecting the collection of `tasks`, an `input` and the `concurrency` limit but the completion callback. As each task is now considered that returns a promise, in this implementation we don't have to use the helper function `done`, instead we will use the promise's methods `then`, `catch` and `finally` in order to decide what's next after a task completes or rejects. The same `next` function is used which is responsible to invoke each task and manage the concurrency limitations at the same time.
+
+```javascript
+function execution (tasks, input, concurrency) {
+  // For any invalid argument reject with Promise.reject
+  ...
+
+  let running = 0; // Total running tasks
+  let index = 0; // Index of the next task to invoke
+  let thrownError = null; // Thrown error by a task
+
+  const results = []; // Store the result of each task
+
+  return new Promise((resolve, reject) => {
+    function next() {
+      // Call next task if there is room in concurrency
+      while (running < concurrency && index < tasks.length) {
+        // Get the task to invoke and mark the next to be ready
+        const task = tasks[index];
+        index++;
+        
+        // Execute task
+        task(input)
+          .then((result) => {
+            results.push(result); // Register the result at completion
+          })
+          .catch((error) => {
+            thrownError = error; // Register the error at rejection
+          })
+          .finally(() => {
+            if (thrownError) {
+              reject(thrownError); // If thrown an error reject immediately
+            } else {
+              // Check if all tasks completed
+              if (results.length < tasks.length) {
+                // Count down to leave space of the next task
+                running--;
+                next();
+              } else {
+                resolve(results); // Resolve with the results
+              }
+            }
+          });
+
+          // Count up to reserve a slot in concurrency
+          running++;
+        }
+      }
+
+      next();
+  });
+}
+```
+
+Keep in mind that the function returns a promise instance in order to handle both the fulfillment and rejection of the execution. The execution is actually wrapped with this promise, where its `resolve` handler will be invoked by the task which completes last and its `reject` handler called by the task rejects first. The following code launches the execution of a given collection of tasks given a concurrency limit.
+
+```javascript
+const tasks = [
+  function tasks1 (input) {
+    return new Promise((resolve, reject) => {...})
+  },
+
+  function tasks2 (input) {...},
+  function tasks3 (input) {...},
+  ...
+];
+
+// Launch the execution
+execution(tasks, input, concurrency)
+  .then((results) => {
+    console.log(results);
+  }
+  .catch((error) => {
+    console.error(error);
+  });
+```
 
 ## Considerations ##
 
