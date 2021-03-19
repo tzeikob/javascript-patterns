@@ -4,7 +4,9 @@ The parallel execution pattern belongs to the category of those design patterns 
 
 ## Explanation ##
 
-In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error and the execution shall be considered as rejected. On the other hand in the case all tasks are completed successfully, the completion callback should be called **once** along with any collected results.
+In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error and the execution shall be considered as rejected. On the other hand in the case all tasks are completed successfully, the completion callback should be called **once** along with any collected results. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
+
+### Parallel execution with callbacks ###
 
 Let's say we have an `execution` function expecting a collection of asynchronous `tasks` along with an `input` and the `completion callback`. This function's responsibility is to handle the invocation of each task in parallel and to achieve that we're using two variables in order to keep the state of the execution at any given time, one variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered canceled.
 
@@ -67,6 +69,40 @@ execution(tasks, input, (error, results) => {
 
 On thing to keep in mind is that, which one of the tasks will call back the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
 
+### Parallel execution with promises ###
+
+Implementing this pattern with **promises** is way easier than using asynchronous callbacks and on top of that we will get a more readable and less complex code base. The only thing we should do in order to execute all the tasks in parallel is to pass them as an array of promises in the built-in `Promise.all` method, this method returns another promise on which we will set our completion and rejection handlers. Let's say we have the same collection of tasks but instead of using asynchronous callback now return a promise.
+
+```javascript
+const tasks = [
+  function tasks1 (input) {
+    return new Promise((resolve, reject) => {...})
+  },
+
+  function tasks2 (input) {...},
+  function tasks3 (input) {...},
+  ...
+];
+```
+
+Start by mapping each task in a collection of promises passing any given `input`, at this point each task should be considered as invoked. Having the collection of promises we can now pass them in the `Promise.all` method in order to handle the completion or the rejection. Keep in mind that this method fulfills only if all of the given promises are fulfilled, if any of them rejects the whole execution is considered as rejected.
+
+```javascript
+// Launch each task in parallel
+const promises = tasks.map(task => task(input)); // Map task into a promise
+
+// Handle the completion or rejection
+Promise.all(promises)
+  .then((results) => {
+    console.log(results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+> Note that `Promise.all` makes sure that results will keep the order the tasks are given in.
+
 ## Considerations ##
 
 ### Race conditions ###
@@ -77,4 +113,5 @@ In parallel programming the most critical part is to keep consistency to the sha
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [reducer](reducer.js): reduce random integer numbers in parallel
+* [reducer](reducer.js): reduce random integer numbers in parallel with callbacks
+* [password-encryption](password-encryption.js): encrypt a collection of passwords with promises
