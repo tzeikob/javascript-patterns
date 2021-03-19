@@ -1,4 +1,8 @@
 function reduce (tasks, cb) {
+  if (!tasks || !Array.isArray(tasks) || tasks.length === 0) {
+    return cb(new Error("Invalid tasks argument"));
+  }
+
   const output = { numbers: [], value: 0 };
 
   function iterate (index) {

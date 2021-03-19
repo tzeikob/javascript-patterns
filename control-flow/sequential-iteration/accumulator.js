@@ -1,4 +1,8 @@
 function execution (tasks, input) {
+  if (!tasks || !Array.isArray(tasks) || tasks.length === 0) {
+    return Promise.reject(new Error("Invalid tasks argument"));
+  }
+
   input = Promise.resolve(input);
 
   const promise = tasks.reduce((previous, task) => {

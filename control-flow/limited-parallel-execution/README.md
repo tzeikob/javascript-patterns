@@ -12,6 +12,9 @@ Assume we have an `execution` function which expects a collection of asynchronou
 
 ```javascript
 function execution (tasks, input, concurrency, callback) {
+  // For any invalid argument call back asynchronously with error
+  ...
+
   let completed = 0; // Total completed tasks
   let rejected = false; // Indicate if a task thrown an error
 

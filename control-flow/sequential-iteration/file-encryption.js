@@ -2,6 +2,10 @@ import fs from "fs";
 import bcrypt from "bcrypt";
 
 function execution (tasks, input, cb) {
+  if (!tasks || !Array.isArray(tasks) || tasks.length === 0) {
+    return cb(new Error("Invalid tasks argument"));
+  }
+
   let value;
 
   function iterate (index) {

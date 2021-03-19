@@ -1,4 +1,8 @@
 function reducer (tasks, input, cb) {
+  if (!tasks || !Array.isArray(tasks) || tasks.length === 0) {
+    return cb(new Error("Invalid tasks argument"));
+  }
+
   let completed = 0;
   let rejected = false;
 

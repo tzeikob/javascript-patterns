@@ -12,6 +12,9 @@ Assuming we have a collection of asynchronous tasks where each task is expecting
 
 ```javascript
 function execution (tasks, input, callback) {
+  // For any invalid argument call back asynchronously with error
+  ...
+
   let value; // Completion value
 
   function iterate (index) {
@@ -89,6 +92,9 @@ Knowing that the `then` method of a promise returns another promise, we can use 
 
 ```javascript
 function execution (tasks, input) {
+  // For any invalid argument reject with Promise.reject
+  ...
+  
   // Make input first promise in the chain
   input = Promise.resolve(input);
 
