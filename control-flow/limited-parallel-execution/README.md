@@ -111,7 +111,7 @@ function execution (tasks, input, concurrency) {
         const task = tasks[index];
         index++;
         
-        // Execute task
+        // Invoke the task
         task(input)
           .then((result) => {
             results.push(result); // Register the result at completion
@@ -121,7 +121,7 @@ function execution (tasks, input, concurrency) {
           })
           .finally(() => {
             if (thrownError) {
-              reject(thrownError); // If thrown an error reject immediately
+              reject(thrownError); // If an error is thrown reject immediately
             } else {
               // Check if all tasks completed
               if (results.length < tasks.length) {
@@ -144,7 +144,7 @@ function execution (tasks, input, concurrency) {
 }
 ```
 
-Keep in mind that the function returns a promise instance in order to handle both the fulfillment and rejection of the execution. The execution is actually wrapped with this promise, where its `resolve` handler will be invoked by the task which completes last and its `reject` handler called by the task rejects first. The following code launches the execution of a given collection of tasks given a concurrency limit.
+Keep in mind that the function returns a promise instance in order to handle both the fulfillment and rejection of the execution. The execution is actually wrapped with this promise, where its `resolve` handler will be invoked by the task which completes last and its `reject` handler called by the task rejects first. The following code launches the execution of a given collection of tasks with a concurrency limit.
 
 ```javascript
 const tasks = [
