@@ -4,7 +4,7 @@ The observer pattern belongs to the category of those design patterns called **b
 
 ## Explanation ##
 
-In the observer pattern an observable is an object also known as the **focal point**, so we can define an observable as a class having initially an empty collection of listeners. This collection is expected to be a map, where the keys are the event types and for each event type we are about to keep an ordered list of listeners meant to be triggered each time a specific event being emitted.
+In the observer pattern an observable is an object also known as the **focal point**, so we can define an observable as a class having initially an empty collection of listeners. This collection is expected to be a map, where the keys are the event types and for each event type we are about to keep an ordered list of listeners meant to be triggered each time a specific event is emitted.
 
 ### Attach listeners to an observable ###
 
@@ -27,7 +27,7 @@ class Observable {
 
     if (eventListeners) {
       // Register the listener for the given event
-      eventListeners[event].push(listener);
+      eventListeners.push(listener);
     }
 
     return this;
