@@ -1,4 +1,4 @@
-function factorial (num, cb) {
+function factorial(num, cb) {
   setTimeout(() => {
     try {
       if (typeof num !== "number") {

@@ -11,7 +11,7 @@ As callback is just a function, it can be passed to another function and invoked
 In a synchronous operation, the callback patterns should be implemented like so,
 
 ```javascript
-function operation (input, callback) {
+function operation(input, callback) {
   // Execute any business logic
   const result = ...
 
@@ -19,7 +19,7 @@ function operation (input, callback) {
   callback(result);
 };
 
-operation(input, function callback (result) {
+operation(input, function callback(result) {
   console.log(result);
 });
 ```
@@ -31,7 +31,7 @@ where input can be any valid value or either a list of separated input values fo
 In an asynchronous operation though, a callback should always be called asynchronously in order to be invoked in the next event loop cycles.
 
 ```javascript
-function operation (input, callback) {
+function operation(input, callback) {
   setTimeout(() => {
     // Execute any business logic
     const result = ...
@@ -41,7 +41,7 @@ function operation (input, callback) {
   });
 };
 
-operation(input, function callback (result) {
+operation(input, function callback(result) {
   console.log(result);
 });
 ```
@@ -53,7 +53,7 @@ operation(input, function callback (result) {
 The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the values of a collection. In such cases a callback is given a value and returns it back modified instead of just handle it.
 
 ```javascript
-function operation (values, callback) {
+function operation(values, callback) {
   const results = [];
 
   for (let i = 0; i < values.length; i++) {
@@ -68,7 +68,7 @@ function operation (values, callback) {
 
 const values = [1, 2, 3, 4, 5];
 
-const results = operation(values, function callback (value) {
+const results = operation(values, function callback(value) {
   return value * 2;
 });
 ```
@@ -78,7 +78,7 @@ const results = operation(values, function callback (value) {
 Another important thing is to be consistent with error handling in callbacks and have any error come first when propagating errors back.
 
 ```javascript
-function operation (input, callback) {
+function operation(input, callback) {
   setTimeout(() => {
     try {
       // Execute business logic
@@ -91,7 +91,7 @@ function operation (input, callback) {
   });
 }
 
-operation(input, function callback (error, result) {
+operation(input, function callback(error, result) {
   // Error must always come first
   if (error) {
     return console.error(error);
@@ -110,7 +110,7 @@ To sum up, a callback called synchronously blocks the current code until the ope
 Try to avoid inconsistencies in the behavior of a function which is using a callback, either the callback should always be called synchronously or asynchronously. It is considered very bad practice to have a function behave unpredictably mixing synchronous and asynchronous calls to the given callback. Let's say we have a `cache` map object and an async `factorial` function:
 
 ```javascript
-function compute (num, callback) {
+function compute(num, callback) {
   if (cache[num]) {
     return callback(cache[num]); // Call back synchronously
   }
@@ -128,7 +128,7 @@ function compute (num, callback) {
 Once you first compute the factorial of a number the next time you request the same number's factorial, the call to the callback will be synchronous. Instead try to stick with either synchronous or asynchronous behavior in any function expecting a callback.
 
 ```javascript
-function compute (num, callback) {
+function compute(num, callback) {
   if (cache[num]) {
     return setTimeout(() => callback(cache[num])); // Call always back asynchronously
   }
