@@ -1,32 +1,36 @@
 class Thermometer {
-  constructor () {
+  constructor() {
     this.previous = 0;
     this.temperature = 0;
 
     this.listeners = {
-      "increase": [],
-      "decrease": [],
-      "error": []
+      increase: [],
+      decrease: [],
+      error: []
     };
   }
 
-  on (event, listener) {
-    if (!/^(increase|decrease|error)$/.test(event)) {
-      throw new Error(`Event type is not supported: ${event}`);
-    }
+  on(event, listener) {
+    const eventListeners = this.listeners[event];
 
-    this.listeners[event].push(listener);
+    if (eventListeners) {
+      eventListeners.push(listener);
+    }
 
     return this;
   }
 
-  emit (event, ...args) {
-    this.listeners[event].forEach(listener => {
-      listener.call(null, ...args);
-    });
+  emit(event, ...args) {
+    const eventListeners = this.listeners[event];
+
+    if (eventListeners) {
+      eventListeners.forEach(listener => {
+        listener.call(null, ...args);
+      });
+    }
   }
 
-  update (value) {
+  update(value) {
     setTimeout(() => {
       try {
         this.previous = this.temperature;
@@ -45,12 +49,12 @@ class Thermometer {
     });
   }
 
-  removeListener (event, listener) {
-    const listeners = this.listeners[event];
+  removeListener(event, listener) {
+    const eventListeners = this.listeners[event];
     
-    if (listeners) {
-      const index = listeners.findIndex(l => l === listener);
-      listeners.splice(index, 1);
+    if (eventListeners) {
+      const index = eventListeners.findIndex(l => l === listener);
+      eventListeners.splice(index, 1);
     }
   }
 }

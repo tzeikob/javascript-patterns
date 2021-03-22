@@ -8,39 +8,54 @@ In the observer pattern an observable is an object also known as the **focal poi
 
 ### Attach listeners to an observable ###
 
-The way to attach a listener to an observable is straightforward, we should provide the event type along with the listener and append it to the list of listeners for that specific event type. The order the listeners are attached must be attained in the whole life-cycle of the observable so they can be called in order.
+The way to attach a listener to an observable is straightforward, we should provide the event type along with the listener and append it to the list of listeners for that specific event type. The order the listeners are attached must be attained in the whole life-cycle of the observable so they can be called in order. To be more precise the observable should define what event types emits, so at creation we initiate each event's listeners list to an empty array. Any attempt to register a listener for a not supported event type should be ignored by convention.
 
 ```javascript
 class Observable {
-  constructor () {
+  constructor() {
     // A map of listeners per event
-    this.listeners = {};
+    this.listeners = {
+      eventA: [],
+      eventB: [],
+      ...,
+      error: []
+    };
   }
 
-  on (event, listener) {
-    // Register the listener for the given event
-    this.listeners[event].push(listener);
+  on(event, listener) {
+    const eventListeners = this.listeners[event];
+
+    if (eventListeners) {
+      // Register the listener for the given event
+      eventListeners[event].push(listener);
+    }
 
     return this;
   }
 }
 ```
 
+> The `error` event type will be used for error handling as we'll see later on.
+
 ### Emit events from an observable ###
 
-By this time we need a mechanism in order to broadcast events, so every listener is triggered for its corresponding event is being emitted. Having the map of listeners per event we only need to iterate through and call them in the specified order along with any data arguments. The data arguments could be any valid value and can be given either as separated arguments or collected in a single custom object passing them as a single argument.
+By this time we need a mechanism in order to broadcast events, so every listener is triggered for its corresponding event is being emitted. Having the map of listeners per event we only need to iterate through and call them in the specified order along with any data arguments. The data arguments could be any valid value given as separated arguments.
 
 ```javascript
 class Observable {
   ...
 
-  emit (event, ...args) {
-    // Trigger the listeners for the given event
-    this.listeners[event].forEach(listener => {
-      listener.call(null, ...args);
-    });
+  emit(event, ...args) {
+    const eventListeners = this.listeners[event];
+
+    if (eventListeners) {
+      // Trigger the listeners for the given event
+      eventListeners.forEach(listener => {
+        listener.call(null, ...args);
+      });
+    }
   }
-} 
+}
 ```
 
 > We could call the listener with `this` instead of `null` in case we need to access the observable within the listener's code for further use via the `this` operator.
@@ -53,7 +68,7 @@ An observable must have a purpose, it must provide at least one asynchronous ope
 class Observable {
   ...
 
-  operation () {
+  operation() {
     setTimeout(() => {
       // Execute any business logic
       const valueA = ...
@@ -76,10 +91,6 @@ Having the observable class we can now create an instance of it and register eve
 ```javascript
 const observable = new Observable();
 
-observable.on("data", (value) => {
-  ...
-});
-
 observable.on("success", (value) => {
   ...
 });
@@ -99,7 +110,7 @@ A special care must be taken regarding the error handling in the observer patter
 class Observable {
   ...
 
-  operation () {
+  operation() {
     setTimeout(() => {
       try {
         // Execute any business logic
@@ -118,24 +129,37 @@ class Observable {
 
 ### Putting all together ###
 
-To sum up, an observable must encapsulate a map of listeners (observers) per event type according to our requirements and broadcast events so the listeners mapped by the emitted event are executed. A special event is the error which must be triggered any time an exception is thrown. All those broadcasts and emissions must happen within an asynchronous operation so no listeners are swallowed by operations executed before the listeners being registered.
+To sum up, an observable must encapsulate a map of listeners (observers) per event type according to our requirements and broadcast events so the listeners mapped by the emitted event are executed. A special event is the error which must be triggered any time an exception is thrown. All those broadcasts and emissions must happen within an asynchronous operation so no listeners are swallowed by operations executed before the listeners being registered. Now let's put all this together.
 
 ```javascript
 class Observable {
   constructor() {
-    this.listeners = {};
+    this.listeners = {
+      eventA: [],
+      eventB: [],
+      ...,
+      error: []
+    };
   }
 
   on(event, listener) {
-    this.listeners[event].push(listener);
+    const eventListeners = this.listeners[event];
+
+    if (eventListeners) {
+      eventListeners.push(listener);
+    }
 
     return this;
   }
 
   emit(event, ...args) {
-    this.listeners[event].forEach(listener => {
-      listener.call(null, ...args);
-    });
+    const eventListeners = this.listeners[event];
+
+    if (eventListeners) {
+      eventListeners.forEach(listener => {
+        listener.call(null, ...args);
+      });
+    }
   }
 
   operation() {
@@ -155,8 +179,13 @@ class Observable {
 
 const observable = new Observable();
 
-observable.on("success", (value) => {...});
-observable.on("error", (error) => {...});
+observable.on("success", (value) => {
+  ...
+});
+
+observable.on("error", (error) => {
+  ...
+});
 ```
 
 ## Considerations ##
@@ -169,10 +198,10 @@ The observer pattern is a very powerful mechanism which if not taken seriously i
 class Observable {
   ...
 
-  removeListener (event, listener) {
-    const listeners = this.listeners[event];
+  removeListener(event, listener) {
+    const eventListeners = this.listeners[event];
     
-    if (listeners) {
+    if (eventListeners) {
       // Find the listener and remove it
       ...
     }
@@ -186,7 +215,7 @@ What do we mean by swallowing listeners is that if we try to emit an event synch
 
 ```javascript
 class Observable {
-  constructor () {
+  constructor() {
     this.emit("create");
   }
 
@@ -208,7 +237,7 @@ What we need to do is to always emit events asynchronously in the next event loo
 
 ```javascript
 class Observable {
-  constructor () {
+  constructor() {
     // Emit the event in the next event loop cycle
     setTimeout(() => this.emit("create"));
   }
@@ -225,12 +254,16 @@ A really reasonable request could be to give access to the observable's state wi
 class Observable {
   ...
 
-  emit (event, ...args) {
-    // Trigger the listeners for the given event
-    this.listeners[event].forEach(listener => {
-      // Set the observable as the `this` in listener's code
-      listener.call(this, ...args);
-    });
+  emit(event, ...args) {
+    const eventListeners = this.listeners[event];
+
+    if (eventListeners) {
+      // Trigger the listeners for the given event
+      eventListeners.forEach(listener => {
+        // Set the observable as the `this` in listener's code
+        listener.call(this, ...args);
+      });
+    }
   }
 } 
 ```
