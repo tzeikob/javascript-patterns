@@ -116,7 +116,48 @@ class Observable {
 }
 ```
 
+### Putting all together ###
+
 To sum up, an observable must encapsulate a map of listeners (observers) per event type according to our requirements and broadcast events so the listeners mapped by the emitted event are executed. A special event is the error which must be triggered any time an exception is thrown. All those broadcasts and emissions must happen within an asynchronous operation so no listeners are swallowed by operations executed before the listeners being registered.
+
+```javascript
+class Observable {
+  constructor() {
+    this.listeners = {};
+  }
+
+  on(event, listener) {
+    this.listeners[event].push(listener);
+
+    return this;
+  }
+
+  emit(event, ...args) {
+    this.listeners[event].forEach(listener => {
+      listener.call(null, ...args);
+    });
+  }
+
+  operation() {
+    setTimeout(() => {
+      try {
+        const valueA = ...
+        const valueB = ...
+        ...
+
+        this.emit("success", valueA, valueB, ...);
+      } catch (error) {
+        this.emit("error", error);
+      }
+    });
+  }
+}
+
+const observable = new Observable();
+
+observable.on("success", (value) => {...});
+observable.on("error", (error) => {...});
+```
 
 ## Considerations ##
 
