@@ -1,6 +1,6 @@
 # The Limited Parallel Execution Pattern #
 
-The limited parallel execution pattern belongs to the category of those design patterns called **async control flow** patterns and is a special version of the [parallel execution](../parallel-execution/README.md) pattern. In use cases where we have limited number of resources (memory, cpu cycles) we should consider taking another approach by just invoking all tasks at once. Instead we can split the execution in batches of tasks run in **parallel** and wait to be notified when all of them are done.
+The limited parallel execution pattern belongs to the category of those design patterns called **async control flow** patterns and is a special version of the [parallel execution](../parallel-execution/readme.md) pattern. In use cases where we have limited number of resources (memory, cpu cycles) we should consider taking another approach by just invoking all tasks at once. Instead we can split the execution in batches of tasks run in **parallel** and wait to be notified when all of them are done.
 
 ## Explanation ##
 
