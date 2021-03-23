@@ -27,7 +27,7 @@ function execution(tasks, input, concurrency, callback) {
 
 > The result of each task will be collected via closure into the variable called `results`.
 
-Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as callback to each task's invocation, but here has a slightly different behavior. When a task calls the done function at completion or rejection we have to count down the `running` variable in order to inform the execution that a task is finished and there is now room for another task to take action.
+Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as callback to each task's invocation, but here has a slightly different behavior. When a task calls the done function at completion we have to count down the `running` variable in order to inform the execution that a task is finished and there is now room for another task to take action.
 
 ```javascript
 function execution(tasks, input, concurrency, callback) {
@@ -157,7 +157,7 @@ execution(tasks, input, concurrency, (error, results) => {
 });
 ```
 
-We can thought the limited parallel execution as a room where tasks can be run in parallel, but the space is bounded to accept only a limited number of tasks. Every time a task in the room completes another task from the collection drops in and starts executing. The goal is to split the overhead of running too many tasks in parallel and avoid running out of resources.
+We can think the limited parallel execution as a room where tasks can be run in parallel, but the space is bounded to accept only a limited number of tasks. Every time a task in the room completes another task from the collection drops in and starts executing. The goal is to split the overhead of running too many tasks in parallel and avoid running out of resources.
 
 ### Limited parallel execution with promises ###
 
@@ -181,7 +181,7 @@ function execution(tasks, input, concurrency) {
         // Get the task to invoke and mark the next to be ready
         const task = tasks[index];
         index++;
-        
+
         // Invoke the task
         task(input)
           .then((result) => {
@@ -205,12 +205,12 @@ function execution(tasks, input, concurrency) {
             }
           });
 
-          // Count up to reserve a slot in concurrency
-          running++;
-        }
+        // Count up to reserve a slot in concurrency
+        running++;
       }
+    }
 
-      next();
+    next();
   });
 }
 ```
