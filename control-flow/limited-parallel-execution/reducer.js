@@ -1,4 +1,4 @@
-function reducer (tasks, input, concurrency, cb) {
+function reducer(tasks, input, concurrency, cb) {
   if (!tasks || !Array.isArray(tasks) || tasks.length === 0) {
     return cb(new Error("Invalid tasks argument"));
   }
@@ -14,7 +14,7 @@ function reducer (tasks, input, concurrency, cb) {
 
   const output = { numbers: [], total: input };
 
-  function done (error, result) {
+  function done(error, result) {
     if (error) {
       if (rejected) {
         return;
@@ -36,7 +36,7 @@ function reducer (tasks, input, concurrency, cb) {
     next();
   }
 
-  function next () {
+  function next() {
     while (running < concurrency && index < tasks.length) {
       const task = tasks[index];
       index++;
@@ -50,7 +50,7 @@ function reducer (tasks, input, concurrency, cb) {
   next();
 }
 
-function rand (max) {
+function rand(max) {
   return (cb) => {
     setTimeout(() => {
       try {
