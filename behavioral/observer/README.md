@@ -15,8 +15,7 @@ class Observable {
   constructor() {
     // A map of listeners per event
     this.listeners = {
-      eventA: [],
-      eventB: [],
+      success: [],
       ...,
       error: []
     };
@@ -135,8 +134,7 @@ To sum up, an observable must encapsulate a map of listeners (observers) per eve
 class Observable {
   constructor() {
     this.listeners = {
-      eventA: [],
-      eventB: [],
+      success: [],
       ...,
       error: []
     };
