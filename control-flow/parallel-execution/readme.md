@@ -8,7 +8,54 @@ In a such a parallel execution context we should take special care to handle the
 
 ### Parallel execution with callbacks ###
 
-Let's say we have an `execution` function expecting a collection of asynchronous `tasks` along with an `input` and the `completion callback`. This function's responsibility is to handle the invocation of each task in parallel and to achieve that we're using two variables in order to keep the state of the execution at any given time, one variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered canceled.
+Let's say we have an `execution` function expecting a collection of asynchronous `tasks` along with an `input` and the `completion callback`. This function's responsibility is to handle the invocation of each task in parallel and to achieve this is using two variables in order to keep the state of the execution at any given time. One variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered as rejected.
+
+```javascript
+function execution (tasks, input, callback) {
+  // For any invalid argument call back asynchronously with error
+  ...
+
+  let completed = 0; // Total completed tasks
+  let rejected = false; // Indicate if another task thrown an error
+
+  const results = []; // Store the result of each task
+}
+```
+
+> The result of each task is collected via closure into a variable called `results`.
+
+Now since this function invokes all the tasks at once we have to control somehow the completion or rejection of the execution. We can do this by using a helper function called `done` which will be passed as the callback to each task at invocation, that's it the `callback` of each task is this same function. When a task completes either rejected or fulfilled this function is called back along with the `error` or the `result` respectively. Within the code of this function we are checking if the task has thrown an error and if such we mark the execution as rejected and return early. On the other hand we count up another completion, collect the result and check if this task was the last completed one in order to call the completion callback along with the list of collected results.
+
+```javascript
+function execution (tasks, input, callback) {
+  ...
+
+  function done (error, result) {
+    if (error) {
+      if (rejected) {
+        return; // Don't call back if execution rejected by another task
+      }
+
+      // Inform all tasks about rejection and call back early
+      rejected = true;
+      return callback(error);
+    }
+
+    completed++; // Count another completed task
+    results.push(result); // Store the task's completion result
+
+    // Call back once in completion
+    if (completed === tasks.length && !rejected) {
+      callback(null, results);
+    }
+  }
+
+  // Spawn all tasks with the done as callback
+  tasks.forEach(task => task(input, done));
+}
+```
+
+Now let's put all this together.
 
 ```javascript
 function execution (tasks, input, callback) {
@@ -45,9 +92,7 @@ function execution (tasks, input, callback) {
 }
 ```
 
-> The result of each task is collected in the shared via closure variable called `results`.
-
-Now since this function invokes all the tasks at once we have to control somehow the completion or rejection of the execution. We can do this by using a helper function called `done` which will be passed as the callback to each task at invocation, that's it the `callback` of each task is this same function. When a task completes either rejected or fulfilled this function is called back along with the `error` or the `result`. Within the code of this function we are checking if the task thrown an error and if such we mark the execution as rejected and return early with the error, otherwise we count up another completion, collect the result and check if this task was the last one in order to call back along with the list of collected results. Having a collection of tasks is now easy to execute them in parallel.
+Having a collection of tasks is now easy to execute them in parallel.
 
 ```javascript
 // A collection of asynchronous tasks
@@ -70,11 +115,11 @@ execution(tasks, input, (error, results) => {
 
 > Note that we don't take special care here, but in real-world it's reasonable to store the results in the order each task has been given.
 
-On thing to keep in mind is that, which one of the tasks will call back the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
+On thing to keep in mind is that, which one of the tasks will call the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
 
 ### Parallel execution with promises ###
 
-Implementing this pattern with **promises** is way easier than using asynchronous callbacks and on top of that we will get a more readable and less complex code base. The only thing we should do in order to execute all the tasks in parallel is to pass them as an array of promises in the built-in `Promise.all` method, this method returns another promise on which we will set our completion and rejection handlers. Let's say we have the same collection of tasks but instead of using asynchronous callback now return a promise.
+Implementing this pattern with **promises** is way easier than using asynchronous callbacks and on top of that we will get a more readable and less complex code base. The only thing we should do in order to execute all the tasks in parallel is to pass them as an array of promises in the built-in `Promise.all` method. This method returns another promise on which we will set our completion and rejection handlers. Let's say we have the same collection of tasks but instead of using asynchronous callback now return a promise.
 
 ```javascript
 const tasks = [
@@ -104,7 +149,7 @@ Promise.all(promises)
   });
 ```
 
-> Note that `Promise.all` makes sure that results will keep the order the tasks are given in.
+> Note that the `Promise.all` makes sure that results will kept in order the tasks are given in.
 
 ## Considerations ##
 
