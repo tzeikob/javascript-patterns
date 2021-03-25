@@ -24,7 +24,7 @@ function execution (tasks, input, callback) {
 
 > The result of each task is collected via closure into a variable called `results`.
 
-Now since this function invokes all the tasks at once we have to control somehow the completion or rejection of the execution. We can do this by using a helper function called `done` which will be passed as the callback to each task at invocation, that's it the `callback` of each task is this same function. When a task completes either rejected or fulfilled this function is called back along with the `error` or the `result` respectively. Within the code of this function we are checking if the task has thrown an error and if such we mark the execution as rejected and return early. On the other hand we count up another completion, collect the result and check if this task was the last completed one in order to call the completion callback along with the list of collected results.
+Now since this function invokes all the tasks at once we have to control somehow the completion or rejection of the execution. We can do this by using a helper function called `done` which will be passed as the callback to each task at invocation, that's it, the `callback` of each task is this same function. When a task completes either rejected or fulfilled this function is called back along with the `error` or the `result` respectively. Within the code of this function we are checking if the task has thrown an error and if such we mark the execution as rejected and return early. On the other hand we count up another completion, collect the result and check if this task was the last completed one in order to call the completion callback along with the list of collected results.
 
 ```javascript
 function execution (tasks, input, callback) {
@@ -157,7 +157,7 @@ Promise.all(promises)
 
 ### Race conditions ###
 
-In parallel programming the most critical part is to keep consistency to the shared context between every task. Event though JavaScript engine implementations are single-threaded environments and there is not need to use techniques such as locks, mutexes and the like, the possibility of race conditions is **not guaranteed** to not happen. So you have to double check the computations taking place within a task running in parallel and the delay it takes to return its result to the others as this is often the reason of such race conditions.
+In parallel programming the most critical part is to keep consistency to the shared context between every task. Even though JavaScript engine implementations are single-threaded environments and there is not need to use techniques such as locks, mutexes and the like, the possibility of race conditions is **not guaranteed** to not happen. So you have to double check the computations taking place within a task running in parallel and the delay it takes to return its result to the others as this is often the reason of such race conditions.
 
 ## Implementations ##
 

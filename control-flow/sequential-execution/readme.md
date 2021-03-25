@@ -4,13 +4,13 @@ The sequential execution pattern belongs to the category of those design pattern
 
 ## Explanation ##
 
-According to the sequential execution pattern each completed task should invoke the next in order task passing its result as input to the latter. The execution should continue as long as the last in order task completes and when this happens the execution is considered completed. In case any task in the sequence throws an error the execution should be rejected along with the given error. The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
+According to this pattern each completed task should invoke the next in order task passing its result as input to the latter. The execution should continue as long as the last in order task completes and when this happens the execution is considered completed. In the case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
 
 ### Sequential execution with callbacks ###
 
 Let's start by making the assumption that a sequential execution of tasks should be started given two arguments, an `input` of any type and the completion `callback`. Each task in execution is responsible to invoke the next in order task passing both the completion callback along with any result computed so far. In case an error is thrown at any given time, the execution should be rejected immediately by invoking the completion callback with the error. One critical rule is that the completion callback should be called only **once** in either rejection or completion.
 
-In order to keep our code as clean as possible we can split the execution of each task in a separate function instead of hard coding invocations within the lexical scope of a single function. Now assume we have a generic asynchronous function called `operation` which just expects two arguments, an `input` and a `callback`, the following code is an implementation of a sequential execution of three tasks using this asynchronous operation.
+In order to keep our code as clean as possible we can split the execution of each task in a separate function instead of hard coding invocations within the lexical scope of a single function. Now assume we have a generic asynchronous function called `operation` which just expects two arguments, an `input` and a `callback`, the following code is an implementation of a sequential execution of three tasks all using this asynchronous operation.
 
 ```javascript
 // An asynchronous operation
@@ -76,7 +76,7 @@ execution(input, (error, result) => {
 });
 ```
 
-Bear in mind that we are using an input argument in the call of a task, this way we can share previous computed data to tasks down into the chain of execution without polluting the top scope via closures. The convention here is that the output of a task should be considered the input of the next in the line task, that input/output could be any type of value including custom objects.
+Bear in mind that we are using an input argument in the call of a task, this way we can share previous computed data to tasks down into the chain of execution without polluting the top scope via closures. The convention here is that the output of a task should be considered the input of the next in the line task, where input/output could be any type of value including custom objects.
 
 ### Sequential execution with promises ###
 

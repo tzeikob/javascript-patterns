@@ -8,7 +8,7 @@ What makes this pattern special about sequential execution is that the tasks are
 
 ### Sequential iteration with callbacks ###
 
-Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts that collection of tasks along with an initial `input` and a `completion callback`, within that function we will use a helper function called `iterate` which will be responsible to manage the sequential execution. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the result of each task, this way we can share data between tasks.
+Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts that collection of tasks along with an initial `input` and a completion `callback`, within that function we will use a helper function called `iterate` which will be responsible to manage the sequential execution. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the result of each task, this way we can share data between tasks. Note that, as with sequential execution pattern, the completion callback should be called only **once** in either rejection or completion.
 
 ```javascript
 function execution (tasks, input, callback) {
@@ -70,7 +70,7 @@ execution(tasks, input, (error, result) => {
 });
 ```
 
-Note that we can use custom objects in the place of the `input` variable if we need to be more flexible, what is the best practice depends on the requirements of our application.
+Note that we can use custom objects in the place of the `input` variable if we need to be more flexible.
 
 ### Sequential iteration with promises ###
 
@@ -120,7 +120,7 @@ After we finish the iteration we only have to return the last in chain promise b
 
 ### Use recursion with caution ###
 
-Even thought using recursion in the iteration pattern might seem so powerful, you should take care and make good and fair use of this feature in order to avoid unexpected results such as **stack overflows**.
+Even though using recursion in the iteration pattern might seem so powerful, you should take care and make good and fair use of this feature in order to avoid unexpected results such as **stack overflows**.
 
 ## Implementations ##
 
