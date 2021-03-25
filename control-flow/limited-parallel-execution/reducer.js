@@ -1,10 +1,10 @@
 function reducer(tasks, input, concurrency, cb) {
   if (!tasks || !Array.isArray(tasks) || tasks.length === 0) {
-    return cb(new Error("Invalid tasks argument"));
+    return setTimeout(() => cb(new Error("Invalid tasks argument")));
   }
 
   if (!concurrency || concurrency <= 0) {
-    return cb(new Error("Invalid concurrency argument"));
+    return setTimeout(() => cb(new Error("Invalid concurrency argument")));
   }
 
   let completed = 0;

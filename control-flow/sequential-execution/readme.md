@@ -17,6 +17,9 @@ In order to keep our code as clean as possible we can split the execution of eac
 function operation (input, callback) {...}
 
 function execution (input, callback) {
+  // For any invalid argument call back asynchronously with error
+  ...
+
   // Call the first task for execution
   task1(input, callback);
 }

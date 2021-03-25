@@ -1,6 +1,14 @@
 import bcrypt from "bcrypt";
 
 function encryption (password, rounds, cb) {
+  if (!password || typeof password !== "string") {
+    return setTimeout(() => cb(new Error("Invalid password argument")));
+  }
+
+  if (!rounds || typeof rounds !== "number") {
+    return setTimeout(() => cb(new Error("Invalid rounds argument")));
+  }
+
   generateSalt(password, rounds, cb);
 }
 
