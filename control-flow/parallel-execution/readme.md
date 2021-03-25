@@ -4,11 +4,11 @@ The parallel execution pattern belongs to the category of those design patterns 
 
 ## Explanation ##
 
-In a such a parallel execution context we should take special care to handle the execution by following two important rules, in case an error is thrown the completion callback should be called **once** given that error and the execution shall be considered as rejected. On the other hand in the case all tasks are completed successfully, the completion callback should be called **once** along with any collected results. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
+The execution of such pattern should be considered as completed when all given tasks have been completed, unless a task throws an error which means that the execution should be rejected along with the thrown error. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
 
 ### Parallel execution with callbacks ###
 
-Let's say we have an `execution` function expecting a collection of asynchronous `tasks` along with an `input` and the `completion callback`. This function's responsibility is to handle the invocation of each task in parallel and to achieve this is using two variables in order to keep the state of the execution at any given time. One variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered as rejected.
+Let's say we have an `execution` function expecting a collection of asynchronous `tasks` along with an `input` and the completion `callback`. This function's responsibility is to handle the invocation of each task in parallel and to achieve this is using two variables in order to keep the state of the execution at any given time. One variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered as rejected.
 
 ```javascript
 function execution (tasks, input, callback) {
@@ -54,6 +54,8 @@ function execution (tasks, input, callback) {
   tasks.forEach(task => task(input, done));
 }
 ```
+
+> Bear in mind that the completion callback should always be called **once** either at rejection or completion along with the error or the result respectively.
 
 Now let's put all this together.
 
