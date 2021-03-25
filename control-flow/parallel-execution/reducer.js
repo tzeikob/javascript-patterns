@@ -54,5 +54,5 @@ reducer(tasks, 0, (error, result) => {
   console.log(result);
 });
 
-// Async random output:
+// Async output:
 // { numbers: [ 1, 4, 3 ], total: 8 }
