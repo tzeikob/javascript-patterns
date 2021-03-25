@@ -107,7 +107,7 @@ To sum up, a callback called synchronously blocks the current code until the ope
 
 ### Unpredictable synchronous or asynchronous behavior ###
 
-Try to avoid inconsistencies in the behavior of a function which is using a callback, either the callback should always be called synchronously or asynchronously. It is considered very bad practice to have a function behave unpredictably mixing synchronous and asynchronous calls to the given callback. Let's say we have a `cache` map object and an async `factorial` function:
+Try to avoid inconsistencies in the behavior of a function which is using a callback, either the callback should always be called synchronously or asynchronously. It is considered very bad practice to have a function behave unpredictably mixing synchronous and asynchronous calls to the given callback. Let's say we have a `cache` map object and an asynchronous `factorial` function:
 
 ```javascript
 function compute(num, callback) {
