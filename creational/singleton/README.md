@@ -6,7 +6,7 @@ The singleton pattern belongs to the category of those design patterns called *c
 
 ## Implementation ##
 
-You can thing of this pattern also as a *factory* but that factory would only create one instance of the module and expose it to your application context once, so you end up actually using the same singleton object no matter who many times you requesting the module ahead of time and in different places of your application. The only thing you should do is to expose a public *get instance* method which is responsible to create the singleton at the very first time and then return that one object each time you call it in the future.
+You can think of this pattern also as a *factory* but that factory would only create one instance of the module and expose it to your application context once, so you end up actually using the same singleton object no matter who many times you requesting the module ahead of time and in different places of your application. The only thing you should do is to expose a public *get instance* method which is responsible to create the singleton at the very first time and then return that one object each time you call it in the future.
 
 ```JavaScript
 // Use your own namespace to keep global scope clean
