@@ -1,12 +1,12 @@
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 
 function encryption (password, rounds, cb) {
-  if (!password || typeof password !== "string") {
-    return setTimeout(() => cb(new Error("Invalid password argument")));
+  if (!password || typeof password !== 'string') {
+    return setTimeout(() => cb(new Error('Invalid password argument')));
   }
 
-  if (!rounds || typeof rounds !== "number") {
-    return setTimeout(() => cb(new Error("Invalid rounds argument")));
+  if (!rounds || typeof rounds !== 'number') {
+    return setTimeout(() => cb(new Error('Invalid rounds argument')));
   }
 
   generateSalt(password, rounds, cb);
@@ -41,12 +41,12 @@ function validate (password, hash, cb) {
     if (valid) {
       cb(null, hash);
     } else {
-      cb(new Error("An error occurred during validation"));
+      cb(new Error('An error occurred during validation'));
     }
   });
 }
 
-encryption("secret", 10, (error, hash) => {
+encryption('secret', 10, (error, hash) => {
   if (error) {
     return console.error(error);
   }

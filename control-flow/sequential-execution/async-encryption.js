@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 
 function encrypt (text, rounds) {
   return bcrypt.hash(text, rounds);
