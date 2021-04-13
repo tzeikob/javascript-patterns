@@ -4,7 +4,7 @@ The sequential execution pattern belongs to the category of those design pattern
 
 ## Explanation ##
 
-According to this pattern each completed task should invoke the next in order task passing its result as input to the latter. The execution should continue as long as the last in order task completes and when this happens the execution is considered completed. In the case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
+According to this pattern each completed task should invoke the next in order task passing its result as input to the latter. The execution should continue as long as the last in order task completes and when this happens the execution is considered completed. In the case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
 ### Sequential execution with callbacks ###
 
@@ -110,6 +110,46 @@ task1(input)
 
 By chaining each promise returned from a task we are making sure that the execution is running in a strictly sequential order. Any rejected promise during the execution will be caught by the error handler defined in the `catch` method, something that is making our code more maintainable and reliable against bugs introduced during development.
 
+### Sequential execution with async/await ###
+
+A more elegant way to implement the same pattern of execution is to use **async functions** along with the **await** expression. The use of async/await will make the code look like it is executed synchronously even though it still remains asynchronous. Let's say we have the same `operation` function and the same tasks as before.
+
+```javascript
+// An operation returns as a promise
+function operation (input) {
+  return new Promise((resolve, reject) => {...});
+};
+
+const task1 = (input) => operation(input);
+const task2 = (input) => operation(input);
+const task3 = (input) => operation(input);
+```
+
+The execution of those tasks in sequential flow could be done within an async function called `execution` like so.
+
+```javascript
+async function execution (input) {
+  try {
+    let result = await task1(input);
+    result = await task2(result);
+    result = await task3(result);
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Launch the execution
+execution(input)
+  .then((result) => {
+    console.log();
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ## Considerations ##
 
 ### Avoid the callback hell anti-pattern ###
@@ -152,3 +192,4 @@ Below you can find various trivial or real-world implementations of this pattern
 
 * [password-encryption](password-encryption.js): random salt encryption of a password with callbacks
 * [triple-encryption](triple-encryption.js): triple encryption of a text with promises
+* [async-encryption](async-encryption.js): triple encryption of a text with async/await and promises
