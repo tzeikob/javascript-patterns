@@ -79,7 +79,7 @@ A more elegant way to implement this pattern is to use **chaining promises** whi
 ```javascript
 const tasks = [
   function tasks1 (input) {
-    return new Promise((resolve, reject) => {...})
+    return new Promise((resolve, reject) => {...});
   },
 
   function tasks2 (input) {...},
@@ -105,16 +105,19 @@ function execution (tasks, input) {
 
   return promise;
 }
+```
 
-// Launch the execution
+> The resolved value of each promise (task) will be the input value of the next promise (task).
+
+After we finish the iteration we only have to return the last in chain promise back to the caller where we use another `then` to handle the completion value. In order to invoke the execution we only need to run the following code.
+
+```javascript
 execution(tasks, input)
   .then((result) => {...})
   .catch((error) => {...});
 ```
 
-> The resolved value of each promise (task) will be the input value of the next promise (task).
-
-After we finish the iteration we only have to return the last in chain promise back to the caller where we use another `then` to handle the completion value. As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any rejected promise in the chain will be caught here as an error. So using promises we can skip boilerplate code and get cleaner and less verbose syntax which is easier to maintain.
+As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any rejected promise in the chain will be caught here as an error. So using promises we can skip boilerplate code and get cleaner and less verbose syntax which is easier to maintain.
 
 ### Sequential iteration with async/await ###
 
