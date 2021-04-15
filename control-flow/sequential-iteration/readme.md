@@ -121,7 +121,7 @@ As you have noticed the error handling is now easier to implement just by using 
 
 ### Sequential iteration with async/await ###
 
-With **async/await** this pattern can be implemented in a more elegant way by implementing an async execution function along with **await** expressions. Let's say we have the same collection of tasks returning promises as before.
+With async/await this pattern can be implemented in a more elegant way by implementing an **async execution** function along with **await** expressions. Let's say we have the same collection of tasks returning promises as before.
 
 ```javascript
 const tasks = [
@@ -135,7 +135,7 @@ const tasks = [
 ];
 ```
 
-Within the execution function we only need to iterate through the collection of tasks and invoke each one via an await expression, where the input of each task should be the result of the previous. The return value of this function is expected to be a promise instance on which we chain both the `then` and `catch` handlers in order to manage either the fulfillment or the rejection of the execution.
+Within the `execution` function we only need to iterate through the collection of `tasks` and invoke each one via an await expression, where the input of each task should be the result of the previous. The return value of this function is expected to be a promise instance on which we can chain both the `then` and `catch` handlers in order to manage the fulfillment and the rejection of the execution.
 
 ```javascript
 async function execution (tasks, input) {
