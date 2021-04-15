@@ -112,7 +112,7 @@ By chaining each promise returned from a task we are making sure that the execut
 
 ### Sequential execution with async/await ###
 
-A more elegant way to implement the same pattern of execution is to use **async functions** along with the **await** expression. The use of async/await will make the code look like it is executed synchronously even though it still remains asynchronous. Let's say we have the same `operation` function and the same tasks as before.
+A more elegant way to implement the same pattern of execution is to use **async functions** along with **await** expressions. The use of async/await will make the code look like it is executed synchronously even though it still remains asynchronous. Let's say we have the same `operation` function and the same tasks as before.
 
 ```javascript
 // An operation returns as a promise

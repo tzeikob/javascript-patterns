@@ -47,7 +47,7 @@ function execution (tasks, input, callback) {
 }
 ```
 
-> The result of each task is expected be the input to the next in order task.
+> The result of each task is expected to be the input to the next in order task.
 
 This function calls recursion in order to invoke each task by using an `index` value pointing to the next task in execution. When the index reaches the total number of tasks the execution should be considered completed and the completion callback is called back with the resulting value. Bear in mind that if an error is thrown at any given time, the execution should be terminated and immediately call the completion callback along with the thrown error. Now assume we have a given collection of asynchronous tasks, this is how we will execute them in sequential order.
 
