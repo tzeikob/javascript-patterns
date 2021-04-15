@@ -5,16 +5,13 @@ function encrypt (text, rounds) {
 }
 
 async function encryption (input, rounds) {
-  try {
-    let result = await encrypt(input, rounds);
-    result = await encrypt(result, rounds);
-    result = await encrypt(result, rounds);
+  let result = await encrypt(input, rounds);
+  result = await encrypt(result, rounds);
+  result = await encrypt(result, rounds);
 
-    return result;
-  } catch (error) {
-    throw error;
-  }
+  return result;
 }
+
 encryption('some text', 10)
   .then((hash) => {
     console.log(hash);

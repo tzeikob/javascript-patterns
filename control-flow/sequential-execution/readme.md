@@ -66,7 +66,6 @@ function task3 (input, callback) {
 Now let's launch the execution.
 
 ```javascript
-// Launch the execution of tasks
 execution(input, (error, result) => {
   if (error) {
     return console.error(error);
@@ -96,16 +95,11 @@ const task3 = (input) => operation(input);
 the code to implement the sequential execution of those three asynchronous tasks is now just a matter of a few lines of code.
 
 ```javascript
-// Launch the execution
 task1(input)
   .then((result) => task2(result))
   .then((result) => task3(result))
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+  .then((result) => {...})
+  .catch((error) => {...});
 ```
 
 By chaining each promise returned from a task we are making sure that the execution is running in a strictly sequential order. Any rejected promise during the execution will be caught by the error handler defined in the `catch` method, something that is making our code more maintainable and reliable against bugs introduced during development.
@@ -129,25 +123,22 @@ The execution of those tasks in sequential flow could be done within an async fu
 
 ```javascript
 async function execution (input) {
-  try {
-    let result = await task1(input);
-    result = await task2(result);
-    result = await task3(result);
+  let result = await task1(input);
+  result = await task2(result);
+  result = await task3(result);
 
-    return result;
-  } catch (error) {
-    throw error;
-  }
+  return result;
 }
+```
 
-// Launch the execution
+> Within the execution function any thrown exception of rejected promise will trigger the `catch` handler of the returned promise.
+
+Knowing that the execution function returns a promise, this is how we invoke the execution handling both the fulfillment and rejections.
+
+```javascript
 execution(input)
-  .then((result) => {
-    console.log();
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+  .then((result) => {...})
+  .catch((error) => {...});
 ```
 
 ## Considerations ##
@@ -192,4 +183,4 @@ Below you can find various trivial or real-world implementations of this pattern
 
 * [password-encryption](password-encryption.js): random salt encryption of a password with callbacks
 * [triple-encryption](triple-encryption.js): triple encryption of a text with promises
-* [async-encryption](async-encryption.js): triple encryption of a text with async/await and promises
+* [async/await encryption](async-encryption.js): triple encryption of a text with async/await and promises
