@@ -5,6 +5,14 @@ function encrypt (text, rounds) {
 }
 
 async function encryption (input, rounds) {
+  if (!input) {
+    throw new Error("Missing or invalid input argument");
+  }
+
+  if (!rounds) {
+    throw new Error("Missing or invalid rounds argument");
+  }
+
   let result = await encrypt(input, rounds);
   result = await encrypt(result, rounds);
   result = await encrypt(result, rounds);
