@@ -172,6 +172,21 @@ execution(tasks, input)
 
 Even though using recursion in the iteration pattern might seem so powerful, you should take care and make good and fair use of this feature in order to avoid unexpected results such as **stack overflows**.
 
+### Avoid the anti-pattern use of async/await ###
+
+One common pitfall using await expressions when we need to call a collection of tasks in sequential way is to use the `Array.prototype.forEach` method like so.
+
+
+```javascript
+function execution (tasks, input) {
+  tasks.forEach(async (task) => {
+    await task(input);
+  });
+}
+```
+
+The issue with this code is that in every invocation of the given async callback in `forEach`, the returned promise will be ignore and so no task will wait for the completion of the previous in order task. This code is like executing all the tasks at once in parallel and not in sequential order, so be very careful.
+
 ## Implementations ##
 
 Below you can find various trivial or real-world implementations of this pattern:
