@@ -4,7 +4,7 @@ The sequential iteration pattern is a special form of the [sequential execution]
 
 ## Explanation ##
 
-What makes this pattern special about sequential execution is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like a collection of tasks. In such a use case it could be impossible to hard code the invocation of each task, so we have to follow a different approach. The solution is to use a more dynamic iterative process. The sequential iteration pattern can be implemented using either old school **callbacks** along with recursion or the more development friendly **promises**, where either implementation should give us the same execution.
+What makes this pattern special about sequential execution is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like a collection of tasks. In such a use case it could be impossible to hard code the invocation of each task, so we have to follow a different approach. The solution is to use a more dynamic iterative process. The sequential iteration pattern can be implemented using either old school **callbacks** along with recursion or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
 ### Sequential iteration with callbacks ###
 
@@ -116,6 +116,53 @@ execution(tasks, input)
 
 After we finish the iteration we only have to return the last in chain promise back to the caller where we use another `then` to handle the completion value. As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any rejected promise in the chain will be caught here as an error. So using promises we can skip boilerplate code and get cleaner and less verbose syntax which is easier to maintain.
 
+### Sequential iteration with async/await ###
+
+With **async/await** this pattern can be implemented in a more elegant way by implementing an async execution function along with **await** expressions. Let's say we have the same collection of tasks returning promises as before.
+
+```javascript
+const tasks = [
+  function tasks1 (input) {
+    return new Promise((resolve, reject) => {...});
+  },
+
+  function tasks2 (input) {...},
+  function tasks3 (input) {...},
+  ...
+];
+```
+
+Within the execution function we only need to iterate through the collection of tasks and invoke each one via an await expression, where the input of each task should be the result of the previous. The return value of this function is expected to be a promise instance on which we chain both the `then` and `catch` handlers in order to manage either the fulfillment or the rejection of the execution.
+
+```javascript
+async function execution (tasks, input) {
+  // For any invalid argument reject by throwing an error
+  ...
+
+  let result;
+
+  // Iterate over the collection of tasks
+  for (const task of tasks) {
+    result = await task(input); // Await until the task is fulfilled
+
+    // Set the input of the next task
+    input = result;
+  }
+
+  return result;
+}
+```
+
+> Within the execution function any thrown exception of rejected promise will trigger the `catch` handler of the returned promise.
+
+Having the async execution function returning a promise, this is how we invoke the execution of a given collection of tasks in sequential order.
+
+```javascript
+execution(tasks, input)
+  .then((result) => {...})
+  .catch((error) => {...});
+```
+
 ## Considerations ##
 
 ### Use recursion with caution ###
@@ -129,3 +176,4 @@ Below you can find various trivial or real-world implementations of this pattern
 * [reducer](reducer.js): reduce random integer numbers with callbacks
 * [file-encryption](file-encryption.js): encrypt the content of a file with callbacks
 * [accumulator](accumulator.js): accumulate a list of random even integers with promises
+* [async/await accumulator](async-accumulator.js): accumulate a list of random even integers with async/await and promises
