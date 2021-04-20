@@ -4,7 +4,7 @@ The parallel execution pattern belongs to the category of those design patterns 
 
 ## Explanation ##
 
-The execution of such pattern should be considered as completed when all given tasks have been completed, unless a task throws an error which means that the execution should be rejected along with the thrown error. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
+The execution of such pattern should be considered as completed when all given tasks have been completed, unless a task throws an error which means that the execution should be rejected along with the thrown error. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
 ### Parallel execution with callbacks ###
 
@@ -24,7 +24,7 @@ function execution (tasks, input, callback) {
 
 > The result of each task is collected via closure into a variable called `results`.
 
-Now since this function invokes all the tasks at once we have to control somehow the completion or rejection of the execution. We can do this by using a helper function called `done` which will be passed as the callback to each task at invocation, that's it, the `callback` of each task is this same function. When a task completes either rejected or fulfilled this function is called back along with the `error` or the `result` respectively. Within the code of this function we are checking if the task has thrown an error and if such we mark the execution as rejected and return early. On the other hand we count up another completion, collect the result and check if this task was the last completed one in order to call the completion callback along with the list of collected results.
+Now since this function invokes all the tasks at once we have to control somehow the completion or rejection of the execution. We can do this by using a helper function called `done` which will be passed as the callback to each task at invocation, that's it, the `callback` of each task is this same function. When a task completes either rejected or fulfilled this function is called back along with the `error` or the `result` respectively. Within the code of this function we are checking if the task has thrown an error and if such we mark the execution as rejected and return early. Otherwise we count up another completion, collect the result and check if this task was the last completed one in order to call the completion callback along with the list of collected results.
 
 ```javascript
 function execution (tasks, input, callback) {
@@ -153,6 +153,46 @@ Promise.all(promises)
 
 > Note that the `Promise.all` makes sure that results will kept in order the tasks are given in.
 
+### Parallel execution with async/await ###
+
+Implementing the parallel execution pattern with **async/await** is not enormously different than using promises, we only need to use an async function along with the `Promise.all` method and we are pretty much done. So let's say we have the same collection of tasks as before.
+
+```javascript
+const tasks = [
+  function tasks1 (input) {
+    return new Promise((resolve, reject) => {...})
+  },
+
+  function tasks2 (input) {...},
+  function tasks3 (input) {...},
+  ...
+];
+```
+
+Within the async function `execution` we pass the collection of `tasks` along with an `input`. The first thing to do is to launch each task in parallel mapping each task item into a promise. Having the collection of promises we can now wait for them to complete. Finally we return the collection of the results back to the caller of the execution, which is expected to be another promise.
+
+```javascript
+async function execution (tasks, input) {
+  // Launch each task in parallel
+  const promises = tasks.man((task) => task(input));
+
+  // Wait for the results
+  const results = await Promise.all(promises);
+
+  return results;
+}
+```
+
+> Any rejection occurred by a task will cause the execution to reject as well.
+
+Having the collection of tasks we can invoke the execution like so.
+
+```javascript
+execution(tasks, input)
+  .then((results) => {...})
+  .catch((error) => {...});
+```
+
 ## Considerations ##
 
 ### Race conditions ###
@@ -165,3 +205,4 @@ Below you can find various trivial or real-world implementations of this pattern
 
 * [reducer](reducer.js): reduce random integer numbers in parallel with callbacks
 * [password-encryption](password-encryption.js): encrypt a collection of passwords with promises
+* [dice-roller](dice-roller.js): a dice roller using async/await and promises
