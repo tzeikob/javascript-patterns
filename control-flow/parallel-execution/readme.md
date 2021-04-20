@@ -169,7 +169,7 @@ const tasks = [
 ];
 ```
 
-Within the async function `execution` we pass the collection of `tasks` along with an `input`. The first thing to do is to launch each task in parallel mapping each task item into a promise. Having the collection of promises we can now wait for them to complete. Finally we return the collection of the results back to the caller of the execution, which is expected to be another promise.
+Within the async function `execution` we pass the collection of `tasks` along with an `input`. The first thing to do is to launch each task in parallel by mapping each task item into a promise. Having the collection of promises we can now wait for them to complete. Finally we return the collection of the results back to the caller of the execution, which is expected to be another promise.
 
 ```javascript
 async function execution (tasks, input) {
