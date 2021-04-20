@@ -177,13 +177,10 @@ class Observable {
 
 const observable = new Observable();
 
-observable.on("success", (value) => {
-  ...
-});
+observable.on("success", (value) => {...});
+observable.on("error", (error) => {...});
 
-observable.on("error", (error) => {
-  ...
-});
+observable.operation();
 ```
 
 ## Considerations ##
