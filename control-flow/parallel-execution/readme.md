@@ -173,6 +173,9 @@ Within the async function `execution` we pass the collection of `tasks` along wi
 
 ```javascript
 async function execution (tasks, input) {
+  // For any invalid argument reject by throwing an error
+  ...
+
   // Launch each task in parallel
   const promises = tasks.man((task) => task(input));
 

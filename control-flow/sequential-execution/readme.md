@@ -123,7 +123,7 @@ The execution of those tasks in sequential flow could be done within an async fu
 
 ```javascript
 async function execution (input) {
-    // For any invalid argument reject by throwing an error
+  // For any invalid argument reject by throwing an error
   ...
   
   let result = await task1(input);

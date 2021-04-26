@@ -12,6 +12,10 @@ function roll (faces) {
 }
 
 async function turn (rolls, faces) {
+  if (!rolls || !Array.isArray(rolls) || rolls.length === 0) {
+    throw new Error("Invalid tasks argument");
+  }
+
   const thrown = rolls.map((roll) => roll(faces));
   const results = await Promise.all(thrown);
 
