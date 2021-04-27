@@ -4,11 +4,11 @@ The limited parallel execution pattern belongs to the category of those design p
 
 ## Explanation ##
 
-The execution of such pattern should be considered as completed when all given tasks have been completed, unless a task throws an error which means that the execution should be rejected along with the thrown error. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises**, where either implementation should give us the same execution.
+The execution of such pattern should be considered as completed when all given tasks have been completed, unless a task throws an error which means that the execution should be rejected along with the thrown error. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
 ### Limited parallel execution with callbacks ###
 
-Assume we have an `execution` function which expects a collection of asynchronous `tasks` along with an `input`, the `concurrency` limit and the completion `callback`. The concurrency limit is the maximum number of tasks which can be running in parallel at any given time in execution. Along with the already known `completed` and `rejected` variables which are used in the parallel execution pattern, here we have two more variables. The variable `running` responsible to keep the actual number of running tasks at any given time and an `index` to point to the next task in invocation.
+Assume we have an `execution` function which expects a collection of asynchronous `tasks` along with an `input`, the `concurrency` limit and the completion `callback`. The concurrency limit is the maximum number of tasks which can be running in parallel at any given time in execution. Along with the already known `completed` and `rejected` variables which are used in the parallel execution pattern, here we have two more variables. The variable `running` meant to store the actual number of running tasks at any given time and an `index` to point to the next in invocation task.
 
 ```javascript
 function execution(tasks, input, concurrency, callback) {
@@ -27,7 +27,7 @@ function execution(tasks, input, concurrency, callback) {
 
 > The result of each task will be collected via closure into the variable called `results`.
 
-Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as callback to each task's invocation, but here has a slightly different behavior. When a task calls the done function at completion we have to count down the `running` variable in order to inform the execution that a task is finished and there is now room for another task to take action.
+Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as callback to each task's invocation, but here has a slightly different behavior. When a task calls the done function at completion we have to count down the `running` variable in order to inform the execution that a task has finished and there is now room for another task to take action.
 
 ```javascript
 function execution(tasks, input, concurrency, callback) {
@@ -241,6 +241,123 @@ execution(tasks, input, concurrency)
 ```
 
 > Be aware that each task should now return a promise and not use a callback to resolve.
+
+### Limited parallel execution with async/await ###
+
+We can implement the same pattern in another way by using async functions along with await expressions without changing anything in the API. So having the same input the `execution` function should now be an async function with the same parameters as before. The first thing to notice is that we only use two local variables, the `queue` as the list of tasks to be registered for invocation at any given time, along with the list of `results` which will be collected during the execution. 
+
+Within the execution function we have another async function called `next`, this function is responsible to keep adding tasks to the queue as long as there is room for new tasks regarding the `concurrency` limit. So when there is no task left to be pushed in the queue this function should complete. Think about this function as running as long as there is a task to be invoked, so any task added to the queue should be removed by the the `tasks` list otherwise the next function will never complete. In order to keep this running we are using and endless `while` loop pausing each iteration in subsequent cycles to avoid blocking the event loop.
+
+```javascript
+async function execution (tasks, input, concurrency) {
+  // For any invalid argument reject by throwing an error
+  ...
+
+  const queue = []; // Current queue of tasks to be invoked
+  const results = []; // Results have been collected
+
+  async function next () {
+    while (true) {
+      if (tasks.length === 0) {
+        return; // If you run out of tasks then complete
+      }
+
+      // Add the next task if there is room in concurrency
+      if (queue.length < concurrency) {
+        const task = tasks.shift();
+        queue.push(task);
+      }
+
+      // Proceed to the next iteration in the next event loop cycle
+      await new Promise((resolve) => setImmediate(resolve));
+    }
+  }
+}
+```
+
+Having a mechanism of pushing tasks in the queue, we now need a way to start executing them concurrently. We are going to do this by using the concept of `executors`, where each executor is just an async function launched in parallel and responsible to execute any available task pushed in the queue. Each executor should terminate only after there is no tasks left to be pushed into the queue and the queue is empty of tasks. As with the `next` function each executor should run as long there are tasks to be invoked.
+
+```javascript
+async function execution (tasks, input, concurrency) {
+  ...
+
+  const executors = [];
+
+  // Create executors equal to the limit of concurrency
+  for (let i = 0; i < concurrency; i++) {
+    executors[i] = async () => {
+      while (true) {
+        if (queue.length === 0 && tasks.length === 0) {
+          return; // Complete if the is no task and the queue is empty
+        }
+
+        const task = queue.shift();
+
+        if (task) {
+          const result = await task(input); // Execute the task
+          results.push(result); // Collect the result
+        } else {
+          // Proceed to the next iteration in the next event loop cycle
+          await new Promise((resolve) => setImmediate(resolve));
+        }
+      }
+    }
+  }
+}
+```
+
+> Again, we avoid blocking the event loop by pausing this endless while for the next cycle.
+
+Let's put all this together.
+
+```javascript
+async function execution (tasks, input, concurrency) {
+  const queue = [];
+  const results = [];
+
+  async function next () {
+    while (true) {
+      if (tasks.length === 0) {
+        return;
+      }
+  
+      if (queue.length < concurrency) {
+        const task = tasks.shift();
+        queue.push(task);
+      }
+
+      await new Promise((resolve) => setImmediate(resolve));
+    }
+  }
+
+  const executors = [];
+
+  for (let i = 0; i < concurrency; i++) {
+    executors[i] = async () => {
+      while (true) {
+        if (queue.length === 0 && tasks.length === 0) {
+          return;
+        }
+
+        const task = queue.shift();
+
+        if (task) {
+          const result = await task(input);
+          results.push(result);
+        } else {
+          await new Promise((resolve) => setImmediate(resolve));
+        }
+      }
+    }
+  }
+
+  const n = next();
+  const e = executors.map(ex => ex());
+  await Promise.all([n, ...e]);
+
+  return results;
+}
+```
 
 ## Considerations ##
 
