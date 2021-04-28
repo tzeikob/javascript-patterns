@@ -11,6 +11,14 @@ function isStopWord (word, callback) {
 }
 
 function countStopWords (words, concurrency, callback) {
+  if (!words || !Array.isArray(words) || words.length === 0) {
+    return setTimeout(() => callback(new Error("Invalid words argument")));
+  }
+
+  if (!concurrency || typeof concurrency !== "number" || concurrency <= 0) {
+    return setTimeout(() => callback(new Error("Invalid concurrency argument")));
+  }
+
   let completed = 0;
   let rejected = false;
 

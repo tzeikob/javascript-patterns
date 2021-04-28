@@ -28,6 +28,14 @@ function mapWordsToUnicode (words, concurrency) {
   const results = [];
 
   return new Promise((resolve, reject) => {
+    if (!words || !Array.isArray(words) || words.length === 0) {
+      return reject(new Error("Invalid words argument"));
+    }
+
+    if (!concurrency || typeof concurrency !== "number" || concurrency <= 0) {
+      return reject(new Error("Invalid concurrency argument"));
+    }
+
     function next () {
       while (running < concurrency && index < words.length) {
         const word = words[index];
