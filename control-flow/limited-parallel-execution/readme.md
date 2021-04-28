@@ -393,4 +393,4 @@ In parallel programming the most critical part is to keep consistency to the sha
 Below you can find various trivial or real-world implementations of this pattern:
 
 * [Stop Words](stop-words.js): find how many stop words a given list of words has with callbacks
-* [limited-reducer](limited-reducer.js): reduce random integer numbers in parallel with promises
+* [Unicode Mapper](unicode-mapper.js): map japanese words to their unicode equivalent with promises
