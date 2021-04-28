@@ -11,10 +11,7 @@ The execution of such pattern should be considered as completed when all given t
 Assume we have an `execution` function which expects a collection of asynchronous `tasks` along with an `input`, the `concurrency` limit and the completion `callback`. The concurrency limit is the maximum number of tasks which can be running in parallel at any given time in execution. Along with the already known `completed` and `rejected` variables which are used in the parallel execution pattern, here we have two more variables. The variable `running` meant to store the actual number of running tasks at any given time and an `index` to point to the next in invocation task.
 
 ```javascript
-function execution(tasks, input, concurrency, callback) {
-  // For any invalid argument call back asynchronously with error
-  ...
-
+function execution (tasks, input, concurrency, callback) {
   let completed = 0; // Total completed tasks
   let rejected = false; // Indicate if a task thrown an error
 
@@ -30,10 +27,10 @@ function execution(tasks, input, concurrency, callback) {
 Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as callback to each task's invocation, but here has a slightly different behavior. When a task calls the done function at completion we have to count down the `running` variable in order to inform the execution that a task has finished and there is now room for another task to take action.
 
 ```javascript
-function execution(tasks, input, concurrency, callback) {
+function execution (tasks, input, concurrency, callback) {
   ...
 
-  function done(error, result) {
+  function done (error, result) {
     if (error) {
       if (rejected) {
         return; // Don't call back if execution rejected by another task
@@ -63,10 +60,10 @@ function execution(tasks, input, concurrency, callback) {
 The execution starts by calling a helper function `next` which via indirect recursion is handling which task is about to be pushed in the parallel execution by keeping at the same time the limit of concurrency. As long as there is room for another task to be executed and there are still tasks not spawn, we invoke the next in order task.
 
 ```javascript
-function execution(tasks, input, concurrency, callback) {
+function execution (tasks, input, concurrency, callback) {
   ...
 
-  function next() {
+  function next () {
     // Call next task if there is room in concurrency
     while (running < concurrency && index < tasks.length) {
       // Get the task to invoke and mark the next to be ready
@@ -86,10 +83,7 @@ function execution(tasks, input, concurrency, callback) {
 Now let's put this all together.
 
 ```javascript
-function execution(tasks, input, concurrency, callback) {
-  // For any invalid argument call back asynchronously with error
-  ...
-
+function execution (tasks, input, concurrency, callback) {
   let completed = 0; // Total completed tasks
   let rejected = false; // Indicate if a task thrown an error
 
@@ -98,7 +92,7 @@ function execution(tasks, input, concurrency, callback) {
 
   const results = []; // Store the result of each task
 
-  function done(error, result) {
+  function done (error, result) {
     if (error) {
       if (rejected) {
         return; // Don't call back if execution rejected by another task
@@ -121,7 +115,7 @@ function execution(tasks, input, concurrency, callback) {
     next(); // Trigger the next iteration
   }
 
-  function next() {
+  function next () {
     // Call next task if there is room in concurrency
     while (running < concurrency && index < tasks.length) {
       // Get the task to invoke and mark the next to be ready
@@ -143,20 +137,14 @@ Having a collection of tasks is now easy to execute them in parallel.
 ```javascript
 // A collection of asynchronous tasks
 const tasks = [
-  function task1(input, callback) {...},
-  function task2(input, callback) {...},
-  function task3(input, callback) {...},
+  function task1 (input, callback) {...},
+  function task2 (input, callback) {...},
+  function task3 (input, callback) {...},
   ...
 ];
 
 // Launch the execution
-execution(tasks, input, concurrency, (error, results) => {
-  if (error) {
-    return console.error(error);
-  }
-
-  console.log(results);
-});
+execution(tasks, input, concurrency, (error, results) => {...});
 ```
 
 We can think the limited parallel execution as a room where tasks can be run in parallel, but the space is bounded to accept only a limited number of tasks. Every time a task in the room completes another task from the collection drops in and starts executing. The goal is to split the overhead of running too many tasks in parallel and avoid running out of resources.
@@ -166,10 +154,7 @@ We can think the limited parallel execution as a room where tasks can be run in 
 The same pattern could be implemented with promises but taking a slightly different approach, especially when handling the resolution of each spawn task. Assuming we have the same `execution` function expecting the collection of `tasks`, an `input` and the `concurrency` limit but the completion callback. As each task is now considered that returns a promise, in this implementation we don't have to use the helper function `done`, instead we will use the promise's methods `then`, `catch` and `finally` in order to decide what's next after a task completes or rejects. The same `next` function is used which is responsible to invoke each task and manage the concurrency limitations at the same time.
 
 ```javascript
-function execution(tasks, input, concurrency) {
-  // For any invalid argument reject with Promise.reject
-  ...
-
+function execution (tasks, input, concurrency) {
   let running = 0; // Total running tasks
   let index = 0; // Index of the next task to invoke
   let thrownError = null; // Thrown error by a task
@@ -177,7 +162,7 @@ function execution(tasks, input, concurrency) {
   const results = []; // Store the result of each task
 
   return new Promise((resolve, reject) => {
-    function next() {
+    function next () {
       // Call next task if there is room in concurrency
       while (running < concurrency && index < tasks.length) {
         // Get the task to invoke and mark the next to be ready
@@ -220,24 +205,20 @@ function execution(tasks, input, concurrency) {
 Keep in mind that the function returns a promise instance in order to handle both the fulfillment and rejection of the execution. The execution is actually wrapped with this promise, where its `resolve` handler will be invoked by the task which completes last and its `reject` handler called by the task rejects first. The following code launches the execution of a given collection of tasks and a concurrency limit.
 
 ```javascript
+// A collection of asynchronous tasks
 const tasks = [
-  function tasks1(input) {
+  function tasks1 (input) {
     return new Promise((resolve, reject) => {...})
   },
-
-  function tasks2(input) {...},
-  function tasks3(input) {...},
+  function tasks2 (input) {...},
+  function tasks3 (input) {...},
   ...
 ];
 
 // Launch the execution
 execution(tasks, input, concurrency)
-  .then((results) => {
-    console.log(results);
-  }
-  .catch((error) => {
-    console.error(error);
-  });
+  .then((results) => {...})
+  .catch((error) => {...});
 ```
 
 > Be aware that each task should now return a promise and not use a callback to resolve.
@@ -250,9 +231,6 @@ Within the execution function we have a local async function called `next`, this
 
 ```javascript
 async function execution (tasks, input, concurrency) {
-  // For any invalid argument reject by throwing an error
-  ...
-
   const queue = []; // Current queue of tasks to be invoked
   const results = []; // Results have been collected
 
@@ -328,9 +306,6 @@ Now let's put all this together.
 
 ```javascript
 async function execution (tasks, input, concurrency) {
-  // For any invalid argument reject by throwing an error
-  ...
-
   const queue = []; // Current queue of tasks to be invoked
   const results = []; // Results have been collected
 
@@ -390,23 +365,18 @@ Assuming we have the same list of tasks as before we can launch the execution li
 
 ```javascript
 const tasks = [
-  function tasks1(input) {
+  function tasks1 (input) {
     return new Promise((resolve, reject) => {...})
   },
-
-  function tasks2(input) {...},
-  function tasks3(input) {...},
+  function tasks2 (input) {...},
+  function tasks3 (input) {...},
   ...
 ];
 
 // Launch the execution
 execution(tasks, input, concurrency)
-  .then((results) => {
-    console.log(results);
-  }
-  .catch((error) => {
-    console.error(error);
-  });
+  .then((results) => {...})
+  .catch((error) => {...});
 ```
 
 ## Considerations ##
