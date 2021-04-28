@@ -135,8 +135,23 @@ function execution (tasks, concurrency, callback) {
 Having a collection of asynchronous tasks is now easy to execute them in parallel like so.
 
 ```javascript
-execution(tasks, concurrency, (error, results) => {...});
+// A collection of trivially implemented asynchronous tasks
+const tasks = [
+  (callback) => setTimeout(() => callback(null, "Task1")),
+  (callback) => setTimeout(() => callback(null, "Task2")),
+  (callback) => setTimeout(() => callback(null, "Task3"))
+];
+
+execution(tasks, 2, (error, results) => {
+  if (error) {
+    return console.error(error);
+  }
+
+  console.log(results);
+});
 ```
+
+> Note that we skip error handling within async tasks for brevity, but you always have take care of thrown errors.
 
 We can think the limited parallel execution as a room where tasks can be run in parallel, but the space is bounded to accept only a limited number of tasks. Every time a task in the room completes another task from the collection drops in and starts executing. The goal is to split the overhead of running too many tasks in parallel and avoid running out of resources.
 
@@ -198,10 +213,19 @@ function execution (tasks, concurrency) {
 Bear in mind that the function returns a promise instance in order to handle both the fulfillment and rejection of the execution. The execution is actually wrapped with this promise, where its `resolve` handler will be invoked by the task which completes last and its `reject` handler called by the task rejects first. The following code launches the execution of a given collection of asynchronous tasks and a concurrency limit.
 
 ```javascript
+// A collection of trivially implemented asynchronous tasks
+const tasks = [
+  () => new Promise((resolve) => setTimeout(() => resolve("Task1"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task2"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task3"))),
+];
+
 execution(tasks, concurrency)
-  .then((results) => {...})
-  .catch((error) => {...});
+  .then((results) => console.log(results))
+  .catch((error) => console.error(error));
 ```
+
+> Note we skip any promise rejection within async tasks for brevity, but you always have take care of rejections.
 
 ### Limited parallel execution with async/await ###
 
@@ -344,10 +368,19 @@ async function execution (tasks, concurrency) {
 Assuming we have a list of asynchronous tasks we can launch the execution like so.
 
 ```javascript
+// A collection of trivially implemented asynchronous tasks
+const tasks = [
+  () => new Promise((resolve) => setTimeout(() => resolve("Task1"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task2"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task3"))),
+];
+
 execution(tasks, concurrency)
-  .then((results) => {...})
-  .catch((error) => {...});
+  .then((results) => console.log(results))
+  .catch((error) => console.error(error));
 ```
+
+> Again, we skip any promise rejection within async tasks for brevity, but you always have take care of rejections.
 
 ## Considerations ##
 
