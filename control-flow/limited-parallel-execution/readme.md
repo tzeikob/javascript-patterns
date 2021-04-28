@@ -384,6 +384,8 @@ async function execution (tasks, input, concurrency) {
 }
 ```
 
+> Any error thrown within the execution will be caught via the `catch` method of the returning promise.
+
 Assuming we have the same list of tasks as before we can launch the execution like so.
 
 ```javascript
