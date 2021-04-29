@@ -394,3 +394,4 @@ Below you can find various trivial or real-world implementations of this pattern
 
 * [Stop Words](stop-words.js): find how many stop words a given list of words has with callbacks
 * [Unicode Mapper](unicode-mapper.js): map japanese words to their unicode equivalent with promises
+* [Sales](sales.js): reduce to the total amount of sales from different sources with async/await
