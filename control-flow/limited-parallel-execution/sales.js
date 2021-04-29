@@ -1,48 +1,24 @@
 import api from "api";
 
 async function totalSales (readers, concurrency) {
-  const queue = [];
   let total = 0;
 
-  async function next () {
-    while (true) {
-      if (readers.length === 0) {
-        return;
-      }
+  async function executor () {
+    while (readers.length > 0) {
+      const reader = readers.shift();
+      const result = await reader();
 
-      if (queue.length < concurrency) {
-        const reader = readers.shift();
-        queue.push(reader);
-      }
-
-      await new Promise((resolve) => setImmediate(resolve));
+      total += result;
     }
   }
 
   const executors = [];
 
   for (let i = 0; i < concurrency; i++) {
-    executors[i] = async () => {
-      while (true) {
-        if (queue.length === 0 && readers.length === 0) {
-          return;
-        }
-
-        const reader = queue.shift();
-
-        if (reader) {
-          const result = await reader();
-          total += result;
-        } else {
-          await new Promise((resolve) => setImmediate(resolve));
-        }
-      }
-    }
+    executors[i] = executor(i);
   }
 
-  const n = next();
-  const e = executors.map(ex => ex());
-  await Promise.all([n, ...e]);
+  await Promise.all(executors);
 
   return total;
 }
@@ -76,7 +52,7 @@ async function kepler78b () {
 
 const readers = [atlantic, europe, kepler78b];
 
-totalSales(readers, 2)
+totalSales(readers, 3)
   .then((total) => console.log(total))
   .catch((error) => console.error(error));
 
