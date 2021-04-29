@@ -250,7 +250,7 @@ async function execution (tasks, concurrency) {
 
 > The `await` makes sure that the `while` loop is not blocking the event loop, every iteration will be scheduled for the next cycle.
 
-Having the executor function we can now create concurrency by just launching the executor function so many times equal to the given `concurrency` limit. The execution will resolves to the collected `results` as soon as all executors have been completed.
+Having the executor function we can now create concurrency by just launching the executor function so many times equal to the given `concurrency` limit. The execution will resolve to the collected `results` only after all tasks have been resolved and each executor is terminated.
 
 ```javascript
 async function execution (tasks, concurrency) {
@@ -308,7 +308,7 @@ const tasks = [
   () => new Promise((resolve) => setTimeout(() => resolve("Task3"))),
 ];
 
-execution(tasks, concurrency)
+execution(tasks, 2)
   .then((results) => console.log(results))
   .catch((error) => console.error(error));
 ```
