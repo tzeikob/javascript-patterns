@@ -1,6 +1,14 @@
 import api from "api";
 
 async function totalSales (readers, concurrency) {
+  if (!readers || !Array.isArray(readers) || readers.length === 0) {
+    throw new Error("Invalid readers argument");
+  }
+
+  if (!concurrency || typeof concurrency !== "number" || concurrency <= 0) {
+    throw new Error("Invalid concurrency argument");
+  }
+
   let total = 0;
 
   async function executor () {
