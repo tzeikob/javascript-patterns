@@ -157,60 +157,95 @@ We can think the limited parallel execution as a room where tasks can be run in 
 
 ### Limited parallel execution with promises ###
 
-The same pattern could be implemented with promises but taking a slightly different approach, especially when handling the resolution of each spawn task. Assuming we have the same `execution` function expecting the collection of asynchronous `tasks` and a `concurrency` limit but the completion callback. In this case each task should now return a promise instead of using a callback to resolve. So in this implementation we don't have to use the helper function `done`, instead we will use the promise's methods `then`, `catch` and `finally` in order to decide what's next after a task completes or rejects. The same `next` function is used which is responsible to invoke each task and manage the concurrency limitations at the same time.
+Using promises we can improve the previous implementation by making the code more readable and maintainable. Having exactly the same `execution` function as before, the first thing to notice here is that we have a local `executor` function. In general this function is responsible to keep pulling available tasks from the given `tasks` queue and execute them one at a time (event loop cycle), where each result should be collected into the `results` variable. When no task has been left into the queue the executor should terminate.
+
+In order to do this in asynchronous way we should wrap all this into a `promise` so this functions returns a promise. Within the execution code of this promise we have another function called `loop` which first checks if there are tasks for execution and if there are pulls one and executes it, otherwise calls the `resolve` in order to terminate the executor. When a task is fulfilled we have to collect the `result` and then call for another loop via recursion. In case an error has been thrown we should call the `reject` to immediately terminate the executor.
 
 ```javascript
 function execution (tasks, concurrency) {
-  let running = 0; // Total running tasks
-  let index = 0; // Index of the next task to invoke
-  let thrownError = null; // Thrown error by a task
+  const results = [];
 
-  const results = []; // Store the result of each task
+  function executor () {
+    return new Promise((resolve, reject) => {
+      function loop () {
+        if (tasks.length === 0) {
+          return resolve(); // Terminate when there is no task to execute
+        }
 
-  return new Promise((resolve, reject) => {
-    function next () {
-      // Call next task if there is room in concurrency
-      while (running < concurrency && index < tasks.length) {
-        // Get the task to invoke and mark the next to be ready
-        const task = tasks[index];
-        index++;
+        const task = tasks.shift(); // Pull the next task
 
-        // Invoke the task
-        task()
-          .then((result) => {
-            results.push(result); // Register the result at completion
-          })
-          .catch((error) => {
-            thrownError = error; // Register the error at rejection
-          })
-          .finally(() => {
-            if (thrownError) {
-              reject(thrownError); // If an error is thrown reject immediately
-            } else {
-              // Check if all tasks completed
-              if (results.length < tasks.length) {
-                // Count down to leave space of the next task
-                running--;
-                next();
-              } else {
-                resolve(results); // Resolve with the results
-              }
-            }
-          });
-
-        // Count up to reserve a slot in concurrency
-        running++;
+        task() // Execute the task
+          .then((result) => results.push(result)) // Collect the result
+          .then(loop) // Keep looping for more tasks
+          .catch(reject); // Reject early if an error has been thrown
       }
-    }
-
-    next();
-  });
+      
+      loop(); // Trigger the first loop
+    });
+  }
 }
 ```
 
-> Be aware that each task should now return a promise and not use a callback to resolve.
+Now we can follow the concept of `executors` and execute tasks concurrently by just launching many times the executor function and keeping the references to their promises. When all of them terminate (resolve) we return a final `promise` which resolves to the collected `results`. Given the `concurrency` limit we expect to have a number of executors equal to this value.
 
-Bear in mind that the function returns a promise instance in order to handle both the fulfillment and rejection of the execution. The execution is actually wrapped with this promise, where its `resolve` handler will be invoked by the task which completes last and its `reject` handler called by the task rejects first. The following code launches the execution of a given collection of asynchronous tasks and a concurrency limit.
+```javascript
+function execution (tasks, concurrency) {
+  ...
+
+  const executors = [];
+
+  // Launch a limited number of concurrent executors
+  for (let i = 0; i < concurrency; i++) {
+    executors[i] = executor(); // Collect executor's promise
+  }
+
+  // Resolve with the collected results
+  const promise = Promise.all(executors).then(() => results);
+
+  return promise;
+}
+```
+
+Now let's put all this together.
+
+```javascript
+function execution (tasks, concurrency) {
+  const results = [];
+
+  function executor () {
+    return new Promise((resolve, reject) => {
+      function loop () {
+        if (tasks.length === 0) {
+          return resolve(); // Terminate when there is no task to execute
+        }
+
+        const task = tasks.shift(); // Pull the next task
+
+        task() // Execute the task
+          .then((result) => results.push(result)) // Collect the result
+          .then(loop) // Keep looping for more tasks
+          .catch(reject); // Reject early if an error has been thrown
+      }
+      
+      loop(); // Trigger the first loop
+    });
+  }
+
+  const executors = [];
+
+  // Launch a limited number of concurrent executors
+  for (let i = 0; i < concurrency; i++) {
+    executors[i] = executor(); // Collect executor's promise
+  }
+
+  // Resolve with the collected results
+  const promise = Promise.all(executors).then(() => results);
+
+  return promise;
+}
+```
+
+The following code launches the execution of asynchronous tasks at a given concurrency limit.
 
 ```javascript
 // A collection of trivially implemented asynchronous tasks
@@ -220,12 +255,12 @@ const tasks = [
   () => new Promise((resolve) => setTimeout(() => resolve("Task3"))),
 ];
 
-execution(tasks, concurrency)
+execution(tasks, 2)
   .then((results) => console.log(results))
   .catch((error) => console.error(error));
 ```
 
-> Note we skip any promise rejection within async tasks for brevity, but you always have take care of rejections.
+> Note we skip any promise rejection within asynchronous tasks for brevity, but you always have take care of rejections.
 
 ### Limited parallel execution with async/await ###
 

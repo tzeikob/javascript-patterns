@@ -21,52 +21,44 @@ function toUnicode (word) {
 }
 
 function mapWordsToUnicode (words, concurrency) {
-  let running = 0;
-  let index = 0;
-  let thrownError = null;
+  if (!words || !Array.isArray(words) || words.length === 0) {
+    return Promise.reject(new Error("Invalid words argument"));
+  }
+
+  if (!concurrency || typeof concurrency !== "number" || concurrency <= 0) {
+    return Promise.reject(new Error("Invalid concurrency argument"));
+  }
 
   const results = [];
 
-  return new Promise((resolve, reject) => {
-    if (!words || !Array.isArray(words) || words.length === 0) {
-      return reject(new Error("Invalid words argument"));
-    }
+  function executor () {
+    return new Promise((resolve, reject) => {
+      function loop () {
+        if (words.length === 0) {
+          return resolve();
+        }
 
-    if (!concurrency || typeof concurrency !== "number" || concurrency <= 0) {
-      return reject(new Error("Invalid concurrency argument"));
-    }
-
-    function next () {
-      while (running < concurrency && index < words.length) {
-        const word = words[index];
-        index++;
+        const word = words.shift();
 
         toUnicode(word)
-          .then((result) => {
-            results.push(result);
-          })
-          .catch((error) => {
-            thrownError = error;
-          })
-          .finally(() => {
-            if (thrownError) {
-              reject(thrownError);
-            } else {
-              if (results.length < words.length) {
-                running--;
-                next();
-              } else {
-                resolve(results);
-              }
-            }
-          });
-
-        running++;
+          .then((result) => results.push(result))
+          .then(loop)
+          .catch(reject);
       }
-    }
+      
+      loop();
+    });
+  }
 
-    next();
-  });
+  const executors = [];
+
+  for (let i = 0; i < concurrency; i++) {
+    executors[i] = executor();
+  }
+
+  const promise = Promise.all(executors).then(() => results);
+
+  return promise;
 }
 
 const words = [
