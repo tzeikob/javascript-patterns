@@ -264,8 +264,7 @@ execution(tasks, 2)
 
 ### Limited parallel execution with async/await ###
 
-We can implement this pattern in another way by changing only the internals of the execution and using async functions along with await expressions. The first thing to notice is that the `execution` function should now be an `async` function instead.
-Within the execution function there is a local async function called `executor`, this function is responsible to keep running as long as there are available `tasks` for invocation, otherwise should terminate and resolve immediately. The executor should check if there is at least one task in the `tasks` queue and if there is removes it from the queue and executes it. Any `result` resolved by an asynchronous task should be collected into the local `results` variable.
+We can improve the previous implementation even more by changing only the internals of the execution and using async functions along with await expressions instead of promises. One important difference here is that the `execution` function should now be an `async` function instead. Within the execution function there is a local async function called `executor`, this function is responsible to keep running as long as there are available `tasks` for invocation, otherwise should terminate and resolve immediately. The executor should check if there is at least one task in the `tasks` queue and if there is removes it from the queue and executes it. Any `result` resolved by an asynchronous task should be collected into the local `results` variable. The task is executed by using `await` which makes sure that the `while` loop is not blocking the event loop because the next iteration is scheduled for the next subsequent cycle.
 
 ```javascript
 async function execution (tasks, concurrency) {
@@ -283,9 +282,7 @@ async function execution (tasks, concurrency) {
 }
 ```
 
-> The `await` makes sure that the `while` loop is not blocking the event loop, every iteration will be scheduled for the next cycle.
-
-Having the executor function we can now create concurrency by just launching the executor function so many times equal to the given `concurrency` limit. The execution will resolve to the collected `results` only after all tasks have been resolved and each executor is terminated.
+Having the executor function we can now create concurrency by just invoking the executor function many times equal to the given `concurrency` limit. The execution will resolve to the collected `results` only after all tasks have been resolved and each executor is terminated.
 
 ```javascript
 async function execution (tasks, concurrency) {
@@ -293,8 +290,9 @@ async function execution (tasks, concurrency) {
 
   const executors = [];
 
+  // Launch a limited number of concurrent executors
   for (let i = 0; i < concurrency; i++) {
-    executors[i] = executor(i); // Launch the next executor in parallel
+    executors[i] = executor(i); // Collect executor's promise
   }
 
   await Promise.all(executors); // Await until all executors resolve
@@ -321,8 +319,9 @@ async function execution (tasks, concurrency) {
 
   const executors = [];
 
+  // Launch a limited number of concurrent executors
   for (let i = 0; i < concurrency; i++) {
-    executors[i] = executor(i); // Launch the next executor in parallel
+    executors[i] = executor(i); // Collect executor's promise
   }
 
   await Promise.all(executors); // Await until all executors resolve
