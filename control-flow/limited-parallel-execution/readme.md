@@ -157,7 +157,7 @@ We can think the limited parallel execution as a room where tasks can be run in 
 
 ### Limited parallel execution with promises ###
 
-Using promises we can improve the previous implementation by making the code more readable and maintainable. Having exactly the same `execution` function as before, the first thing to notice here is that we have a local `executor` function. In general this function is responsible to keep pulling available tasks from the given `tasks` queue and execute them one at a time (event loop cycle), where each result should be collected into the `results` variable. When no task has been left into the queue the executor should terminate.
+Using promises we can improve the previous implementation by making the code more readable and maintainable. In this case instead of using callbacks the `execution` function returns a promise. The first thing to notice is that we have a local nested `executor` function. In general this function is responsible to keep pulling available tasks from the given `tasks` queue and execute them one at a time (event loop cycle), where each result should be collected into the `results` variable. When no task has been left into the queue the executor should terminate.
 
 In order to do this in asynchronous way we should wrap all this into a `promise` so this functions returns a promise. Within the execution code of this promise we have another function called `loop` which first checks if there are tasks for execution and if there are pulls one and executes it, otherwise calls the `resolve` in order to terminate the executor. When a task is fulfilled we have to collect the `result` and then call for another loop via recursion. In case an error has been thrown we should call the `reject` to immediately terminate the executor.
 
@@ -186,7 +186,7 @@ function execution (tasks, concurrency) {
 }
 ```
 
-Now we can follow the concept of `executors` and execute tasks concurrently by just launching many times the executor function and keeping the references to their promises. When all of them terminate (resolve) we return a final `promise` which resolves to the collected `results`. Given the `concurrency` limit we expect to have a number of executors equal to this value.
+Now we can follow the concept of `executors` and execute tasks concurrently by just invoking many times the executor function and keeping the references to their promises. When all of them terminate (resolve) we return a final `promise` which resolves to the collected `results`. Given the `concurrency` limit we expect to have a number of executors equal to this value.
 
 ```javascript
 function execution (tasks, concurrency) {
