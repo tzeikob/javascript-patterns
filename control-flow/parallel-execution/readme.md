@@ -145,7 +145,7 @@ Implementing the parallel execution pattern with **async/await** is not enormous
 ```javascript
 async function execution (tasks) {
   // Launch each task in parallel
-  const promises = tasks.man((task) => task());
+  const promises = tasks.map((task) => task());
 
   // Wait for the results
   const results = await Promise.all(promises);
