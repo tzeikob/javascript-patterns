@@ -12,9 +12,6 @@ Let's say we have an `execution` function expecting a collection of asynchronous
 
 ```javascript
 function execution (tasks, callback) {
-  // For any invalid argument call back asynchronously with error
-  ...
-
   let completed = 0; // Total completed tasks
   let rejected = false; // Indicate if another task thrown an error
 
@@ -61,9 +58,6 @@ Now let's put all this together.
 
 ```javascript
 function execution (tasks, callback) {
-  // For any invalid argument call back asynchronously with error
-  ...
-
   let completed = 0; // Total completed tasks
   let rejected = false; // Indicate if another task thrown an error
 
@@ -150,9 +144,6 @@ Implementing the parallel execution pattern with **async/await** is not enormous
 
 ```javascript
 async function execution (tasks) {
-  // For any invalid argument reject by throwing an error
-  ...
-
   // Launch each task in parallel
   const promises = tasks.man((task) => task());
 
