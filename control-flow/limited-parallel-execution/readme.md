@@ -252,15 +252,19 @@ The following code launches the execution of asynchronous tasks at a given concu
 const tasks = [
   () => new Promise((resolve) => setTimeout(() => resolve("Task1"))),
   () => new Promise((resolve) => setTimeout(() => resolve("Task2"))),
-  () => new Promise((resolve) => setTimeout(() => resolve("Task3"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task3")))
 ];
 
 execution(tasks, 2)
-  .then((results) => console.log(results))
-  .catch((error) => console.error(error));
+  .then((results) => {
+    console.log(results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
 
-> Note we skip any promise rejection within asynchronous tasks for brevity, but you always have take care of rejections.
+> Note we skip any promise rejection within asynchronous tasks for brevity, but you always have to take care of rejections.
 
 ### Limited parallel execution with async/await ###
 
@@ -339,15 +343,17 @@ Assuming we have a list of asynchronous tasks we can launch the execution like s
 const tasks = [
   () => new Promise((resolve) => setTimeout(() => resolve("Task1"))),
   () => new Promise((resolve) => setTimeout(() => resolve("Task2"))),
-  () => new Promise((resolve) => setTimeout(() => resolve("Task3"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task3")))
 ];
 
 execution(tasks, 2)
-  .then((results) => console.log(results))
-  .catch((error) => console.error(error));
+  .then((results) => {
+    console.log(results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
-
-> Note that we skip any promise rejection within async tasks for brevity, but you always have take care of rejections.
 
 ## Considerations ##
 
