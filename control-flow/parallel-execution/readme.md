@@ -8,10 +8,10 @@ The execution of such pattern should be considered as completed when all given t
 
 ### Parallel execution with callbacks ###
 
-Let's say we have an `execution` function expecting a collection of asynchronous `tasks` along with an `input` and the completion `callback`. This function's responsibility is to handle the invocation of each task in parallel and to achieve this is using two variables in order to keep the state of the execution at any given time. One variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered as rejected.
+Let's say we have an `execution` function expecting a collection of asynchronous via callback `tasks` along with the completion `callback`. This function's responsibility is to handle the invocation of each task in parallel and to achieve that we are about to use two variables to store the state of the execution at any given time. One variable called `completed` to count the number of completed tasks and another one called `rejected` which is a boolean indicating that a task has already thrown an error and the execution should be considered as rejected.
 
 ```javascript
-function execution (tasks, input, callback) {
+function execution (tasks, callback) {
   // For any invalid argument call back asynchronously with error
   ...
 
@@ -22,12 +22,12 @@ function execution (tasks, input, callback) {
 }
 ```
 
-> The result of each task is collected via closure into a variable called `results`.
+> The result of each task is collected via closure into the `results` variable.
 
-Now since this function invokes all the tasks at once we have to control somehow the completion or rejection of the execution. We can do this by using a helper function called `done` which will be passed as the callback to each task at invocation, that's it, the `callback` of each task is this same function. When a task completes either rejected or fulfilled this function is called back along with the `error` or the `result` respectively. Within the code of this function we are checking if the task has thrown an error and if such we mark the execution as rejected and return early. Otherwise we count up another completion, collect the result and check if this task was the last completed one in order to call the completion callback along with the list of collected results.
+Now since this function invokes all the tasks at once we have to control somehow the completion or rejection of the execution. We can do this by using a helper function called `done` which will be passed as the callback to each task at invocation, that's it, the `callback` of each task is that same function. When a task completes either rejected or fulfilled this function is called back along with the `error` or the `result` respectively. Within the code of this function we are checking if the task has thrown an error and if such we mark the execution as rejected and return early. Otherwise we count up another completion, collect the result and check if this task was the last one in order to call the completion callback along with the list of collected results.
 
 ```javascript
-function execution (tasks, input, callback) {
+function execution (tasks, callback) {
   ...
 
   function done (error, result) {
@@ -51,7 +51,7 @@ function execution (tasks, input, callback) {
   }
 
   // Spawn all tasks with the done as callback
-  tasks.forEach(task => task(input, done));
+  tasks.forEach(task => task(done));
 }
 ```
 
@@ -60,7 +60,7 @@ function execution (tasks, input, callback) {
 Now let's put all this together.
 
 ```javascript
-function execution (tasks, input, callback) {
+function execution (tasks, callback) {
   // For any invalid argument call back asynchronously with error
   ...
 
@@ -90,23 +90,21 @@ function execution (tasks, input, callback) {
   }
 
   // Spawn all tasks with the done as callback
-  tasks.forEach(task => task(input, done));
+  tasks.forEach(task => task(done));
 }
 ```
 
 Having a collection of tasks is now easy to execute them in parallel.
 
 ```javascript
-// A collection of asynchronous tasks
+// A collection of trivially implemented asynchronous tasks
 const tasks = [
-  function task1 (input, callback) {...},
-  function task2 (input, callback) {...},
-  function task3 (input, callback) {...},
-  ...
+  (callback) => setTimeout(() => callback(null, "Task1")),
+  (callback) => setTimeout(() => callback(null, "Task2")),
+  (callback) => setTimeout(() => callback(null, "Task3"))
 ];
 
-// Launch the execution
-execution(tasks, input, (error, results) => {
+execution(tasks, (error, results) => {
   if (error) {
     return console.error(error);
   }
@@ -121,25 +119,18 @@ On thing to keep in mind is that, which one of the tasks will call the completio
 
 ### Parallel execution with promises ###
 
-Implementing this pattern with **promises** is way easier than using asynchronous callbacks and on top of that we will get a more readable and less complex code base. The only thing we should do in order to execute all the tasks in parallel is to pass them as an array of promises in the built-in `Promise.all` method. This method returns another promise on which we will set our completion and rejection handlers. Let's say we have the same collection of tasks but instead of using asynchronous callback now return a promise.
+Implementing this pattern with **promises** is way easier than using asynchronous callbacks and on top of that we will get a more readable and less complex code base. In this implementation each task is expected to return a promise instead of using a callback to complete. The only thing we should do in order to execute all the tasks in parallel is to invoke them and pass their promises as an array of promises in the built-in `Promise.all` method. This method returns another promise on which we will set our completion and rejection handlers. Keep in mind that this method fulfills only if all of the given promises are fulfilled, if any of them rejects the whole execution is considered as rejected. Assuming we have a collection of asynchronous `tasks` this is how we execute them in parallel.
 
 ```javascript
+// A collection of trivially implemented asynchronous tasks
 const tasks = [
-  function tasks1 (input) {
-    return new Promise((resolve, reject) => {...})
-  },
-
-  function tasks2 (input) {...},
-  function tasks3 (input) {...},
-  ...
+  () => new Promise((resolve) => setTimeout(() => resolve("Task1"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task2"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task3")))
 ];
-```
 
-Start by mapping each task in a collection of promises passing any given `input`, at this point each task should be considered as invoked. Having the collection of promises we can now pass them in the `Promise.all` method in order to handle the completion or the rejection. Keep in mind that this method fulfills only if all of the given promises are fulfilled, if any of them rejects the whole execution is considered as rejected.
-
-```javascript
 // Launch each task in parallel
-const promises = tasks.map(task => task(input)); // Map task into a promise
+const promises = tasks.map(task => task()); // Map task into a promise
 
 // Handle the completion or rejection
 Promise.all(promises)
@@ -151,33 +142,19 @@ Promise.all(promises)
   });
 ```
 
-> Note that the `Promise.all` makes sure that results will kept in order the tasks are given in.
+> Note we skip any promise rejection within asynchronous tasks for brevity, but you always have to take care of rejections.
 
 ### Parallel execution with async/await ###
 
-Implementing the parallel execution pattern with **async/await** is not enormously different than using promises, we only need to use an async function along with the `Promise.all` method and we are pretty much done. So let's say we have the same collection of tasks as before.
+Implementing the parallel execution pattern with **async/await** is not enormously different than using promises, we only need to use an async function along with the `Promise.all` method and we are pretty much done. Within the async function `execution` we pass the collection of `tasks`. The first thing to do is to launch each task in parallel by mapping each task into its promise. Having the collection of promises we can now wait for them to complete. Finally we return the collection of the results back to the caller of the execution, which is expected to be another promise.
 
 ```javascript
-const tasks = [
-  function tasks1 (input) {
-    return new Promise((resolve, reject) => {...})
-  },
-
-  function tasks2 (input) {...},
-  function tasks3 (input) {...},
-  ...
-];
-```
-
-Within the async function `execution` we pass the collection of `tasks` along with an `input`. The first thing to do is to launch each task in parallel by mapping each task item into a promise. Having the collection of promises we can now wait for them to complete. Finally we return the collection of the results back to the caller of the execution, which is expected to be another promise.
-
-```javascript
-async function execution (tasks, input) {
+async function execution (tasks) {
   // For any invalid argument reject by throwing an error
   ...
 
   // Launch each task in parallel
-  const promises = tasks.man((task) => task(input));
+  const promises = tasks.man((task) => task());
 
   // Wait for the results
   const results = await Promise.all(promises);
@@ -191,9 +168,20 @@ async function execution (tasks, input) {
 Having the collection of tasks we can invoke the execution like so.
 
 ```javascript
-execution(tasks, input)
-  .then((results) => {...})
-  .catch((error) => {...});
+// A collection of trivially implemented asynchronous tasks
+const tasks = [
+  () => new Promise((resolve) => setTimeout(() => resolve("Task1"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task2"))),
+  () => new Promise((resolve) => setTimeout(() => resolve("Task3")))
+];
+
+execution(tasks)
+  .then((results) => {
+    console.log(results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
 
 ## Considerations ##
