@@ -1,12 +1,10 @@
-# The Stack #
-
-[Back to Home](../../../../)
+# The Stack
 
 A stack is an ordered collection of elements that follows the *LIFO* (Last In First Out) principle. The addition of new elements or the removal of existing ones takes place at the same time. The end of the stack is known as the *top*, and the opposite side is known as the *base*. The newest elements are near the top, and the oldest elements are near the base.
 
 We have several examples of stack structures applied to real world problems like compilers in programming languages, and by computer memory to store variables and method calls.
 
-## Implementation ##
+## Implementation
 
 A stack apart from the *encapsulation* of its protected data must provide several *atomic* operations in order to be fully functional in real world cases and problems. First of all the elements of a stack must not be exposed in the outer scope of the stack and no other parts of the code should have permissions to modify them. In order to protect the data of the stack, we can work either with *Symbols* or with the *WeakMaps* both they offer a clean way to provide the same functionality the private properties give in other object-oriented languages. The operations a stack should provide are the following ones,
 
@@ -17,7 +15,7 @@ A stack apart from the *encapsulation* of its protected data must provide severa
 * clear the stack of its elements
 * get the size of the stack as the number of its elements
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -80,17 +78,15 @@ s.clear(); // []
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Converter](converter.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * Using weak maps you can emulate private fields and protect the elements of the stack.
 * Using weak maps is more efficient than using regular maps.
 
-### Cons ###
+### Cons
 * Regarding the nature of each problem you may have to take a different approach.
 * Even using weak maps it might be memory expensive in a large scale problems.
-
-[Back to Home](../../../../)

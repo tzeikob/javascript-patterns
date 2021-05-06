@@ -1,14 +1,12 @@
-# The Singleton Pattern #
-
-[Back to Home](../../../../)
+# The Singleton Pattern
 
 The singleton pattern belongs to the category of those design patterns called *creational*. Its purpose is to give you the option to use any functionality, encapsulated in a module, into your code just by creating a single instance of it. That's it instead of using factories, singletons are the best option to make sure your application is using the same instance of a module and not create a new one each time you requesting it.
 
-## Implementation ##
+## Implementation
 
 You can thing of this pattern also as a *factory* but that factory would only create one instance of the module and expose it to your application context once, so you end up actually using the same singleton object no matter who many times you requesting the module ahead of time and in different places of your application. The only thing you should do is to expose a public *get instance* method which is responsible to create the singleton at the very first time and then return that one object each time you call it in the future.
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -48,17 +46,15 @@ if (a1 === a2) {
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Repository](repository.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * You can modularize your code into reusable objects.
 * You keep your global scope clean of variables and functions.
 * Inject modules in various places in your application context once only.
 
-### Cons ###
+### Cons
 * You need to be careful especially working with external resources like db connections etc.
-
-[Back to Home](../../../../)

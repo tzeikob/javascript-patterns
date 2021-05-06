@@ -1,10 +1,8 @@
-# The Map #
-
-[Back to Home](../../../../)
+# The Map
 
 A map is a collection of unordered *key-value* entries also known as *dictionary*, but unlike arrays a map stores each entry *value* under a given object known as *key*. In a map a key must be *unique* and shown up only once, in other words a map is nothing more than a *set of indexes* each one pointing and referencing to a certain entry value.
 
-## Implementation ##
+## Implementation
 
 In order to implement a map we need a *helper* class to be used as the container of the element entries, and that will be the *Array* class. In addition we're gonna use another helper class known as *Entry* in order to keep track on the *key-value* pair for each element in the map. So it's our responsibility to protect the map's data in order to make sure a key used only once. The operations a map should provide are the following ones,
 
@@ -19,7 +17,7 @@ In order to implement a map we need a *helper* class to be used as the container
 * clear the map of its entries
 * print the entries of the map into a string
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -132,16 +130,14 @@ m.values(); // ['alice: alice@mail.com']
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Phone Book](phone-book.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * A map is a perfect choice if you need to create indexes of values.
 * Both key and value of the entry can be any type of value like primitive or objects.
 
-### Cons ###
+### Cons
 * Due to the use of an array as the container we should shift elements after each remove.
-
-[Back to Home](../../../../)

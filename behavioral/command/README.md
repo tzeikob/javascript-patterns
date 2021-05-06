@@ -1,14 +1,12 @@
-# The Command Pattern #
-
-[Back to Home](../../../../)
+# The Command Pattern
 
 The command pattern belongs to the category of those design patterns called *behavioral*. The command patterns gives you the ability to encapsulate a *calling method* as an object, so it allows you to fully decouple the execution from the implementation.
 
-## Implementation ##
+## Implementation
 
 The command design pattern allows you to get less fragile implementations by building functionality on an existing implementation like a repository service. An important thing is that with this patterns you're able to keep track on each command executed which gives you the ability to undo or rollback into previous state.
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -70,19 +68,17 @@ e.replay();
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Calculator](calculator.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * Decouple the execution from the implementation.
 * Get less fragile implementations.
 * You're able to rollback and undo operations.
 * Easy to add logging and auditing operations.
 
-### Cons ###
+### Cons
 * Storing commands history into memory could be a possible overhead.
 * Rollback operations could be very tricky to implement.
-
-[Back to Home](../../../../)

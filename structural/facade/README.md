@@ -1,14 +1,12 @@
-# The Facade Pattern #
-
-[Back to Home](../../../../)
+# The Facade Pattern
 
 The facade pattern belongs to the category of those design patterns called *structural*. Its purpose is to give you the option to use only a simplified fraction of a given large functionality. Let say you only have to use some features of an external library, so regarding your needs you can use this pattern and stick a facade in front of the given exposed.
 
-## Implementation ##
+## Implementation
 
 One of the most famous facades out there is the *JQuery library*, which actually hides all the difficulties and the peculiarities the DOM object brings us. A facade like this simplifies the interface in order to work more easily and only with the features we need and not more than that.
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -52,18 +50,16 @@ let r = myNS.wrapper.methodC(e); // 6
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Calculator](calculator.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * You can use only a fraction of a given large functionality.
 * Fast and easy way for the team to adopt the more simplified API.
 * Decouple your code from a given external library by using a facade of it.
 * You can add more functionality at any time.
 
-### Cons ###
+### Cons
 * Each time you update the library you may update the facade as well.
-
-[Back to Home](../../../../)

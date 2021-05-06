@@ -1,14 +1,12 @@
-# The Factory Pattern #
-
-[Back to Home](../../../../)
+# The Factory Pattern
 
 The factory pattern belongs to the category of those design patterns called *creational*. It encapsulates and organizes reusable modules or functionality, in a way they are cached and exposed publicly into a vocabulary of terms, so you can ask for them and get them on demand.
 
-## Implementation ##
+## Implementation
 
 You can thing of this pattern also as a *factory* of different kind of objects aka *domain*, where you can use it like an isolated module which actually exposes to you all the objects of your model around a single name space. Nothing prevents you from creating multiple instances of a factory, but each one of that instances will have its own internal state, so it's smart to use that pattern as a *singleton* object.
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -61,18 +59,16 @@ b.log(); // B{ value: 9 }
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Domain](domain.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * You can modularize your code into reusable objects.
 * You keep your global scope clean of variables and functions.
 * Cleaner way to expose and reveal your domain model.
 
-### Cons ###
+### Cons
 * Each module instance will create its own copies of functions in memory.
 * You need to cache each term especially when loading external resources like modules.
-
-[Back to Home](../../../../)

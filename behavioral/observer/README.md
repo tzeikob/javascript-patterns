@@ -1,14 +1,12 @@
-# The Observer Pattern #
-
-[Back to Home](../../../../)
+# The Observer Pattern
 
 The observer pattern belongs to the category of those design patterns called *behavioral*. That pattern allows you to manage a collection or a group of objects so they can *watch* another object, *the subject*, and be *notified* of its changes. In addition you get a loosely coupled system of objects having less dependencies between them.
 
-## Implementation ##
+## Implementation
 
 In the observer pattern a group of objects is watching another single object known as the *focal point*. In order to get a more clear picture of what this is about, think of that group as a collection of services like logging, auditing etc. Each one of those services is called *observer* and can be used and coupled within an object having some behavior. Each time that object has something to report it should iterate through its observer list and fire up the notification method they provide, so each observer gets back a notification call.
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -83,17 +81,15 @@ e.update(10);
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Auditor](auditor.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * Each object has its responsibilities getting a loosely coupled system.
 * You get a clear hierarchy of objects.
 * You can manage objects they can cooperate each other.
 
-### Cons ###
+### Cons
 * You have to be familiar with other design pattern before use this one.
-
-[Back to Home](../../../../)

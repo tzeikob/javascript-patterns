@@ -1,10 +1,8 @@
-# The Linked List #
-
-[Back to Home](../../../../)
+# The Linked List
 
 A linked list is a sequential collection of elements, but unlike arrays in a linked list the elements are not placed contiguously in memory. Each element consist of a node that stores the *element* itself and also a *reference* known as a pointer or link to the next in order element. The first in order element is known as the *head* and if we want get access to a specific element in the list we should iterate the list until we get the desired element.
 
-## Implementation ##
+## Implementation
 
 In order to implement a linked list we need a *helper* class to represent the nodes of the list, each node must store the element as a value and the link to the next element in order. The operations a linked list should provide are the following ones,
 
@@ -17,7 +15,7 @@ In order to implement a linked list we need a *helper* class to represent the no
 * ask for the size of the list as the number of its elements
 * print the elements of the list into a string
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -212,17 +210,15 @@ ll.clear(); // []
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Double Linked List](double-linked-list.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * In contrast with arrays removing an element you don't have to shift elements.
 * Linked lists are a best choice if you need a connection between the elements.
 * If you need to add/remove a lot of elements linked lists are a better option to arrays.
 
-### Cons ###
+### Cons
 * In order to get access to an element you must iterate the list until you find that element.
-
-[Back to Home](../../../../)

@@ -1,14 +1,12 @@
-# The Mediator Pattern #
-
-[Back to Home](../../../../)
+# The Mediator Pattern
 
 The mediator pattern belongs to the category of those design patterns called *behavioral*. That pattern has some similarities with the [observer](../observer/) pattern, which allows you to manage a group of objects so they can *watch* another object, *the subject*, and be *notified* of its changes. With that pattern you can get a loosely coupled system with clear hierarchies of objects they are responsible only for certain things.
 
-## Implementation ##
+## Implementation
 
 The mediator design pattern can be better described as a *publisher/subscriber pattern* in which a subject object, which is responsible to broadcast data, should notify a mediator service which in turn should notify a group of subscribers attached to the broadcast messages of the former.
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -88,16 +86,14 @@ console.log(s2.messages);
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Sensor](sensor.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * Each object has its responsibilities getting a loosely coupled system.
 * You get a clear hierarchy of objects.
 
-### Cons ###
+### Cons
 * You have to be familiar with other design pattern before use this one.
-
-[Back to Home](../../../../)

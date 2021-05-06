@@ -1,6 +1,4 @@
-# The Closure Pattern #
-
-[Back to Home](../../../)
+# The Closure Pattern
 
 The closure is more than a simple design pattern it's a fundamental part of the language itself. You can thing of it like a powerful feature that gives you more options to *control* and *encapsulate* data and functionality in your application. A definition of what a closure is, could be the following,
 
@@ -8,11 +6,11 @@ The closure is more than a simple design pattern it's a fundamental part of the 
 
 Another way to define a closure is to say that a closure is the ability of a function to keep *access* not only to its local variable-scope but to its parents variable-scopes as well, bound with at the very first moment it was declared, even it may be called outside of that place in different part of your code.
 
-## Implementation ##
+## Implementation
 
 We know that each time a function is called a new scope is created and bound to it known as its local scope, but actually this only the half truth. There is more to that and that's, each time a function is declared is *capturing* (closing) around the scope of the function it was declared within. We know that functions are objects so each time you declare a new function that object keeps a reference to that scope, creating a closure around it. So each time the function is called still has access to those scopes even when called outside of the its *syntax scope*.
 
-```JavaScript
+```javascript
 let g = 'global';
 
 const outer = function outer() {
@@ -35,18 +33,16 @@ fn(); // 'I have access to inner, outer and global scope'
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Counter](counter.js)
 * [Stopwatch](stopwatch.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * It provides a powerful option to encapsulate data and functionality in private.
 * Gives flexibility and more options in favor of code reusability especially in modules.
 
-### Cons ###
+### Cons
 * Because a closure binds everything in the outer scope of a function, tends to increase memory usage.
 * Sometimes may be hard to grasp on it if you are a beginner.
-
-[Back to Home](../../../)

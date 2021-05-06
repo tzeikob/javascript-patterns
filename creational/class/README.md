@@ -1,14 +1,12 @@
-# The Class Pattern #
-
-[Back to Home](../../../../)
+# The Class Pattern
 
 The class pattern belongs to the category of those design patterns called *creational* and is based on the built-in *class* feature of the language added in ECMAScript 2015. That pattern gives you the option to organize and structure your code into reusable containers having state and behavior, in an almost similar way classes are for the *classical object-oriented* languages.
 
-## Implementation ##
+## Implementation
 
 The class is actually nothing more than a *syntactic sugar* upon the [prototype](../prototype) pattern, which can be used in combination with the *this* mechanism in order to base an object on a shared functionality across other objects created by the same *constructor* function. On a top of that you can have member methods as well as static ones and extend base classes into a more concrete and less generic ones creating a short of inheritance in favor of reusability.
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -59,12 +57,12 @@ console.log(clone); // Entity { x: 266, y: 4 }
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Calculator](calculator.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * Use the language features to leverage functionality.
 * Organize you code into re-usable objects.
 * You can extend existing functionality by the extend keyword.
@@ -72,8 +70,6 @@ console.log(clone); // Entity { x: 266, y: 4 }
 * No duplicate functions/methods are added for each object, so you get better memory usage.
 * You can override/shadow methods.
 
-### Cons ###
+### Cons
 * The *this* mechanism is somewhat tricky to understand at the first place.
 * Is just a syntactic sugar upon prototype pattern nothing more than that.
-
-[Back to Home](../../../../)

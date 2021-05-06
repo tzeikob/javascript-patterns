@@ -1,14 +1,12 @@
-# The Flyweight Pattern #
-
-[Back to Home](../../../../)
+# The Flyweight Pattern
 
 The flyweight pattern belongs to the category of those design patterns called *structural*. That pattern gives you the ability to structure your code in a way to manage efficiently your memory in cases where you must create a *large amount* of objects which sharing non unique *duplicated data*.
 
-## Implementation ##
+## Implementation
 
 The flyweight pattern makes easy to share data across objects giving you at the same time better management and smaller memory footprint. In order to use flyweight objects you have to figure out which properties of the object are actually non unique having many appearances across the objects. Replace those properties encapsulating them into a flyweight object that will be created through a *flyweight factory*.
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -103,17 +101,15 @@ console.log(`Flyweights: ${myNS.factory.size()}`);
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Collector](collector.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * Share non unique data across objects.
 * Smaller memory usage on a large amount of objects.
 
-### Cons ###
+### Cons
 * Only for use cases with large amount of objects.
 * Overhead in use cases with objects having large number of properties.
-
-[Back to Home](../../../../)

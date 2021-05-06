@@ -1,10 +1,8 @@
-# The Set #
-
-[Back to Home](../../../../)
+# The Set
 
 A set is a collection of unordered elements, but unlike arrays a set consists only of unique elements. Each set can be subject of mathematical operations like *union*, *intersection*, *difference* and so on. A set without elements is also known as a *null set* or an *empty set*.
 
-## Implementation ##
+## Implementation
 
 In order to implement a set we need a *helper* class to be used as the container of the elements, and that will be the *Array* class. So it's our responsibility to protect the set's data in order to make sure each element shown up only once in the set. The operations a set should provide are the following ones,
 
@@ -17,7 +15,7 @@ In order to implement a set we need a *helper* class to be used as the container
 * clear the set of its elements
 * print the elements of the set into a string
 
-```JavaScript
+```javascript
 // Use your own namespace to keep global scope clean
 var myNS = myNS || Object.create(null);
 
@@ -107,16 +105,14 @@ s.clear(); // []
 
 [Go to Source](index.js)
 
-## Use Cases ##
+## Use Cases
 * [Set Operator](set-operator.js)
 
-## Considerations ##
+## Considerations
 
-### Pros ###
+### Pros
 * A set is a perfect choice if you need to filter out duplicate values.
 * An element can be any type of value like primitive or objects.
 
-### Cons ###
+### Cons
 * Due to the use of an array as the container we should shift elements after each remove.
-
-[Back to Home](../../../../)
