@@ -48,3 +48,9 @@ Below you can find reference books and sources about design patterns and best pr
 * [JavaScript Patterns](https://www.oreilly.com/library/view/javascript-patterns/9781449399115/)
 * [Learning JavaScript Data Structures and Algorithms, 2nd Ed.](https://www.packtpub.com/product/learning-javascript-data-structures-and-algorithms-second-edition/9781785285493)
 * [Node.js Design Patterns, 3rd Ed.](https://www.packtpub.com/product/node-js-design-patterns-third-edition/9781839214110)
+
+## License & Copyright
+
+The materials herein are all &copy; 2020-2021 Iakovos Papadopoulos.
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivs 4.0 Unported License</a>.
