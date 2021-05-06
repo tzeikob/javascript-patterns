@@ -17,3 +17,21 @@ In case you are about to submit a PR for typo fixes, please consider in doing th
 The current edition of this content is pushed in the default branch and must considered as a work **in progress**. While this content is in progress, contributions are welcome, but it's impossible to turn back in 1st edition while I'm still working on this current version.
 
 Please note that I **am not accepting any contributions** for 1st edition any more.
+
+## Pull request guidelines
+
+The title of every PR should be a short phrase pointing to what this PR is all about, where the first character should always be in uppercase and the rest in lowercase. In case the PR is related to a specific reported issue include its number in the form `(#issue-number)` at the end of the title.
+
+> Note: Please do not use special characters or emoticons in the title, titles like `fix => typo` will not be accepted.
+
+A good example of a title is, `Add implementation of the parallel execution using async/await (#13)`.
+
+Every PR should have a description with the following template.
+
+```
+Category: <Behavioral>
+Pattern: <Observer>
+Label: <Fix, Feature, Improvement, Typo, etc.>
+Issue: <#13>
+Description: <Free text>
+```
