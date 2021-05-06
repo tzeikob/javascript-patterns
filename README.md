@@ -34,6 +34,10 @@ This is a digital book diving deep into the field of design patterns and best pr
 * [Async Retry](async-retry/)
 * [Actor Model](actor-model/)
 
+## Contribution
+
+As this 1st edition book is now considered complete and archived it will not be maintained any more, so there is no further need for more contributions. Refer to the latest edition which should be considered active.
+
 ## License & Copyright
 
 The materials herein are all &copy; 2015-2020 Iakovos Papadopoulos.
