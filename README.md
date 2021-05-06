@@ -1,24 +1,26 @@
-# JavaScript Patterns #
+# JavaScript Patterns - 1st Edition
 
-A cheat sheet repository for JavaScript design patterns and best practices.
+> NOTE: You are viewing the 1st edition of this digital book which should be considered as archived and provided here only for historical reasons. Any issues or PRs should be directed against the latest edition as this content should be kept as a stale branch for now on.
 
-## Table of Contents ##
-* [Creational](creational/)
+This is a digital book diving deep into the field of design patterns and best practices being used in JavasScript software development. Even though this content is focusing in JavaScript implementations, many patterns and practices may still be applicable to other programming languages as well.
+
+## Table of Contents
+* Creational
   * [Prototype](creational/prototype/)
   * [Module](creational/module/)
   * [Revealing Module](creational/revealing-module/)
   * [Factory](creational/factory/)
   * [Singleton](creational/singleton/)
   * [Class](creational/class/)
-* [Structural](structural/)
+* Structural
   * [Decorator](structural/decorator/)
   * [Facade](structural/facade/)
   * [Flyweight](structural/flyweight/)
-* [Behavioral](behavioral/)
+* Behavioral
   * [Observer](behavioral/observer/)
   * [Mediator](behavioral/mediator/)
   * [Command](behavioral/command/)
-* [Data Structures](data-structures/)
+* Data Structures
   * [Stack](data-structures/stack/)
   * [Queue](data-structures/queue/)
   * [Linked List](data-structures/linked-list/)
