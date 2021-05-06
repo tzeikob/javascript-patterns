@@ -35,3 +35,5 @@ Label: <Fix, Feature, Improvement, Typo, etc.>
 Issue: <#13>
 Description: <Free text>
 ```
+
+If the PR is not related to an issue then just ignore the issue line.
