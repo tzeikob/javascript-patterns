@@ -279,4 +279,4 @@ observable.on("success", function (data) {
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [thermometer](thermometer.js): a trivial implementation of an observable thermometer
+* [Thermometer](thermometer.js): A trivial implementation of an observable thermometer

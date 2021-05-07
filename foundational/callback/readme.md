@@ -145,5 +145,5 @@ function compute(num, callback) {
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [factorial](factorial.js): calculate the factorial of a given non-negative integer number
-* [mapper](mapper.js): a trivial implementation of the `Array.prototype.map` method
+* [Factorial](factorial.js): Calculate the factorial of a given non-negative integer number
+* [Mapper](mapper.js): A trivial implementation of the `Array.prototype.map` method

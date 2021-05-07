@@ -41,7 +41,7 @@ Short paragraphs followed by code snippets...
 
 Below you can find various trivial or real-world implementations of this pattern:
 
- * [Parallel Reducer](parallel-reducer.js): short description about the implementation
+ * [Parallel Reducer](parallel-reducer.js): A short description about the implementation
  * ...
 ```
 

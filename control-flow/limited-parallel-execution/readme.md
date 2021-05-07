@@ -365,6 +365,6 @@ In parallel programming the most critical part is to keep consistency to the sha
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [Stop Words](stop-words.js): find how many stop words a given list of words has with callbacks
-* [Unicode Mapper](unicode-mapper.js): map japanese words to their unicode equivalent with promises
-* [Sales](sales.js): reduce to the total amount of sales from different sources with async/await
+* [Stop Words](stop-words.js): Find how many stop words a given list of words has with callbacks
+* [Unicode Mapper](unicode-mapper.js): Map japanese words to their unicode equivalent with promises
+* [Sales](sales.js): Reduce to the total amount of sales from different sources with async/await
