@@ -188,4 +188,4 @@ Below you can find various trivial or real-world implementations of this pattern
 
 * [Text Processing](text-processing.js): Pass a given phrase through various text processors with callbacks
 * [Filter](filter.js): Apply various filters to a given array of strings with promises
-* [Async/await Accumulator](async-accumulator.js): Accumulate a list of random even integers with async/await and promises
+* [Middleware](middleware.js): Add sequential middleware actions to a given function with async/await
