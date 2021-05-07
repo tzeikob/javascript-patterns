@@ -212,6 +212,6 @@ Instead try to split your code into named function definitions per task, this wa
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [Password Encryption](password-encryption.js): Random salt encryption of a password with callbacks
+* [Password Encryption](password-encryption.js): Encrypt randomly salted passwords with callbacks
 * [Triple Encryption](triple-encryption.js): Triple encryption of a text with promises
 * [Async/await Encryption](async-encryption.js): Triple encryption of a text with async/await and promises
