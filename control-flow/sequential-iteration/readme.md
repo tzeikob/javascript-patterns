@@ -74,24 +74,20 @@ Note that we can use custom objects in the place of the `input` variable if we n
 A more elegant way to implement this pattern is to use **chaining promises** which will give us more readable and less verbose code in comparison to callbacks. In promises we know that a promise will resolve only **once** either fulfilled or rejected, so why not to wrap each task in a promise and chain them so to get that strictly sequential flow. Let's say we have the same tasks as before but this time instead of using async callback they return a promise.
 
 ```javascript
+// A collection of trivial asynchronous tasks
 const tasks = [
-  function tasks1 (input) {
-    return new Promise((resolve, reject) => {...});
-  },
-
-  function tasks2 (input) {...},
-  function tasks3 (input) {...},
-  ...
+  (input) => new Promise((resolve) => setTimeout(() => resolve("Task1"))),
+  (input) => new Promise((resolve) => setTimeout(() => resolve("Task2"))),
+  (input) => new Promise((resolve) => setTimeout(() => resolve("Task3")))
 ];
 ```
+
+> Again, we skip both business logic and callbacks to error only for brevity.
 
 Knowing that the `then` method of a promise returns another promise, we can use it to get the sequential execution of those tasks by chaining them. We will use the `Array.prototype.reduce` method on the given array of `tasks` to iteratively chain each task to the next one. Bear in mind that the value a promise resolves to will be the input to the next promise, that way each task gets as input the result of the previous.
 
 ```javascript
 function execution (tasks, input) {
-  // For any invalid argument reject with Promise.reject
-  ...
-  
   // Make input first promise in the chain
   input = Promise.resolve(input);
 
@@ -110,8 +106,12 @@ After we finish the iteration we only have to return the last in chain promise b
 
 ```javascript
 execution(tasks, input)
-  .then((result) => {...})
-  .catch((error) => {...});
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
 
 As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any rejected promise in the chain will be caught here as an error. So using promises we can skip boilerplate code and get cleaner and less verbose syntax which is easier to maintain.
