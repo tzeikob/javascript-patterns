@@ -19,13 +19,9 @@ const datastore = (() => {
       await middleware(query);
     }
 
-    const response = {
-      data: users.find((user) => user.handle === query.username),
-      requestId: query.requestId,
-      timestamp: query.timestamp
-    }
+    const user = users.find((user) => user.handle === query.username);
   
-    return response;
+    return { user, ...query };
   }
 
   return { getUser };
@@ -62,7 +58,8 @@ datastore.getUser({ username: "alice" }, middlewares)
 
 // Async output:
 // {
-//   data: { id: 2, handle: 'alice', role: 'author' },
-//   requestId: '623cbd11-5f1d-463b-90a4-5e0216b93207',
-//   timestamp: 1620409821851
+//   user: { id: 2, handle: 'alice', role: 'author' },
+//   username: 'alice',
+//   requestId: 'a7de3dc0-1fc2-4508-969b-ea724bf36091',
+//   timestamp: 1620410644011
 // }
