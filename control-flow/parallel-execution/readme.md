@@ -185,6 +185,6 @@ In parallel programming the most critical part is to keep consistency to the sha
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [Reducer](reducer.js): Reduce random integer numbers in parallel with callbacks
+* [Stop Words](stop-words.js): Find how many stop words a given list of words has with callbacks
 * [Password Encryption](password-encryption.js): Encrypt a collection of passwords with promises
 * [Dice Roller](dice-roller.js): A dice roller using async/await and promises
