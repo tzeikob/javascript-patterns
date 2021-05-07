@@ -1,6 +1,14 @@
 import bcrypt from 'bcrypt';
 
 function encrypt (text, rounds) {
+  if (!text || typeof text !== "string") {
+    return Promise.reject(new Error("Invalid text argument"));
+  }
+
+  if (!rounds || typeof rounds !== "number") {
+    return Promise.reject(new Error("Invalid rounds argument"));
+  }
+
   return bcrypt.hash(text, rounds);
 }
 
