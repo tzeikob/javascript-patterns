@@ -187,4 +187,4 @@ Below you can find various trivial or real-world implementations of this pattern
 
 * [Stop Words](stop-words.js): Find how many stop words a given list of words has with callbacks
 * [Unicode Mapper](unicode-mapper.js): Map japanese words to their unicode equivalent with promises
-* [Dice Roller](dice-roller.js): A dice roller using async/await and promises
+* [Sales](sales.js): Reduce to the total amount of sales from different sources with async/await
