@@ -214,4 +214,4 @@ Below you can find various trivial or real-world implementations of this pattern
 
 * [Password Encryption](password-encryption.js): Encrypt randomly salted passwords with callbacks
 * [Triple Encryption](triple-encryption.js): Triple encryption of a text with promises
-* [Async/await Encryption](async-encryption.js): Triple encryption of a text with async/await and promises
+* [Total Sales](total-sales.js): Calculate the total sales of a given product with async/await
