@@ -4,7 +4,7 @@ The sequential execution pattern belongs to the category of those design pattern
 
 ## Explanation
 
-According to this pattern each completed task should invoke the next in order task passing its result as input to the latter. The execution should continue as long as the last in order task completes and when this happens the execution is considered completed. In the case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
+According to this pattern each completed task should invoke the next in order task passing its result as input to the latter. The execution should continue as long as the last in order task completes, by that time the execution is considered as completed. In the case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
 ### Sequential execution with callbacks
 
@@ -14,14 +14,21 @@ In order to keep our code as clean as possible we can split the execution of eac
 
 ```javascript
 // An asynchronous operation
-function operation (input, callback) {...}
+function operation (input, callback) {
+  setTimeout(() => {
+    try {
+      // Execute business logic
+      const result = ...
+
+      callback(null, result);
+    } catch (error) {
+      callback(error);
+    }
+  });
+}
 
 function execution (input, callback) {
-  // For any invalid argument call back asynchronously with error
-  ...
-
-  // Call the first task for execution
-  task1(input, callback);
+  task1(input, callback); // Call the first task
 }
 
 function task1 (input, callback) {
@@ -31,7 +38,7 @@ function task1 (input, callback) {
       return callback(error); // Call back early with error
     }
 
-    // Call next task passing the result as input
+    // Call next task passing both result and callback
     task2(result, callback);
   });
 }
@@ -43,7 +50,7 @@ function task2 (input, callback) {
       return callback(error); // Call back early with error
     }
 
-    // Call next task passing the result as input
+    // Call next task passing both result and callback
     task3(result, callback);
   });
 }
@@ -75,34 +82,48 @@ execution(input, (error, result) => {
 });
 ```
 
-Bear in mind that we are using an input argument in the call of a task, this way we can share previous computed data to tasks down into the chain of execution without polluting the top scope via closures. The convention here is that the output of a task should be considered the input of the next in the line task, where input/output could be any type of value including custom objects.
+Bear in mind that we are using an input argument in the call of a task, this way we can share previous computed data to tasks down into the chain of execution without polluting the top scope via closures. The convention here is that the output of a task should be considered the input of the next task, where input/output could be any type of value including custom objects.
 
 ### Sequential execution with promises
 
-A more elegant approach to implement this pattern is to use promises which will give us more readable and less error-prone code in comparison to callbacks. Apart from readability one drawback in callbacks implementation is that's so easy to call the completion callback twice or even more times by accident, which will introduce serious problems in any application. In promises this is not the case because every promise is guaranteed to be resolved only **once** either fulfilled or rejected. So let's say we have the same `operation` function and tasks as before but this time instead of using async callback the operation returns a promise,
+A more elegant approach to implement this pattern is to use promises which will give us more readable and less error-prone code in comparison to callbacks. Apart from readability one drawback in callbacks implementation is that's so easy to call the completion callback twice or even more times by accident, which will introduce serious problems in any application. In promises this is not the case because every promise is guaranteed to be resolved only **once** either fulfilled or rejected. So let's say we have the same `operation` function and tasks as before but this time instead of using async callback the operation returns a promise.
 
 ```javascript
 // An operation returns as a promise
 function operation (input) {
-  return new Promise((resolve, reject) => {...});
+  return new Promise((resolve, reject) => {
+    try {
+      // Execute the business logic
+      const result = ...
+
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
+// Each task returns a promise as well
 const task1 = (input) => operation(input);
 const task2 = (input) => operation(input);
 const task3 = (input) => operation(input);
 ```
 
-the code to implement the sequential execution of those three asynchronous tasks is now just a matter of a few lines of code.
+The code to implement the sequential execution of those three asynchronous tasks is now just a matter of a few lines of code.
 
 ```javascript
 task1(input)
   .then((result) => task2(result))
   .then((result) => task3(result))
-  .then((result) => {...})
-  .catch((error) => {...});
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
 
-By chaining each promise returned from a task we are making sure that the execution is running in a strictly sequential order. Any rejected promise during the execution will be caught by the error handler defined in the `catch` method, something that is making our code more maintainable and reliable against bugs introduced during development.
+By chaining each promise returned from a task we are making sure that the execution is running in a strictly sequential order. Any rejected promise during the execution will be caught by the error handler defined in the `catch` method, something that makes our code more maintainable and reliable against bugs introduced during development.
 
 ### Sequential execution with async/await
 
@@ -111,9 +132,19 @@ A more elegant way to implement the same pattern of execution is to use **async 
 ```javascript
 // An operation returns as a promise
 function operation (input) {
-  return new Promise((resolve, reject) => {...});
+  return new Promise((resolve, reject) => {
+    try {
+      // Execute the business logic
+      const result = ...
+
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
+// Each task returns a promise as well
 const task1 = (input) => operation(input);
 const task2 = (input) => operation(input);
 const task3 = (input) => operation(input);
@@ -123,9 +154,6 @@ The execution of those tasks in sequential flow could be done within an async fu
 
 ```javascript
 async function execution (input) {
-  // For any invalid argument reject by throwing an error
-  ...
-  
   let result = await task1(input);
   result = await task2(result);
   result = await task3(result);
@@ -140,8 +168,12 @@ Knowing that the execution function returns a promise, this is how we invoke the
 
 ```javascript
 execution(input)
-  .then((result) => {...})
-  .catch((error) => {...});
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
 
 ## Considerations
@@ -171,10 +203,6 @@ function execution (input, callback) {
       });
     });
   });
-});
-
-execution(input, (error, result) => {
-  ...
 });
 ```
 
