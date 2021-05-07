@@ -186,7 +186,7 @@ The issue with this code is that in every invocation of the given async callback
 
 Below you can find various trivial or real-world implementations of this pattern:
 
-* [Reducer](reducer.js): Reduce random integer numbers with callbacks
+* [Text Processing](text-processing.js): Pass a given phrase through various text processors with callbacks
 * [File Encryption](file-encryption.js): Encrypt the content of a file with callbacks
 * [Accumulator](accumulator.js): Accumulate a list of random even integers with promises
 * [Async/await Accumulator](async-accumulator.js): Accumulate a list of random even integers with async/await and promises
