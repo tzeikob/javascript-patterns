@@ -121,14 +121,11 @@ As you have noticed the error handling is now easier to implement just by using 
 With async/await this pattern can be implemented in a more elegant way by implementing an **async execution** function along with **await** expressions. Let's say we have the same collection of tasks returning promises as before.
 
 ```javascript
+// A collection of trivial asynchronous tasks
 const tasks = [
-  function tasks1 (input) {
-    return new Promise((resolve, reject) => {...});
-  },
-
-  function tasks2 (input) {...},
-  function tasks3 (input) {...},
-  ...
+  (input) => new Promise((resolve) => setTimeout(() => resolve("Task1"))),
+  (input) => new Promise((resolve) => setTimeout(() => resolve("Task2"))),
+  (input) => new Promise((resolve) => setTimeout(() => resolve("Task3")))
 ];
 ```
 
@@ -136,9 +133,6 @@ Within the `execution` function we only need to iterate through the collection o
 
 ```javascript
 async function execution (tasks, input) {
-  // For any invalid argument reject by throwing an error
-  ...
-
   let result;
 
   // Iterate over the collection of tasks
@@ -159,8 +153,12 @@ Having the async execution function returning a promise, this is how we invoke t
 
 ```javascript
 execution(tasks, input)
-  .then((result) => {...})
-  .catch((error) => {...});
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
 
 ## Considerations
@@ -182,7 +180,7 @@ function execution (tasks, input) {
 }
 ```
 
-The issue with this code is that in every invocation of the given async callback in `forEach`, the returned promise will be ignore and so no task will wait for the completion of the previous in order task. This code is like executing all the tasks at once in parallel and not in sequential order, so be very careful.
+The issue with this code is that in every invocation of the given async callback in `forEach`, the returned promise will be ignored and so no task will wait for the completion of the previous in order task. This code is like executing all the tasks at once in parallel and not in sequential order, so be very careful.
 
 ## Implementations
 
