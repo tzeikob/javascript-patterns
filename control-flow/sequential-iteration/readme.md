@@ -1,12 +1,12 @@
-# The Sequential Iteration Pattern #
+# The Sequential Iteration Pattern
 
 The sequential iteration pattern is a special form of the [sequential execution](../sequential-execution/readme.md) pattern, thus belongs to the category of the **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** of tasks.
 
-## Explanation ##
+## Explanation
 
 What makes this pattern special about sequential execution is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like a collection of tasks. In such a use case it could be impossible to hard code the invocation of each task, so we have to follow a different approach. The solution is to use a more dynamic iterative process. The sequential iteration pattern can be implemented using either old school **callbacks** along with recursion or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
-### Sequential iteration with callbacks ###
+### Sequential iteration with callbacks
 
 Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts that collection of tasks along with an initial `input` and a completion `callback`, within that function we will use a helper function called `iterate` which will be responsible to manage the sequential execution. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the result of each task, this way we can share data between tasks. Note that, as with sequential execution pattern, the completion callback should be called only **once** in either rejection or completion.
 
@@ -72,7 +72,7 @@ execution(tasks, input, (error, result) => {
 
 Note that we can use custom objects in the place of the `input` variable if we need to be more flexible.
 
-### Sequential iteration with promises ###
+### Sequential iteration with promises
 
 A more elegant way to implement this pattern is to use **chaining promises** which will give us more readable and less verbose code in comparison to callbacks. In promises we know that a promise will resolve only **once** either fulfilled or rejected, so why not to wrap each task in a promise and chain them so to get that strictly sequential flow. Let's say we have the same tasks as before but this time instead of using async callback they return a promise.
 
@@ -119,7 +119,7 @@ execution(tasks, input)
 
 As you have noticed the error handling is now easier to implement just by using the `catch` method on the returned promise, any rejected promise in the chain will be caught here as an error. So using promises we can skip boilerplate code and get cleaner and less verbose syntax which is easier to maintain.
 
-### Sequential iteration with async/await ###
+### Sequential iteration with async/await
 
 With async/await this pattern can be implemented in a more elegant way by implementing an **async execution** function along with **await** expressions. Let's say we have the same collection of tasks returning promises as before.
 
@@ -166,13 +166,13 @@ execution(tasks, input)
   .catch((error) => {...});
 ```
 
-## Considerations ##
+## Considerations
 
-### Use recursion with caution ###
+### Use recursion with caution
 
 Even though using recursion in the iteration pattern might seem so powerful, you should take care and make good and fair use of this feature in order to avoid unexpected results such as **stack overflows**.
 
-### Avoid the anti-pattern use of async/await ###
+### Avoid the anti-pattern use of async/await
 
 One common pitfall using await expressions when we need to call a collection of tasks in sequential way is to use the `Array.prototype.forEach` method like so.
 
@@ -187,7 +187,7 @@ function execution (tasks, input) {
 
 The issue with this code is that in every invocation of the given async callback in `forEach`, the returned promise will be ignore and so no task will wait for the completion of the previous in order task. This code is like executing all the tasks at once in parallel and not in sequential order, so be very careful.
 
-## Implementations ##
+## Implementations
 
 Below you can find various trivial or real-world implementations of this pattern:
 

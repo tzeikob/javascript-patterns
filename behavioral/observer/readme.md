@@ -1,12 +1,12 @@
-# The Observer Pattern #
+# The Observer Pattern
 
 The observer pattern belongs to the category of those design patterns called **behavioral**. This pattern allows you to manage a collection of callbacks called **listeners**, so they can be triggered by another object, called the **subject** or the **observable**. According to this pattern an observable should emit various events during an operation and call every registered listener for each event, in order other parts of the code to get notified.
 
-## Explanation ##
+## Explanation
 
 In the observer pattern an observable is an object also known as the **focal point**, so we can define an observable as a class having initially an empty collection of listeners. This collection is expected to be a map, where the keys are the event types and for each event type we are about to keep an ordered list of listeners meant to be triggered each time a specific event is emitted.
 
-### Attach listeners to an observable ###
+### Attach listeners to an observable
 
 The way to attach a listener to an observable is straightforward, we should provide the event type along with the listener and append it to the list of listeners for that specific event type. The order the listeners are attached must be attained in the whole life-cycle of the observable so they can be called in order. To be more precise the observable should define what event types emits, so at creation we initiate each event's listeners list to an empty array. Any attempt to register a listener for a not supported event type should be ignored by convention.
 
@@ -36,7 +36,7 @@ class Observable {
 
 > The `error` event type will be used for error handling as we'll see later on.
 
-### Emit events from an observable ###
+### Emit events from an observable
 
 By this time we need a mechanism in order to broadcast events, so every listener is triggered for its corresponding event is being emitted. Having the map of listeners per event we only need to iterate through and call them in the specified order along with any data arguments. The data arguments could be any valid value given as separated arguments.
 
@@ -59,7 +59,7 @@ class Observable {
 
 > We could call the listener with `this` instead of `null` in case we need to access the observable within the listener's code for further use via the `this` operator.
 
-### An observable must have a purpose ###
+### An observable must have a purpose
 
 An observable must have a purpose, it must provide at least one asynchronous operation. It doesn't have to be an asynchronous operation, even though it only makes sense to have an asynchronous observable. Within each operation the observable must use the `emit` method in order to call every listener given this event type along with any data arguments.
 
@@ -83,7 +83,7 @@ class Observable {
 
 > We are using the `setTimeout` function to mimic the execution of an asynchronous operation.
 
-### Register event listeners ###
+### Register event listeners
 
 Having the observable class we can now create an instance of it and register event listeners by using the `on` method given the event type and the listener.
 
@@ -101,7 +101,7 @@ observable.on("error", (error) => {
 
 > Because the observable's `on` method is implemented such to return the observable object, we can use chaining as well.
 
-### Error handling in observable ###
+### Error handling in observable
 
 A special care must be taken regarding the error handling in the observer pattern. Every time an error is caught in an operation of an observable we must emit with the special event type of `error`. The emission by convention must be triggered along with a given valid `Error` object and not any primitive or custom object value.
 
@@ -126,7 +126,7 @@ class Observable {
 }
 ```
 
-### Putting all together ###
+### Putting all together
 
 To sum up, an observable must encapsulate a map of listeners (observers) per event type according to our requirements and broadcast events so the listeners mapped by the emitted event are executed. A special event is the error which must be triggered any time an exception is thrown. All those broadcasts and emissions must happen within an asynchronous operation so no listeners are swallowed by operations executed before the listeners being registered. Now let's put all this together.
 
@@ -183,9 +183,9 @@ observable.on("error", (error) => {...});
 observable.operation();
 ```
 
-## Considerations ##
+## Considerations
 
-### Avoid memory leaks of dangling listeners ###
+### Avoid memory leaks of dangling listeners
 
 The observer pattern is a very powerful mechanism which if not taken seriously it might introduce some kind of degradation in the performance of your application. Each time a new listener is attached to an observable occupies memory because of the surrounding closure, that portion of allocation must be released when the listener not needed anymore. So we always must provide a method to remove registered listeners from an observable object. In order to remove a listener we must provide both the event type and the listener.
 
@@ -204,7 +204,7 @@ class Observable {
 }
 ```
 
-### Emit asynchronously to avoid swallowing listeners ###
+### Emit asynchronously to avoid swallowing listeners
 
 What do we mean by swallowing listeners is that if we try to emit an event synchronously there is possibility to miss listeners registered after the emission of the event. Let's say we need to emit an event each time we construct an observable, anyone could think that the following code should do the job,
 
@@ -241,7 +241,7 @@ class Observable {
 }
 ```
 
-### Get access to the observable within listeners ###
+### Get access to the observable within listeners
 
 A really reasonable request could be to give access to the observable's state within the code of each registered listener. We can do this by just calling each listener with the `this` like so,
 
@@ -275,7 +275,7 @@ observable.on("success", function (data) {
 });
 ```
 
-## Implementations ##
+## Implementations
 
 Below you can find various trivial or real-world implementations of this pattern:
 

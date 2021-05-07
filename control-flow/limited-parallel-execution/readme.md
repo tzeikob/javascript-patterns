@@ -1,12 +1,12 @@
-# The Limited Parallel Execution Pattern #
+# The Limited Parallel Execution Pattern
 
 The limited parallel execution pattern belongs to the category of those design patterns called **async control flow** patterns and is a special version of the [parallel execution](../parallel-execution/readme.md) pattern. In use cases where we have limited number of resources (memory, cpu cycles) we should consider taking another approach by just invoking all tasks at once. Instead we can split the execution in batches of tasks run in **parallel** and wait to be notified when all of them are done.
 
-## Explanation ##
+## Explanation
 
 The execution of such pattern should be considered as completed when all given tasks have been completed, unless a task throws an error which means that the execution should be rejected along with the thrown error. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
-### Limited parallel execution with callbacks ###
+### Limited parallel execution with callbacks
 
 Assume we have an `execution` function which expects a collection of asynchronous `tasks`, where each task should use a callback to fulfill or reject. Along with tasks the function requires a `concurrency` limit and a completion `callback`. The concurrency limit is the maximum number of tasks which can be running in parallel at any given time in execution. Along with the already known `completed` and `rejected` variables which have been used in the parallel execution pattern, here we will need two more variables. The variable `running` meant to store the actual number of running tasks at any given time and an `index` to point to the next task in invocation.
 
@@ -155,7 +155,7 @@ execution(tasks, 2, (error, results) => {
 
 We can think the limited parallel execution as a room where tasks can be run in parallel, but the space is bounded to accept only a limited number of tasks. Every time a task in the room completes another task from the collection drops in and starts executing. The goal is to split the overhead of running too many tasks in parallel and avoid running out of resources.
 
-### Limited parallel execution with promises ###
+### Limited parallel execution with promises
 
 Using promises we can improve the previous implementation by making the code more readable and maintainable. In this case we have one important difference, both every task and the `execution` function instead of using callbacks should now return a promise. Within the execution function we have a local nested `executor` function. In general this function is responsible to keep pulling available tasks from the given `tasks` queue and execute them one at a time (event loop cycle), where each result should be collected into the `results` variable. When no task has been left into the queue the executor should terminate.
 
@@ -266,7 +266,7 @@ execution(tasks, 2)
 
 > Note we skip any promise rejection within asynchronous tasks for brevity, but you always have to take care of rejections.
 
-### Limited parallel execution with async/await ###
+### Limited parallel execution with async/await
 
 We can improve the previous implementation even more by changing only the internals of the execution and using async functions along with await expressions. One important difference here is that the `execution` function should now be an `async` function instead. Within the execution function there is a local async function called `executor`, this function is responsible to keep running as long as there are available `tasks` for invocation, otherwise should terminate and resolve immediately. The executor should check if there is at least one task in the `tasks` queue and if there is removes it from the queue and executes it. Any `result` resolved by an asynchronous task should be collected into the local `results` variable. The task is executed by using `await` which makes sure that the `while` loop is not blocking the event loop because the next iteration is scheduled for the next subsequent cycle.
 
@@ -355,13 +355,13 @@ execution(tasks, 2)
   });
 ```
 
-## Considerations ##
+## Considerations
 
-### Race conditions ###
+### Race conditions
 
 In parallel programming the most critical part is to keep consistency to the shared context between every task. Even though JavaScript engine implementations are single-threaded environments and there is not need to use techniques such as locks, mutexes and the like, the possibility of race conditions is **not guaranteed** to not happen. So you have to double check the computations taking place within a task running in parallel and the delay it takes to return its result to the others as this is often the reason of such race conditions.
 
-## Implementations ##
+## Implementations
 
 Below you can find various trivial or real-world implementations of this pattern:
 

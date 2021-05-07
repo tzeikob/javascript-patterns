@@ -1,12 +1,12 @@
-# The Sequential Execution Pattern #
+# The Sequential Execution Pattern
 
 The sequential execution pattern belongs to the category of those design patterns called **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means that every task should be executed as part of a **chain** or **pipeline** of tasks.
 
-## Explanation ##
+## Explanation
 
 According to this pattern each completed task should invoke the next in order task passing its result as input to the latter. The execution should continue as long as the last in order task completes and when this happens the execution is considered completed. In the case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
-### Sequential execution with callbacks ###
+### Sequential execution with callbacks
 
 Let's start by making the assumption that a sequential execution of tasks should be started given two arguments, an `input` of any type and the completion `callback`. Each task in execution is responsible to invoke the next in order task passing both the completion callback along with any result computed so far. In case an error is thrown at any given time, the execution should be rejected immediately by invoking the completion callback with the error. One critical rule is that the completion callback should be called only **once** in either rejection or completion.
 
@@ -77,7 +77,7 @@ execution(input, (error, result) => {
 
 Bear in mind that we are using an input argument in the call of a task, this way we can share previous computed data to tasks down into the chain of execution without polluting the top scope via closures. The convention here is that the output of a task should be considered the input of the next in the line task, where input/output could be any type of value including custom objects.
 
-### Sequential execution with promises ###
+### Sequential execution with promises
 
 A more elegant approach to implement this pattern is to use promises which will give us more readable and less error-prone code in comparison to callbacks. Apart from readability one drawback in callbacks implementation is that's so easy to call the completion callback twice or even more times by accident, which will introduce serious problems in any application. In promises this is not the case because every promise is guaranteed to be resolved only **once** either fulfilled or rejected. So let's say we have the same `operation` function and tasks as before but this time instead of using async callback the operation returns a promise,
 
@@ -104,7 +104,7 @@ task1(input)
 
 By chaining each promise returned from a task we are making sure that the execution is running in a strictly sequential order. Any rejected promise during the execution will be caught by the error handler defined in the `catch` method, something that is making our code more maintainable and reliable against bugs introduced during development.
 
-### Sequential execution with async/await ###
+### Sequential execution with async/await
 
 A more elegant way to implement the same pattern of execution is to use **async functions** along with **await** expressions. The use of async/await will make the code look like it is executed synchronously even though it still remains asynchronous. Let's say we have the same `operation` function and the same tasks as before.
 
@@ -144,9 +144,9 @@ execution(input)
   .catch((error) => {...});
 ```
 
-## Considerations ##
+## Considerations
 
-### Avoid the callback hell anti-pattern ###
+### Avoid the callback hell anti-pattern
 
 By using in-place anonymous function definitions where we have to place a callback is considered a very bad practice when you have a list of tasks must be executed one after the other. The reason is that this will eventually result in the chaos of an unreadable code (pyramid of doom), hard to maintain, debug and test. So avoid doing the following when you have to control the execution of asynchronous tasks.
 
@@ -180,7 +180,7 @@ execution(input, (error, result) => {
 
 Instead try to split your code into named function definitions per task, this way you can test and debug easier every part of the execution in isolation. In addition, following this approach you can avoid unnecessary closures in order to pass and share data across all the tasks in case a task needs some results from a task completed before.
 
-## Implementations ##
+## Implementations
 
 Below you can find various trivial or real-world implementations of this pattern:
 

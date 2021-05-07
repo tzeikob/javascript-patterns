@@ -1,12 +1,12 @@
-# The Callback Pattern #
+# The Callback Pattern
 
 A callback is nothing more than a function, which in JavaScript is considered a **first-class** object. Functions can be assigned to variables, passed as arguments in other functions and even returned by functions. In both the synchronous and asynchronous world of JavaScript this is considered a foundational concept, because either we can pass functionality to be executed at the same cycle of the event loop or at a future event loop cycle without blocking the current code.
 
-## Explanation ##
+## Explanation
 
 As callback is just a function, it can be passed to another function and invoked with the result when the operation in that function completes. It doesn't need to be an asynchronous operation though, callbacks can be used both in synchronous and asynchronous operations.
 
-### Callback in a synchronous operation ###
+### Callback in a synchronous operation
 
 In a synchronous operation, the callback patterns should be implemented like so,
 
@@ -26,7 +26,7 @@ operation(input, function callback(result) {
 
 where input can be any valid value or either a list of separated input values followed be the callback which always should come last.
 
-### Callback in an asynchronous operation ###
+### Callback in an asynchronous operation
 
 In an asynchronous operation though, a callback should always be called asynchronously in order to be invoked in the next event loop cycles.
 
@@ -48,7 +48,7 @@ operation(input, function callback(result) {
 
 > We are using the `setTimeout` function in order to mimic the execution of an asynchronous operation.
 
-### Callback which returns a value back ###
+### Callback which returns a value back
 
 The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the values of a collection. In such cases a callback is given a value and returns it back modified instead of just handle it.
 
@@ -73,7 +73,7 @@ const results = operation(values, function callback(value) {
 });
 ```
 
-### Error handling in a callback ###
+### Error handling in a callback
 
 Another important thing is to be consistent with error handling in callbacks and have any error come first when propagating errors back.
 
@@ -103,9 +103,9 @@ operation(input, function callback(error, result) {
 
 To sum up, a callback called synchronously blocks the current code until the operation completes, where an asynchronously called callback returns control back immediately and completes, given the result, at a later event loop cycle. In any use case mentioned above, there is no syntactic difference which means that the intent of the callback should always be explained in the documentation of the API about the synchronous or asynchronous manner the callback is called.
 
-## Considerations ##
+## Considerations
 
-### Unpredictable synchronous or asynchronous behavior ###
+### Unpredictable synchronous or asynchronous behavior
 
 Try to avoid inconsistencies in the behavior of a function which is using a callback, either the callback should always be called synchronously or asynchronously. It is considered very bad practice to have a function behave unpredictably mixing synchronous and asynchronous calls to the given callback. Let's say we have a `cache` map object and an asynchronous `factorial` function:
 
@@ -141,7 +141,7 @@ function compute(num, callback) {
 }
 ```
 
-## Implementations ##
+## Implementations
 
 Below you can find various trivial or real-world implementations of this pattern:
 
