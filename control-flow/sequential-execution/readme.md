@@ -12,30 +12,18 @@ The sequential execution pattern can be implemented using either old school **ca
 
 Let's start by making the assumption that a sequential execution of tasks should be started given two arguments, an `input` of any type and the completion `callback`. Each task in execution is responsible to invoke the next in order task passing both the completion callback along with any result computed so far. In case an error is thrown at any given time, the execution should be rejected immediately by invoking the completion callback with the error. One critical rule is that the completion callback should be called only **once** in either rejection or completion.
 
-In order to keep our code as clean as possible we can split the execution of each task in a separate function instead of hard coding invocations within the lexical scope of a single function. Now assume we have a generic asynchronous function called `operation` which just expects two arguments, an `input` and a `callback`, the following code is an implementation of a sequential execution of three tasks all using this asynchronous operation.
+In order to keep our code as clean as possible we can split the execution of each task in a separate function instead of hard coding invocations within the lexical scope of a single function. Now assume we have an `api` module which exposes some asynchronous via callback operations, each of those operations expects two arguments, an `input` and a `callback`. The following code is an implementation of a sequential execution of three tasks each using its corresponding operation.
 
 ```javascript
-// An asynchronous operation
-function operation (input, callback) {
-  setTimeout(() => {
-    try {
-      // Execute business logic
-      const result = ...
-
-      callback(null, result);
-    } catch (error) {
-      callback(error);
-    }
-  });
-}
+import { operationA, operationB, operationC } from "api";
 
 function execution (input, callback) {
   task1(input, callback); // Call the first task
 }
 
 function task1 (input, callback) {
-  // Execute asynchronous operation
-  operation(input, (error, result) => {
+  // Execute asynchronous operation A
+  operationA(input, (error, result) => {
     if (error) {
       return callback(error); // Call back early with error
     }
@@ -46,8 +34,8 @@ function task1 (input, callback) {
 }
 
 function task2 (input, callback) {
-  // Execute asynchronous operation
-  operation(input, (error, result) => {
+  // Execute asynchronous operation B
+  operationB(input, (error, result) => {
     if (error) {
       return callback(error); // Call back early with error
     }
@@ -58,8 +46,8 @@ function task2 (input, callback) {
 }
 
 function task3 (input, callback) {
-  // Execute asynchronous operation
-  operation(input, (error, result) => {
+  // Execute asynchronous operation C
+  operationC(input, (error, result) => {
     if (error) {
       return callback(error); // Call back early with error
     }
@@ -88,30 +76,18 @@ Bear in mind that we are using an input argument in the call of a task, this way
 
 ### Sequential execution with promises
 
-A more elegant approach to implement this pattern is to use promises which will give us more readable and less error-prone code in comparison to callbacks. Apart from readability one drawback in callbacks implementation is that's so easy to call the completion callback twice or even more times by accident, which will introduce serious problems in any application. In promises this is not the case because every promise is guaranteed to be resolved only **once** either fulfilled or rejected. So let's say we have the same `operation` function and tasks as before but this time instead of using async callback the operation returns a promise.
+A more elegant approach to implement this pattern is to use promises which will give us more readable and less error-prone code in comparison to callbacks. Apart from readability one drawback in callbacks implementation is that's so easy to call the completion callback twice or even more times by accident, which will introduce critical problems in any application. In promises this is not the case because every promise is guaranteed to be resolved only **once** either fulfilled or rejected. So let's say we have the same `api` as before but now each operation instead of using a callback returns a promise instead and so each task could be just a wrapper around its corresponding operation.
 
 ```javascript
-// An operation returns as a promise
-function operation (input) {
-  return new Promise((resolve, reject) => {
-    try {
-      // Execute the business logic
-      const result = ...
-
-      resolve(result);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+import { operationA, operationB, operationC } from "api";
 
 // Each task returns a promise as well
-const task1 = (input) => operation(input);
-const task2 = (input) => operation(input);
-const task3 = (input) => operation(input);
+const task1 = (input) => operationA(input);
+const task2 = (input) => operationB(input);
+const task3 = (input) => operationC(input);
 ```
 
-The code to implement the sequential execution of those three asynchronous tasks is now just a matter of a few lines of code.
+The code to execute the sequence of those asynchronous tasks is now just a matter of a few lines of code.
 
 ```javascript
 task1(input)
@@ -129,27 +105,15 @@ By chaining each promise returned from a task we are making sure that the execut
 
 ### Sequential execution with async/await
 
-A more elegant way to implement the same pattern of execution is to use **async functions** along with **await** expressions. The use of async/await will make the code look like it is executed synchronously even though it still remains asynchronous. Let's say we have the same `operation` function and the same tasks as before.
+A more elegant way to implement the same pattern of execution is to use **async functions** along with **await** expressions. The use of async/await will make the code look like it is executed synchronously even though it still remains asynchronous. Let's say we have the same operations along with the same tasks all returning promises as before.
 
 ```javascript
-// An operation returns as a promise
-function operation (input) {
-  return new Promise((resolve, reject) => {
-    try {
-      // Execute the business logic
-      const result = ...
-
-      resolve(result);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+import { operationA, operationB, operationC } from "api";
 
 // Each task returns a promise as well
-const task1 = (input) => operation(input);
-const task2 = (input) => operation(input);
-const task3 = (input) => operation(input);
+const task1 = (input) => operationA(input);
+const task2 = (input) => operationB(input);
+const task3 = (input) => operationC(input);
 ```
 
 The execution of those tasks in sequential flow could be done within an async function called `execution` like so.
@@ -166,7 +130,7 @@ async function execution (input) {
 
 > Within the execution function any thrown exception of rejected promise will trigger the `catch` handler of the returned promise.
 
-Knowing that the execution function returns a promise, this is how we invoke the execution handling both the fulfillment and rejections.
+Knowing that the `execution` function returns a promise, this is how we invoke the execution handling both the fulfillment and rejections.
 
 ```javascript
 execution(input)
