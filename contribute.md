@@ -59,20 +59,25 @@ Please note that I **am not accepting any contributions** for 1st edition any mo
 
 ## Pull request guidelines
 
-The title of every PR should be a short phrase pointing to what this PR is all about, where the first character should always be in uppercase and the rest in lowercase. In case the PR is related to a specific reported issue include its number in the form `(#issue-number)` at the end of the title.
+### Use short and specific as possible titles
 
-> Note: Please do not use special characters or emoticons in the title, titles like `fix => typo` will not be accepted.
+The title of every PR should be a short phrase pointing to what this PR is all about, where the first character should always be in uppercase and the rest in lowercase. In case the PR is related to a specific reported issue (e.g. fix, feature, etc.) include its number in the form `(#issue-number)` at the end of the title.
 
-A good example of a title is, `Add implementation of the parallel execution using async/await (#13)`.
+> Note: Please do not use periods, special characters or emoticons in the title, titles like `Fix! => typo.` will not be accepted. Keep it simple.
 
-Every PR should have a description with the following template.
+A good example of a title is, `Add a new impl to the parallel execution pattern (#13)`.
+
+### Use the description to provide a more in depth information
+
+Every PR should have a description starting with some information in the following form.
 
 ```
-Category: <Behavioral>
-Pattern: <Observer>
-Label: <Fix, Feature, Improvement, Typo, etc.>
-Issue: <#13>
-Description: <Free text>
+Category: `Behavioral`
+Pattern: `Observer`
+Label: `Fix`
+Issue: `#13`
 ```
 
-If the PR is not related to an issue then just ignore the issue line.
+Where `Category` and `Pattern` referring to the category and the name of the design pattern which this PR is fixing, adding, modifying, etc. The `Label` should be single word indicating the purpose of this contribution, for instance in case of adding a new pattern the label is expected to be `Feature` (see github issues labels). Last but not least the `Issue` line, which is optional and required only if this PR is attached to a specific issue created in the issues page.
+
+After adding the previous information you can use more lines in free text to describe what this PR is all about and provide as much information as possible including perhaps code snippets and links.
