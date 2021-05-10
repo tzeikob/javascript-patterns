@@ -6,7 +6,7 @@ You are welcome to contribute to the quality of this content by submitting PR's 
 
 ## Search before submit
 
-In case you have any questions about the content or a code snippet, please make sure to check in issues first, there are great chances others in the community having the same concerns. This way we can keep the churn of issues to a minimum.
+In case you have any questions about the content or a code snippet, please make sure to check in [issues](https://github.com/tzeikob/javascript-patterns/issues) page first, there are great chances others in the community having the same concerns. This way we can keep the churn of issues to a minimum.
 
 ## Add a pattern
 
