@@ -2,7 +2,7 @@
 
 > NOTE: You are viewing the latest edition of this digital book which should be considered as a work **in progress**. The [1st edition](https://github.com/tzeikob/javascript-patterns/tree/1st-ed) of this book has been archived and kept stale.
 
-This is a digital book diving deep into the field of design patterns and best practices being used in JavasScript software development. Even though this content is focusing in JavaScript implementations, many patterns and practices may still be applicable to other programming languages as well.
+This is a digital book diving deep into the field of design patterns and best practices being used in JavasScript software development. Even though this content is focusing in JavaScript implementations, many patterns and practices may still be applicable to others programming languages as well.
 
 ## Table of Contents
 * Foundational
