@@ -63,7 +63,7 @@ Please note that I **am not accepting any contributions** for 1st edition any mo
 
 The title of every PR should be a short phrase pointing to what this PR is all about, where the first character should always be in uppercase and the rest in lowercase. In case the PR is related to a specific reported issue (e.g. fix, feature, etc.) include its number in the form `(#issue-number)` at the end of the title.
 
-> Note: Please do not use periods, special characters or emoticons in the title, titles like `Fix! => typo.` will not be accepted. Keep it simple.
+> Please do not use periods, special characters or emoticons in the title, titles like `Fix! => typo.` will not be accepted. Keep it simple.
 
 A good example of a title is, `Add a new impl to the parallel execution pattern (#13)`.
 
