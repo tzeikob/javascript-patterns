@@ -63,7 +63,7 @@ Please note that I **am not accepting any contributions** for 1st edition any mo
 
 The title of every PR should be a short phrase pointing to what this PR is all about, where the first character should always be in uppercase and the rest in lowercase. In case the PR is related to a specific reported issue (e.g. fix, feature, etc.) include its number in the form `(#issue-number)` at the end of the title.
 
-> Please do not use periods, special characters or emoticons in the title, titles like `Fix! => typo.` will not be accepted. Keep it simple.
+> Please do not use periods, special characters or emoticons in the title, titles like `Fix! => typo.` will not be accepted.
 
 A good example of a title is, `Add a new impl to the parallel execution pattern (#13)`.
 
@@ -71,11 +71,11 @@ A good example of a title is, `Add a new impl to the parallel execution pattern 
 
 Every PR should have a description starting with some information in the following form.
 
-```
-Category: `Behavioral`
-Pattern: `Observer`
-Label: `Fix`
-Issue: `#13`
+```markdown
+Category: Behavioral
+Pattern: Observer
+Label: Fix
+Issue: #13
 ```
 
 Where `Category` and `Pattern` referring to the category and the name of the design pattern which this PR is fixing, adding, modifying, etc. The `Label` should be single word indicating the purpose of this contribution, for instance in case of adding a new pattern the label is expected to be `Feature` (see github issues labels). Last but not least the `Issue` line, which is optional and required only if this PR is attached to a specific issue created in the issues page.
