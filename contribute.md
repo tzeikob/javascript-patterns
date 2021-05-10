@@ -69,15 +69,17 @@ A good example of a title is, `Add a new impl to the parallel execution pattern 
 
 ### Use the description to provide a more in depth information
 
-Every PR should have a description starting with some information in the following form.
+Every PR should have a description starting with some line of information in the following form.
 
-```markdown
+```
 Category: Behavioral
 Pattern: Observer
 Label: Fix
 Issue: #13
+
+Add free text here...
 ```
 
-Where `Category` and `Pattern` referring to the category and the name of the design pattern which this PR is fixing, adding, modifying, etc. The `Label` should be single word indicating the purpose of this contribution, for instance in case of adding a new pattern the label is expected to be `Feature` (see github issues labels). Last but not least the `Issue` line, which is optional and required only if this PR is attached to a specific issue created in the issues page.
+Where `Category` and `Pattern` must referring to the category and the name of the design pattern which this PR is fixing, adding, modifying, etc. The `Label` should be a single keyword indicating the purpose of this contribution, for instance adding a new pattern the label is expected to be given as `Feature` (see github issues labels). Last but not least the `Issue` line, which is optional and required only if this PR is attached to a specific issue created in the issues page.
 
-After adding the previous information you can use more lines in free text to describe what this PR is all about and provide as much information as possible including perhaps code snippets and links.
+After adding the previous information you can use more lines in free text to describe what this PR is for and provide as much context as possible including perhaps code snippets and links.
