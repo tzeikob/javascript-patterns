@@ -1,10 +1,12 @@
 # The Sequential Execution Pattern
 
-The sequential execution pattern belongs to the category of those design patterns called **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means that every task should be executed as part of a **chain** or **pipeline** of tasks.
+The sequential execution pattern belongs to the category of those design patterns called **control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means that every task should be executed as part of a **chain** or **pipeline** of tasks.
 
-## Explanation
+According to this pattern each completed task should invoke the next in order task passing its result as input to the next one. The execution should continue as long as the last in order task completes, by that time the execution is considered as completed. In case any task in the sequence throws an error the execution should be rejected immediately along with the given error.
 
-According to this pattern each completed task should invoke the next in order task passing its result as input to the latter. The execution should continue as long as the last in order task completes, by that time the execution is considered as completed. In the case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
+## Implementation
+
+The sequential execution pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
 ### Sequential execution with callbacks
 
@@ -208,7 +210,7 @@ function execution (input, callback) {
 
 Instead try to split your code into named function definitions per task, this way you can test and debug easier every part of the execution in isolation. In addition, following this approach you can avoid unnecessary closures in order to pass and share data across all the tasks in case a task needs some results from a task completed before.
 
-## Implementations
+## Use Cases
 
 Below you can find various trivial or real-world implementations of this pattern:
 
