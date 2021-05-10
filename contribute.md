@@ -10,7 +10,7 @@ In case you have any questions about the content or a code snippet, please make 
 
 ## Add a new Design Pattern
 
-In order to keep the content of the book well organized and as uniform as possible every design pattern should be given as a `readme.md` file placed under a parent folder which is expected to be the category the pattern belongs to. The content of this file must be written in a specific structure of four main sections, the introduction, the implementation, the considerations and the use cases. Both the considerations and the use cases sections are optional and so if not applicable can be skipped. Below you can find an abstract example of such a readme file.
+In order to keep the content of the book well organized and as uniform as possible every design pattern should be given as a `readme.md` file placed under a parent folder which is expected to be the category the pattern belongs to. The content of this file must be written in a specific structure constitutes of four main sections, the introduction, the implementation, the considerations and the use cases. Both the considerations and the use cases sections are optional and so if not applicable can be skipped. Below you can find an abstract example of such a readme file.
 
 ```markdown
 # The <Name> Pattern
