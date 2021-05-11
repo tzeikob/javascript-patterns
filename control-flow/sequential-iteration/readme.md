@@ -1,6 +1,6 @@
 # The Sequential Iteration Pattern
 
-The sequential iteration pattern is a special version of the [sequential execution](../sequential-execution/readme.md) pattern. Both of these patterns allow you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** of tasks. What makes this pattern special over sequential execution pattern, is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like an array or list of tasks.
+The sequential iteration pattern is a special version of the [sequential execution](../sequential-execution/readme.md) pattern. Both of these patterns allow you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** of tasks. What makes this pattern special over the sequential execution pattern, is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like an array or list of tasks.
 
 Apart from this variation in the way the tasks are given, this pattern works the same way the sequential execution pattern works. So we expect that each completed task should invoke the next in order task passing its result as input to the next one. The execution should continue as long as the last in order task completes, by which time the execution is considered as completed. In case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The execution should be either fulfilled or rejected and no intermediate state should be allowed.
 
@@ -10,7 +10,7 @@ Having the tasks given as a dynamic collection it could be impossible to hard co
 
 ### Sequential iteration with callbacks
 
-Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts a collection of tasks along with an initial `input` and a completion `callback`. Within that function we will use another helper function called `iterate` which will be responsible to manage the sequential execution. This function will start being called recursively until the last task in the collection completes. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the `output` of each task in each iteration. Each task has access also to a shared local variable called `result`, where the completion value of the execution can be stored. Note that, as with sequential execution pattern, the completion callback should be called only **once** in either rejection or completion.
+Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts a collection of `tasks` along with an initial `input` and a completion `callback`. Within that function we will use another helper function called `iterate` which will be responsible to manage the sequential execution. This function will start being called recursively until the last task in the collection completes. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the `output` of each task per iteration. Each task has access also to a shared local variable called `result`, where the completion value of the execution can be stored. Note that, as with sequential execution pattern, the completion callback should be called only **once** in either rejection or completion.
 
 ```javascript
 function execution (tasks, input, callback) {
@@ -45,7 +45,7 @@ function execution (tasks, input, callback) {
 }
 ```
 
-> The result of each task is expected to be the input to the next in order task.
+> The output of each task is expected to be the input to the next in order task.
 
 This function calls recursion in order to invoke each task by using an `index` value pointing to the next task in execution. When the index reaches the total number of tasks the execution should be considered completed and the completion callback is called back with the `result` value. Bear in mind that if an error is thrown at any given time, the execution should be terminated and immediately call the completion callback along with the thrown error. Now assume we have a given collection of asynchronous tasks, this is how we will execute them in sequential order.
 
