@@ -2,7 +2,7 @@
 
 The sequential execution pattern belongs to the category of those design patterns called **control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means that every task should be executed as part of a **chain** or **pipeline** of tasks.
 
-According to this pattern each completed task should invoke the next in order task passing its result as input to the next one. The execution should continue as long as the last in order task completes, by which time the execution is considered as completed. In case any task in the sequence throws an error the execution should be rejected immediately along with the given error.
+According to this pattern each completed task should invoke the next in order task passing its result as input to the next one. The execution should continue as long as the last in order task completes, by which time the execution is considered as completed. In case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The execution should be either fulfilled or rejected and no intermediate state should be allowed.
 
 ## Implementation
 
