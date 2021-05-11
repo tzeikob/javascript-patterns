@@ -2,7 +2,7 @@
 
 The sequential execution pattern belongs to the category of those design patterns called **control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means that every task should be executed as part of a **chain** or **pipeline** of tasks.
 
-According to this pattern each completed task should invoke the next in order task passing its result as input to the next one. The execution should continue as long as the last in order task completes, by which time the execution is considered as completed. In case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The execution should be either fulfilled or rejected and no intermediate state should be allowed.
+According to this pattern each completed task should invoke the next in order task passing its result as input to the next one. The execution should continue until the last in order task completes, by which time the execution is considered as completed. In case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The execution should be either fulfilled or rejected and no intermediate state should be allowed.
 
 ## Implementation
 
@@ -10,9 +10,9 @@ The sequential execution pattern can be implemented using either old school **ca
 
 ### Sequential execution with callbacks
 
-Let's start by making the assumption that a sequential execution of tasks should be started given two arguments, an `input` of any type and the completion `callback`. Each task in execution is responsible to invoke the next in order task passing both the completion callback along with any result computed so far. In case an error is thrown at any given time, the execution should be rejected immediately by invoking the completion callback with the error. One critical rule is that the completion callback should be called only **once** in either rejection or completion.
+Let's start by making the assumption that a sequential execution of tasks should be started given two arguments, an `input` and the completion `callback`. Each task in execution is responsible to invoke the next in order task passing both the completion callback along with any result computed so far. In case an error is thrown at any given time, the execution should be rejected immediately by invoking the completion callback with the error. One critical rule is that the completion callback should be called only **once** in either rejection or completion.
 
-In order to keep our code as clean as possible we can split the execution of each task in a separate functions instead of hard coding invocations within the lexical scope of a single function. Now assume we have an `api` module which exposes some asynchronous via callback operations, each of those operations expects two arguments, an input and a callback. The following code is an implementation of a sequential execution of three tasks each using its corresponding operation.
+In order to keep our code as clean as possible we can split the execution of each task in separate functions instead of hard coding invocations within the lexical scope of a single function. Now assume we have an `api` module which exposes some asynchronous via callback operations, each of those operations expects two arguments, an input and a callback. The following code is an implementation of a sequential execution of three tasks each using its corresponding operation.
 
 ```javascript
 import { operationA, operationB, operationC } from "api";
@@ -105,7 +105,7 @@ By chaining each promise returned from a task we are making sure that the execut
 
 ### Sequential execution with async/await
 
-A more elegant way to implement the same pattern of execution is to use **async functions** along with **await** expressions. The use of async/await will make the code look like it is executed synchronously even though it still remains asynchronous. Let's say we have the same operations along with the same tasks all returning promises as before.
+A more elegant way to implement the same pattern of execution is to use async functions along with await expressions. The use of async/await will make the code look like it is executed synchronously even though it still remains asynchronous. Let's say we have the same operations along with the same tasks all returning promises as before.
 
 ```javascript
 import { operationA, operationB, operationC } from "api";
