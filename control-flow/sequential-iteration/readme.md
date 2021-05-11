@@ -10,31 +10,30 @@ Having the tasks given as a dynamic collection it could be impossible to hard co
 
 ### Sequential iteration with callbacks
 
-Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts a collection of tasks along with an initial `input` and a completion `callback`, within that function we will use a helper local function called `iterate` which will be responsible to manage the sequential execution. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the result of each task, this way we can share data between tasks. Note that, as with sequential execution pattern, the completion callback should be called only **once** in either rejection or completion.
+Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts a collection of tasks along with an initial `input` and a completion `callback`. Within that function we will use another helper function called `iterate` which will be responsible to manage the sequential execution. This function will start being called recursively until the last task in the collection completes. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the `output` of each task in each iteration. Each task has access also to a shared local variable called `result`, where the completion value of the execution can be stored. Note that, as with sequential execution pattern, the completion callback should be called only **once** in either rejection or completion.
 
 ```javascript
 function execution (tasks, input, callback) {
-  let value; // Completion value
+  let result; // Completion result value
 
   function iterate (index) {
-    // Call back at completion
     if (index === tasks.length) {
-      return callback(null, value);
+      return callback(null, result); // Call back at completion
     }
 
     // Execute the next in order task
     const task = tasks[index];
 
-    task(input, (error, result) => {
+    task(input, (error, output) => {
       if (error) {
         return callback(error); // Reject immediately
       }
 
-      // Pass the result as input for the next task
-      input = result;
+      // Pass the output as input for the next task
+      input = output;
 
-      // Update the completion value
-      value = ...
+      // Execute any business logic
+      result = ...
 
       // Call for the next iteration
       iterate(index + 1);
@@ -48,7 +47,7 @@ function execution (tasks, input, callback) {
 
 > The result of each task is expected to be the input to the next in order task.
 
-This function calls recursion in order to invoke each task by using an `index` value pointing to the next task in execution. When the index reaches the total number of tasks the execution should be considered completed and the completion callback is called back with the resulting `value`. Bear in mind that if an error is thrown at any given time, the execution should be terminated and immediately call the completion callback along with the thrown error. Now assume we have a given collection of asynchronous tasks, this is how we will execute them in sequential order.
+This function calls recursion in order to invoke each task by using an `index` value pointing to the next task in execution. When the index reaches the total number of tasks the execution should be considered completed and the completion callback is called back with the `result` value. Bear in mind that if an error is thrown at any given time, the execution should be terminated and immediately call the completion callback along with the thrown error. Now assume we have a given collection of asynchronous tasks, this is how we will execute them in sequential order.
 
 ```javascript
 // A collection of trivial asynchronous tasks
