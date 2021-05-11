@@ -1,14 +1,16 @@
 # The Sequential Iteration Pattern
 
-The sequential iteration pattern is a special form of the [sequential execution](../sequential-execution/readme.md) pattern, thus belongs to the category of the **async control flow** patterns. This pattern allows you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** of tasks.
+The sequential iteration pattern is a special version of the [sequential execution](../sequential-execution/readme.md) pattern. Both of these patterns allow you to control the **execution** of asynchronous tasks in a **sequential order**, which means every task should be executed as part of a **chain** or **pipeline** of tasks. What makes this pattern special over sequential execution pattern, is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like an array or list of tasks.
 
-## Explanation
+Apart from this variation in the way the tasks are given, this pattern works the same way the sequential execution pattern works. So we expect that each completed task should invoke the next in order task passing its result as input to the next one. The execution should continue as long as the last in order task completes, by which time the execution is considered as completed. In case any task in the sequence throws an error the execution should be rejected immediately along with the given error. The execution should be either fulfilled or rejected and no intermediate state should be allowed.
 
-What makes this pattern special about sequential execution is that the tasks aren't known from the very beginning and most of the time are given in a more dynamic way like a collection of tasks. In such a use case it could be impossible to hard code the invocation of each task, so we have to follow a different approach. The solution is to use a more dynamic iterative process. The sequential iteration pattern can be implemented using either old school **callbacks** along with recursion or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
+## Implementation
+
+Having the tasks given as a dynamic collection it could be impossible to hard code the invocation of each task, so we have to follow a different approach. The solution is to use a more dynamic **iterative** process. The sequential iteration pattern can be implemented using either old school **callbacks** along with recursion or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
 ### Sequential iteration with callbacks
 
-Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts that collection of tasks along with an initial `input` and a completion `callback`, within that function we will use a helper function called `iterate` which will be responsible to manage the sequential execution. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the result of each task, this way we can share data between tasks. Note that, as with sequential execution pattern, the completion callback should be called only **once** in either rejection or completion.
+Assuming we have a collection of asynchronous tasks where each task is expecting two arguments, an `input` and a `callback`. We can define an `execution` function which accepts a collection of tasks along with an initial `input` and a completion `callback`, within that function we will use a helper local function called `iterate` which will be responsible to manage the sequential execution. Keep in mind that we are passing information from a task to the next task by updating the local `input` value with the result of each task, this way we can share data between tasks. Note that, as with sequential execution pattern, the completion callback should be called only **once** in either rejection or completion.
 
 ```javascript
 function execution (tasks, input, callback) {
@@ -25,7 +27,7 @@ function execution (tasks, input, callback) {
 
     task(input, (error, result) => {
       if (error) {
-        return callback(error);
+        return callback(error); // Reject immediately
       }
 
       // Pass the result as input for the next task
@@ -65,13 +67,11 @@ execution(tasks, input, (error, result) => {
 });
 ```
 
-> Note that within each task we skip both business logic and callbacks to error only for brevity.
-
-Note that we can use custom objects in the place of the `input` variable if we need to be more flexible.
+> Note that within each task we skip both any business logic and error handling only for brevity.
 
 ### Sequential iteration with promises
 
-A more elegant way to implement this pattern is to use **chaining promises** which will give us more readable and less verbose code in comparison to callbacks. In promises we know that a promise will resolve only **once** either fulfilled or rejected, so why not to wrap each task in a promise and chain them so to get that strictly sequential flow. Let's say we have the same tasks as before but this time instead of using async callback they return a promise.
+A more elegant way to implement this pattern is to use **chaining promises** which will give us more readable and less verbose code in comparison to callbacks. In promises we know that a promise will resolve only **once** either fulfilled or rejected, so why not to wrap each task in a promise and chain them so to get that strictly sequential flow. Let's say we have the same tasks as before but this time instead of using callback they return a promise.
 
 ```javascript
 // A collection of trivial asynchronous tasks
@@ -82,9 +82,9 @@ const tasks = [
 ];
 ```
 
-> Again, we skip both business logic and callbacks to error only for brevity.
+> Again, we skip both business logic and error handling only for brevity.
 
-Knowing that the `then` method of a promise returns another promise, we can use it to get the sequential execution of those tasks by chaining them. We will use the `Array.prototype.reduce` method on the given array of `tasks` to iteratively chain each task to the next one. Bear in mind that the value a promise resolves to will be the input to the next promise, that way each task gets as input the result of the previous.
+Knowing that the `then` method of a promise returns another promise, we can use it to get the sequential execution of those tasks by chaining them. We will use the `Array.prototype.reduce` method on the given array of `tasks` to iteratively chain each task to the next one. Bear in mind that the value a promise resolves to, will be the input to the next promise. That way each task gets as input the result of the previous.
 
 ```javascript
 function execution (tasks, input) {
@@ -118,7 +118,7 @@ As you have noticed the error handling is now easier to implement just by using 
 
 ### Sequential iteration with async/await
 
-With async/await this pattern can be implemented in a more elegant way by implementing an **async execution** function along with **await** expressions. Let's say we have the same collection of tasks returning promises as before.
+With async/await this pattern can be implemented in a more elegant way by implementing an async `execution` function along with await expressions. Let's say we have the same collection of tasks returning promises as before.
 
 ```javascript
 // A collection of trivial asynchronous tasks
@@ -129,7 +129,7 @@ const tasks = [
 ];
 ```
 
-Within the `execution` function we only need to iterate through the collection of `tasks` and invoke each one via an await expression, where the input of each task should be the result of the previous. The return value of this function is expected to be a promise instance on which we can chain both the `then` and `catch` handlers in order to manage the fulfillment and the rejection of the execution.
+Within the `execution` function we only need to iterate through the collection of `tasks` and invoke each one via an `await` expression, where the input of each task should be the result of the previous. The return value of this function is expected to be a promise instance on which we can chain both the `then` and `catch` handlers in order to manage the fulfillment and the rejection of the execution.
 
 ```javascript
 async function execution (tasks, input) {
@@ -182,7 +182,7 @@ function execution (tasks, input) {
 
 The issue with this code is that in every invocation of the given async callback in `forEach`, the returned promise will be ignored and so no task will wait for the completion of the previous in order task. This code is like executing all the tasks at once in parallel and not in sequential order, so be very careful.
 
-## Implementations
+## Use Cases
 
 Below you can find various trivial or real-world implementations of this pattern:
 
