@@ -2,7 +2,7 @@
 
 The parallel execution pattern belongs to the category of those design patterns called **control flow** patterns. In use cases where there is no requirement to execute a list of asynchronous tasks in a strict sequential order, it's better to spawn the execution of each task in **parallel** and wait to be notified when all of them are done. By convention when we are referring to a parallel execution we actually mean that the tasks are executed **concurrently**, which is a more accurate term.
 
-According to this pattern we expect to have a collection of asynchronous tasks which all must be invoked at once in parallel. During the execution any result computed by a task must be collected to a shared location, this will be the completion value of the execution. The execution should be considered as fulfilled if and only if all of the tasks are completed. In case a task throws an error the execution should be immediately rejected given back the thrown error and ignore any result collected by other tasks so far.
+According to this pattern we expect to have a collection of asynchronous tasks which all must be invoked at once in parallel. During the execution any result computed by a task must be collected to a shared location, this will be the completion value of the execution. The execution should be considered as fulfilled if and only if all of the tasks are completed. In case a task throws an error the execution should be immediately rejected given back the thrown error and ignore any results collected by other tasks so far.
 
 ## Implementation
 
