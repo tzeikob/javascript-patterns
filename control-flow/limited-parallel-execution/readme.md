@@ -1,19 +1,21 @@
 # The Limited Parallel Execution Pattern
 
-The limited parallel execution pattern belongs to the category of those design patterns called **async control flow** patterns and is a special version of the [parallel execution](../parallel-execution/readme.md) pattern. In use cases where we have limited number of resources (memory, cpu cycles) we should consider taking another approach by just invoking all tasks at once. Instead we can split the execution in batches of tasks run in **parallel** and wait to be notified when all of them are done.
+The limited parallel execution is another pattern which belongs to the category of **control flow** patterns and is a special version of the [parallel execution](../parallel-execution/readme.md) pattern. In use cases where we have limited number of resources (memory, cpu cycles, etc.) we should consider taking another approach by just invoking all tasks at once. Instead we can split the execution in batches of tasks run in **parallel** and wait to be notified when all of them are done.
 
-## Explanation
+We can think the limited parallel execution as a room where tasks can be running in parallel, but the space is bounded to accept only a limited number of such tasks. Every time a task in the room completes another pending task from the collection drops in and starts executing. The goal is to split the overhead of running too many tasks in parallel and avoid running out of resources. The execution of such pattern should be considered as completed only when all of the given tasks have been completed. In the case a task throws an error the execution should be rejected immediately skipping any result collected from other completed tasks so far.
 
-The execution of such pattern should be considered as completed when all given tasks have been completed, unless a task throws an error which means that the execution should be rejected along with the thrown error. This pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
+## Implementation
+
+This pattern can be implemented using either old school **callbacks** or the more development friendly **promises** and **async functions**, where either implementation should give us the same execution.
 
 ### Limited parallel execution with callbacks
 
-Assume we have an `execution` function which expects a collection of asynchronous `tasks`, where each task should use a callback to fulfill or reject. Along with tasks the function requires a `concurrency` limit and a completion `callback`. The concurrency limit is the maximum number of tasks which can be running in parallel at any given time in execution. Along with the already known `completed` and `rejected` variables which have been used in the parallel execution pattern, here we will need two more variables. The variable `running` meant to store the actual number of running tasks at any given time and an `index` to point to the next task in invocation.
+Assume we have an `execution` function which expects a collection of asynchronous via callback `tasks`. Along with tasks the function requires a `concurrency` limit and a completion `callback`. The concurrency limit is the maximum number of tasks which can be running in parallel at any given time in execution. Along with the already known `completed` and `rejected` variables which have been used in the parallel execution pattern, here we will need two more variables. The variable `running` meant to store the actual number of running tasks at any given time and an `index` to point to the next task in invocation.
 
 ```javascript
 function execution (tasks, concurrency, callback) {
   let completed = 0; // Total completed tasks
-  let rejected = false; // Indicate if a task thrown an error
+  let rejected = false; // Execution is rejected
 
   let running = 0; // Total running tasks
   let index = 0; // Index of the next task to invoke
@@ -24,7 +26,7 @@ function execution (tasks, concurrency, callback) {
 
 > The result of each task will be collected via closure into the `results` variable.
 
-Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as the callback to each task's invocation, but here has a slightly different behavior. When a task calls the done function at completion, we have to count down the `running` variable in order to inform the execution that a task has finished and there is now room for another task to take action.
+Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as the callback to each task's invocation, but here has a slightly different behavior. When a task calls the done callback at completion, we have to count down the `running` variable in order to inform the execution that a task has finished and there is now room for another task to check in.
 
 ```javascript
 function execution (tasks, concurrency, callback) {
@@ -57,7 +59,7 @@ function execution (tasks, concurrency, callback) {
 
 > Bear in mind that the completion callback should always be called **once** either at rejection or completion along with the error or the result respectively.
 
-The execution starts by calling a helper function `next` which via indirect recursion is handling which task is about to be pushed in the parallel execution by keeping at the same time the limit of concurrency. As long as there is room for another task to be executed and there are still tasks not spawn, we invoke the next in order task.
+The execution starts by calling a helper function `next` which via indirect recursion is handling which task is about to be pushed into the parallel execution by keeping the process under the limit of `concurrency`. As long as there is room for another task to be executed and there are still tasks not spawn, we invoke the next in order task.
 
 ```javascript
 function execution (tasks, concurrency, callback) {
@@ -85,7 +87,7 @@ Now let's put this all together.
 ```javascript
 function execution (tasks, concurrency, callback) {
   let completed = 0; // Total completed tasks
-  let rejected = false; // Indicate if a task thrown an error
+  let rejected = false; // Execution is rejected
 
   let running = 0; // Total running tasks
   let index = 0; // Index of the next task to invoke
@@ -142,7 +144,7 @@ const tasks = [
   (callback) => setTimeout(() => callback(null, "Task3"))
 ];
 
-execution(tasks, 2, (error, results) => {
+execution(tasks, concurrency, (error, results) => {
   if (error) {
     return console.error(error);
   }
@@ -153,13 +155,11 @@ execution(tasks, 2, (error, results) => {
 
 > Note that we skip error handling within async tasks for brevity, but you always have take care of thrown errors.
 
-We can think the limited parallel execution as a room where tasks can be run in parallel, but the space is bounded to accept only a limited number of tasks. Every time a task in the room completes another task from the collection drops in and starts executing. The goal is to split the overhead of running too many tasks in parallel and avoid running out of resources.
-
 ### Limited parallel execution with promises
 
-Using promises we can improve the previous implementation by making the code more readable and maintainable. In this case we have one important difference, both every task and the `execution` function instead of using callbacks should now return a promise. Within the execution function we have a local nested `executor` function. In general this function is responsible to keep pulling available tasks from the given `tasks` queue and execute them one at a time (event loop cycle), where each result should be collected into the `results` variable. When no task has been left into the queue the executor should terminate.
+Using promises we can improve the previous implementation by making the code more readable and maintainable. In this case we have one important difference, both every task and the `execution` function instead of using callbacks should now return a promise. Within the execution function we have a local nested `executor` function. In general this function is responsible to keep pulling available tasks from the given `tasks` queue and execute them, where each result should be collected into the `results` variable. When no task has been left into the queue the executor should terminate.
 
-In order to do this in asynchronous way we should wrap all this into a `promise` so this functions returns a promise. Within the execution code of this promise we have another function called `loop` which first checks if there are tasks for execution and if there are pulls one and executes it, otherwise calls the `resolve` in order to terminate the executor. When a task is fulfilled we have to collect the `result` and then call for another loop via recursion. In case an error has been thrown we should call the `reject` to immediately terminate the executor.
+In order to do this in asynchronous way we should wrap all this into a `promise` so this function returns a promise. Within the execution code of this promise we have another function called `loop` which first checks if there are tasks for execution and if there are pulls one and executes it, otherwise calls the `resolve` in order to terminate the executor. When a task is fulfilled we have to collect the `result` and then call for another loop via recursion. In case an error has been thrown we should call the `reject` to immediately terminate the executor.
 
 ```javascript
 function execution (tasks, concurrency) {
@@ -255,7 +255,7 @@ const tasks = [
   () => new Promise((resolve) => setTimeout(() => resolve("Task3")))
 ];
 
-execution(tasks, 2)
+execution(tasks, concurrency)
   .then((results) => {
     console.log(results);
   })
@@ -346,7 +346,7 @@ const tasks = [
   () => new Promise((resolve) => setTimeout(() => resolve("Task3")))
 ];
 
-execution(tasks, 2)
+execution(tasks, input)
   .then((results) => {
     console.log(results);
   })
@@ -361,7 +361,7 @@ execution(tasks, 2)
 
 In parallel programming the most critical part is to keep consistency to the shared context between every task. Even though JavaScript engine implementations are single-threaded environments and there is not need to use techniques such as locks, mutexes and the like, the possibility of race conditions is **not guaranteed** to not happen. So you have to double check the computations taking place within a task running in parallel and the delay it takes to return its result to the others as this is often the reason of such race conditions.
 
-## Implementations
+## Use Cases
 
 Below you can find various trivial or real-world implementations of this pattern:
 
