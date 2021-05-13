@@ -28,11 +28,11 @@ function countStopWords (words, concurrency, callback) {
   let result = 0;
 
   function done (error, isStopWord) {
-    if (error) {
-      if (rejected) {
-        return;
-      }
+    if (rejected) {
+      return;
+    }
 
+    if (error) {
       rejected = true;
       return callback(error);
     }

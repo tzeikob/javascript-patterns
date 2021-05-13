@@ -33,14 +33,13 @@ function execution (tasks, concurrency, callback) {
   ...
 
   function done (error, result) {
-    if (error) {
-      if (rejected) {
-        return; // Don't call back if execution rejected by another task
-      }
+    if (rejected) {
+        return;  // Exit if execution rejected by another task
+    }
 
-      // Inform all tasks about rejection and call back early
-      rejected = true;
-      return callback(error);
+    if (error) {
+      rejected = true; // Mark the rejection of the execution
+      return callback(error); // Call back with the thrown error
     }
 
     completed++; // Count another task as completed
@@ -95,14 +94,13 @@ function execution (tasks, concurrency, callback) {
   const results = []; // Store the result of each task
 
   function done (error, result) {
-    if (error) {
-      if (rejected) {
-        return; // Don't call back if execution rejected by another task
-      }
+    if (rejected) {
+        return;  // Exit if execution rejected by another task
+    }
 
-      // Inform all tasks about rejection and call back early
-      rejected = true;
-      return callback(error);
+    if (error) {
+      rejected = true; // Mark the rejection of the execution
+      return callback(error); // Call back with the thrown error
     }
 
     completed++; // Count another task as completed
