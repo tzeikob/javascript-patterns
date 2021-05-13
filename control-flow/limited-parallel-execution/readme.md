@@ -26,7 +26,7 @@ function execution (tasks, concurrency, callback) {
 
 > The result of each task will be collected via closure into the `results` variable.
 
-Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as the callback to each task's invocation, but here has a slightly different behavior. When a task calls the done callback at completion, we have to count down the `running` variable in order to inform the execution that a task has finished and there is now room for another task to check in.
+Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as the callback to each task's invocation, but here has a slightly different behavior. When a task calls the done callback at completion, we have to count down the `running` variable in order to inform the execution that a task has finished and there is now room for another task to check in. The last thing to do is to call for another iteration by invoking the `next` function again, so other tasks to get the chance in execution.
 
 ```javascript
 function execution (tasks, concurrency, callback) {
