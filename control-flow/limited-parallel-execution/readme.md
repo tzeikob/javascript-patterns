@@ -184,6 +184,8 @@ function execution (tasks, concurrency) {
 }
 ```
 
+> Each task within the `loop` function is invoked in subsequent event loop cycles in order to not block the single thread.
+
 Now we can follow the concept of `executors` and execute tasks concurrently by just invoking many times the executor function and keeping the references to their promises. When all of them terminate (resolve) we return a final `promise` which resolves to the collected `results`. Given the `concurrency` limit we expect to have a number of executors equal to this value.
 
 ```javascript
