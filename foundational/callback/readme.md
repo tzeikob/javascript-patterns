@@ -1,6 +1,6 @@
 # The Callback Pattern
 
-A callback is nothing more than a function, which in JavaScript is considered a **first-class** object. Functions can be assigned to variables, passed as arguments in other functions and even returned by functions. In both the synchronous and asynchronous world of JavaScript this is considered a foundational concept, because either we can pass functionality to be executed at the current cycle (sync) or at a subsequent cycle (async) of the event loop.
+A callback is nothing more than a function, which in JavaScript is considered a **first-class** object. Functions can be assigned to variables, passed as arguments in other functions and even returned by functions. In both the synchronous and asynchronous world of JavaScript this is considered a foundational concept, because either we can pass functionality to be executed at the current cycle (synchronously) or at a subsequent cycle (asynchronously) of the event loop.
 
 ## Implementation
 
@@ -8,7 +8,7 @@ As callback is just a function, it can be passed to another function and invoked
 
 ### Callback in a synchronous operation
 
-In a synchronous operation, the callback pattern should be implemented like so.
+In a synchronous `operation` given an `input` and a `callback` function, the first thing is to start executing the business logic and once we have the `result` we invoke the `callback` given that value.
 
 ```javascript
 function operation (input, callback) {
@@ -24,11 +24,11 @@ operation(input, (result) => {
 });
 ```
 
-where input can be any valid value or either a list of separated input values followed be the `callback` which always should come last.
+Even though an input is required for the most operations out there, it is not required to have one. In fact we can have as many input arguments as we need or none if the operation doesn't need such an input. One thing to keep in mind though is that by convention in case of having input arguments, the `callback` argument should always come last.
 
 ### Callback in an asynchronous operation
 
-In an asynchronous operation though, a `callback` should always be called asynchronously in order to be invoked in the next event loop cycles.
+In an asynchronous operation though, a `callback` should always be called asynchronously in order to be invoked in the next event loop cycles. Both the business logic and the call to the callback must happen in subsequent cycles, otherwise we are blocking the event loop.
 
 ```javascript
 function operation (input, callback) {
@@ -40,6 +40,7 @@ function operation (input, callback) {
   });
 };
 
+// Execute the operation
 operation(input, (result) => {
   console.log(result);
 });
@@ -49,7 +50,7 @@ operation(input, (result) => {
 
 ### Callback which returns a value back
 
-The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the values of a collection. In such cases a callback is given a value and returns it back modified instead of just handle it.
+The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the `values` of a collection **synchronously**. In those cases a `callback` should be a function expecting a `value` as input which should be returned back modified or with a new one. The callback should be called for each one value in the given collection, where every `result` should be collected into a new collection of `results`.
 
 ```javascript
 function operation (values, callback) {
@@ -75,7 +76,7 @@ const results = operation(values, (value) => {
 
 ### Error handling in a callback
 
-Another important thing is to be consistent with error handling in callbacks, in case an `error` is thrown the `callback` has always to be called given that error as the first and only argument.
+One important thing with callbacks is to be consistent with error handling, that's it we should take care of any thrown errors either in synchronous or asynchronous operations. In case an `error` is thrown the `callback` has always to be immediately called back given that error as the **first** and only argument. In asynchronous operations though any `try/catch` should be happening in the asynchronous context, otherwise the thrown error will be swallowed.
 
 ```javascript
 function operation (input, callback) {
@@ -132,6 +133,8 @@ function compute (num, callback) {
 Once you first compute the `factorial` of a number the next time you request the same number's factorial, the call to the callback will be synchronous. Instead try to stick with either synchronous or asynchronous behavior in any function expecting a callback.
 
 ```javascript
+import { factorial } from "math";
+
 function compute (num, callback) {
   if (cache[num]) {
     // Call always back asynchronously
