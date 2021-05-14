@@ -50,7 +50,7 @@ operation(input, (result) => {
 
 ### Callback which returns a value back
 
-The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the `values` of a collection **synchronously**. In those cases a `callback` should be a function expecting a `value` as input which should be returned back modified or with a new one. The callback should be called for each one value in the given collection, where every `result` should be collected into a new collection of `results`.
+The callback pattern can be used in other use cases as well, for instance in cases where you need to transform the `values` of a collection synchronously. In those cases a `callback` should be a function expecting a `value` as input which should be returned back modified or as a new one. The callback should be called for each one value in the given collection, where every `result` should be collected into a new collection of `results`.
 
 ```javascript
 function operation (values, callback) {
