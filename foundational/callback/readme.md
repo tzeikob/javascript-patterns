@@ -28,7 +28,7 @@ Even though an input is required for the most operations out there, it is not re
 
 ### Callback in an asynchronous operation
 
-In an asynchronous operation though, a `callback` should always be called asynchronously in order to be invoked in the next event loop cycles. Both the business logic and the call to the callback must happen in subsequent cycles, otherwise we are blocking the event loop.
+In an asynchronous operation though, a `callback` should always be called asynchronously in order to be invoked in subsequent event loop cycles. Both the business logic and the call to the callback must happen in a subsequent cycle, otherwise we are blocking the event loop.
 
 ```javascript
 function operation (input, callback) {
@@ -76,7 +76,22 @@ const results = operation(values, (value) => {
 
 ### Error handling in a callback
 
-One important thing with callbacks is to be consistent with error handling, that's it we should take care of any thrown errors either in synchronous or asynchronous operations. In case an `error` is thrown the `callback` has always to be immediately called back given that error as the **first** and only argument. In asynchronous operations though any `try/catch` should be happening in the asynchronous context, otherwise the thrown error will be swallowed.
+One important thing with callbacks is to be consistent with error handling, that's it we should take care of any thrown errors either in synchronous or asynchronous operations. In case an `error` is thrown the `callback` has always to be immediately called back given that error as the **first** and only argument. In synchronous operations the error handling could be done like so.
+
+```javascript
+function operation (input, callback) {
+  try {
+    // Execute business logic
+    const result = ...
+    
+    callback(null, result); // Calling back with the result
+  } catch (error) {
+    callback(error); // Propagating an error back
+  }
+}
+```
+
+Where in asynchronous operations any `try/catch` should be happening in the asynchronous context, otherwise the thrown error will be swallowed as we are not in the same call stack anymore.
 
 ```javascript
 function operation (input, callback) {
@@ -91,7 +106,11 @@ function operation (input, callback) {
     }
   });
 }
+```
 
+And here is how we execute the operation handling thrown errors in the callback.
+
+```javascript
 // Execute the operation
 operation(input, (error, result) => {
   // Error must always come first
@@ -103,7 +122,9 @@ operation(input, (error, result) => {
 });
 ```
 
-To sum up, a callback called synchronously blocks the current code until the operation completes, where an asynchronously called callback returns control back immediately and completes at a subsequent event loop cycle. As mentioned above, there is no syntactic difference which means that the intent of the callback should always be explained in the documentation of the API about the synchronous or asynchronous manner the callback is called.
+> Note the use of the `return` in order to abort early the callback function. We don't want to keep executing code meant to be only for handling results.
+
+To sum up, a callback called synchronously blocks the current code until the operation completes, where an asynchronously called callback returns control back immediately and completes at a subsequent event loop cycle. As it is clear there is no syntactic difference between synchronous and asynchronous operations via callback, the intent of the callback should always be explained in the documentation of the API.
 
 ## Considerations
 
