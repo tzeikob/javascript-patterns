@@ -128,6 +128,43 @@ To sum up, a callback called synchronously blocks the current code until the ope
 
 ## Considerations
 
+### Avoid swallowing thrown errors in asynchronous operations
+
+A very common mistake when handling errors in asynchronous operations is following the same practice as with synchronous operations. Let's say we have the following asynchronous operation, our first thought could be to have the `try/catch` wraps around the `setTimeout` call.
+
+```javascript
+function operation (input, callback) {
+  try {
+    setTimeout(() => {
+      // Any error thrown here will be swallowed
+      const result = ...
+
+      callback(null, result);
+    });
+  } catch (error) {
+    callback(error); // Oops, this will never be called
+  }
+}
+```
+
+> As we took of in another call stack, no error will be caught here.
+
+So the right way to handle thrown errors from an asynchronous code is to move the `try/catch` within the same call stack like so.
+
+```javascript
+function operation (input, callback) {
+  setTimeout(() => {
+    try {
+      const result = ...
+
+      callback(null, result);
+    } catch (error) {
+      callback(error); // This will be called if an error is thrown
+    }
+  });
+}
+```
+
 ### Unpredictable synchronous or asynchronous behavior
 
 Try to avoid inconsistencies in the behavior of a function which is using a callback, either the callback should always be called synchronously or asynchronously. It is considered very bad practice to have a function behave unpredictably mixing synchronous and asynchronous calls to the given callback. Let's say we have a `cache` map object and an asynchronous `factorial` function:
