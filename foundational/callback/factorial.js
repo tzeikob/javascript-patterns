@@ -1,4 +1,4 @@
-function factorial(num, cb) {
+function factorial (num, callback) {
   setTimeout(() => {
     try {
       if (typeof num !== "number") {
@@ -10,13 +10,14 @@ function factorial(num, cb) {
       }
 
       let result = 1;
+
       for (let i = 1; i <= num; i++) {
         result *= i;
       }
   
-      cb(null, result);
+      callback(null, result);
     } catch (error) {
-      cb(error);
+      callback(error);
     }
   });
 }

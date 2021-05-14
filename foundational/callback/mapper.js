@@ -1,8 +1,12 @@
-function map(values, cb) {
+function map (values, callback) {
+  if (!values || !Array.isArray(values) || values.length === 0) {
+    throw new Error("Invalid values argument");
+  }
+
   const mapped = [];
 
   for (let i = 0; i < values.length; i++) {
-    mapped.push(cb(values[i]));
+    mapped.push(callback(values[i]));
   }
 
   return mapped;
