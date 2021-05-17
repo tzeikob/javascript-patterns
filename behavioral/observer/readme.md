@@ -252,7 +252,6 @@ class Observable {
     const eventListeners = this.listeners[event];
 
     if (eventListeners) {
-      // Trigger the listeners for the given event
       eventListeners.forEach((listener) => {
         // Set the observable as the `this` in listener's code
         listener.call(this, ...args);
