@@ -10,7 +10,7 @@ class Thermometer {
     };
   }
 
-  on(event, listener) {
+  on (event, listener) {
     const eventListeners = this.listeners[event];
 
     if (eventListeners) {
@@ -20,17 +20,17 @@ class Thermometer {
     return this;
   }
 
-  emit(event, ...args) {
+  emit (event, ...args) {
     const eventListeners = this.listeners[event];
 
     if (eventListeners) {
-      eventListeners.forEach(listener => {
+      eventListeners.forEach((listener) => {
         listener.call(null, ...args);
       });
     }
   }
 
-  update(value) {
+  update (value) {
     setTimeout(() => {
       try {
         this.previous = this.temperature;
@@ -49,11 +49,11 @@ class Thermometer {
     });
   }
 
-  removeListener(event, listener) {
+  removeListener (event, listener) {
     const eventListeners = this.listeners[event];
     
     if (eventListeners) {
-      const index = eventListeners.findIndex(l => l === listener);
+      const index = eventListeners.findIndex((l) => l === listener);
       eventListeners.splice(index, 1);
     }
   }
@@ -71,7 +71,7 @@ t.on("decrease", (temp, delta) => {
   console.log(`Temperature decreased to ${temp} with a delta ${delta}`)
 });
 
-t.on("error", error => {
+t.on("error", (error) => {
   console.error(`An error occurred updating the temperature: ${error.message}`)
 });
 

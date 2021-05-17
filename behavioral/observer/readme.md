@@ -51,7 +51,7 @@ class Observable {
 
     if (eventListeners) {
       // Trigger the listeners for the given event
-      eventListeners.forEach(listener => {
+      eventListeners.forEach((listener) => {
         listener.call(null, ...args);
       });
     }
@@ -92,13 +92,8 @@ Having the observable class we can now create an instance of it and register eve
 ```javascript
 const observable = new Observable();
 
-observable.on("success", (value) => {
-  ...
-});
-
-observable.on("error", (error) => {
-  ...
-});
+observable.on("success", (value) => {...});
+observable.on("error", (error) => {...});
 ```
 
 > Because the observable's `on` method returns the observable object itself, we can use chaining as well.
@@ -119,6 +114,7 @@ class Observable {
         const valueB = ...
         ...
 
+        // Emit the success of the operation
         this.emit("success", valueA, valueB, ...);
       } catch (error) {
         this.emit("error", error); // Emit the thrown error
@@ -135,6 +131,7 @@ To sum up, an observable must encapsulate a map of listeners (observers) per eve
 ```javascript
 class Observable {
   constructor () {
+    // A map of listeners per event
     this.listeners = {
       success: [],
       ...,
@@ -146,6 +143,7 @@ class Observable {
     const eventListeners = this.listeners[event];
 
     if (eventListeners) {
+      // Register the listener for the given event
       eventListeners.push(listener);
     }
 
@@ -156,7 +154,8 @@ class Observable {
     const eventListeners = this.listeners[event];
 
     if (eventListeners) {
-      eventListeners.forEach(listener => {
+      // Trigger the listeners for the given event
+      eventListeners.forEach((listener) => {
         listener.call(null, ...args);
       });
     }
@@ -165,13 +164,15 @@ class Observable {
   operation () {
     setTimeout(() => {
       try {
+        // Execute any business logic
         const valueA = ...
         const valueB = ...
         ...
 
+        // Emit the success of the operation
         this.emit("success", valueA, valueB, ...);
       } catch (error) {
-        this.emit("error", error);
+        this.emit("error", error); // Emit the thrown error
       }
     });
   }
@@ -256,7 +257,7 @@ class Observable {
 
     if (eventListeners) {
       // Trigger the listeners for the given event
-      eventListeners.forEach(listener => {
+      eventListeners.forEach((listener) => {
         // Set the observable as the `this` in listener's code
         listener.call(this, ...args);
       });
