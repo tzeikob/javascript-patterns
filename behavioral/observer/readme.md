@@ -61,6 +61,8 @@ class Observable {
 
 > We could call the listener with `this` instead of `null` in case we need to have access the observable within the listener's code via the `this` operator.
 
+Bear in mind that this method should always be called from an asynchronous context, for instance an operation of the observable running asynchronously.
+
 ### An observable must have a purpose
 
 An observable must have a purpose, it must provide at least one asynchronous `operation`. It doesn't have to be an asynchronous operation, even though it only makes sense to have an asynchronous observable. Within each operation the observable must use the `emit` method in order to call every listener given this event type along with any data arguments.
@@ -69,21 +71,19 @@ An observable must have a purpose, it must provide at least one asynchronous `op
 class Observable {
   ...
 
-  operation () {
-    setTimeout(() => {
-      // Execute any business logic
-      const valueA = ...
-      const valueB = ...
-      ...
-
-      // Emit the success of the operation
-      this.emit("success", valueA, valueB, ...);
-    });
+  async operation () {
+    // Execute any business logic
+    const valueA = await ...
+    const valueB = await ...
+    ...
+    
+    // Emit the success of the operation
+    this.emit("success", valueA, valueB, ...);
   }
 }
 ```
 
-> We are using the `setTimeout` function to mimic the execution of an asynchronous operation.
+> Operation is set to be an async function in order to call operations asynchronously.
 
 ### Register event listeners
 
@@ -106,20 +106,18 @@ A special care must be taken regarding the error handling in the observer patter
 class Observable {
   ...
 
-  operation () {
-    setTimeout(() => {
-      try {
-        // Execute any business logic
-        const valueA = ...
-        const valueB = ...
-        ...
+  async operation () {
+    try {
+      // Execute any business logic
+      const valueA = await ...
+      const valueB = await ...
+      ...
 
-        // Emit the success of the operation
-        this.emit("success", valueA, valueB, ...);
-      } catch (error) {
-        this.emit("error", error); // Emit the thrown error
-      }
-    });
+      // Emit the success of the operation
+      this.emit("success", valueA, valueB, ...);
+    } catch (error) {
+      this.emit("error", error); // Emit the thrown error
+    }
   }
 }
 ```
@@ -161,20 +159,18 @@ class Observable {
     }
   }
 
-  operation () {
-    setTimeout(() => {
-      try {
-        // Execute any business logic
-        const valueA = ...
-        const valueB = ...
-        ...
+  async operation () {
+    try {
+      // Execute any business logic
+      const valueA = await ...
+      const valueB = await ...
+      ...
 
-        // Emit the success of the operation
-        this.emit("success", valueA, valueB, ...);
-      } catch (error) {
-        this.emit("error", error); // Emit the thrown error
-      }
-    });
+      // Emit the success of the operation
+      this.emit("success", valueA, valueB, ...);
+    } catch (error) {
+      this.emit("error", error); // Emit the thrown error
+    }
   }
 }
 

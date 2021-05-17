@@ -1,5 +1,8 @@
+import { sensors } from "iot";
+
 class Thermometer {
   constructor() {
+    this.running = false;
     this.previous = 0;
     this.temperature = 0;
 
@@ -30,11 +33,13 @@ class Thermometer {
     }
   }
 
-  update (value) {
-    setTimeout(() => {
+  async start () {
+    this.running = true;
+
+    while (this.running) {
       try {
         this.previous = this.temperature;
-        this.temperature = value;
+        this.temperature = await sensors.readTemperature();
 
         const delta = this.temperature - this.previous;
 
@@ -46,7 +51,11 @@ class Thermometer {
       } catch (error) {
         this.emit("error", error);
       }
-    });
+    }
+  }
+
+  stop () {
+    this.running = false;
   }
 
   removeListener (event, listener) {
@@ -61,34 +70,22 @@ class Thermometer {
 
 const t = new Thermometer();
 
-t.update(10);
+t.start();
 
 t.on("increase", (temp, delta) => {
-  console.log(`Temperature increased up to ${temp} with a delta ${delta}`)
+  console.log({ temp, delta });
 });
 
 t.on("decrease", (temp, delta) => {
-  console.log(`Temperature decreased to ${temp} with a delta ${delta}`)
+  console.log({ temp, delta });
 });
 
 t.on("error", (error) => {
-  console.error(`An error occurred updating the temperature: ${error.message}`)
+  console.error(`Error: ${error.message}`)
 });
-
-t.on("increase", (temp, delta) => {
-  console.log(`With the temperature increased by ${delta} is getting warmer`)
-});
-
-t.update(-15);
-t.update(8);
-t.update(8);
-t.update(40);
 
 // Async output:
-// Temperature increased up to 10 with a delta 10
-// With the temperature increased by 10 is getting warmer
-// Temperature decreased to -15 with a delta -25
-// Temperature increased up to 8 with a delta 23
-// With the temperature increased by 23 is getting warmer
-// Temperature increased up to 40 with a delta 32
-// With the temperature increased by 32 is getting warmer
+// { temp: -1, delta: -1 }
+// { temp: -3, delta: -2 }
+// { temp: -5, delta: -2 }
+// { temp: -7, delta: -2 }
