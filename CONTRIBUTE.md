@@ -10,7 +10,7 @@ In case you have any questions about the content or a code snippet, please make 
 
 ## Add a new Design Pattern
 
-In order to keep the content of the book well organized and as uniform as possible every design pattern should be given as a `README.md` file placed under a parent folder which is expected to be the category the pattern belongs to. The content of this file must be written in a specific structure constitutes of four main sections, the introduction, the implementation, the considerations and the use cases. Both the considerations and the use cases sections are optional and so if not applicable can be skipped. Below you can find an abstract example of such a readme file.
+In order to keep the content of the book well organized and as uniform as possible every design pattern should be given as a folder given the name of the pattern and including a `README.md` file. The content of this file must be written in a specific structure constitutes of four main sections, the introduction, the implementation, the considerations and the use cases. Both the considerations and the use cases sections are optional and so if not applicable can be omitted. Below you can find an abstract example of such a readme file.
 
 ```markdown
 # The <Name> Pattern
@@ -51,9 +51,9 @@ The **implementation** section is where we must describe how to implement the pa
 
 The **considerations** is an optional section where you can add content explaining additional information about the pattern which must be known. For instance, various second thoughts about the pattern, anti-patterns we have to avoid, limitations about resources and precautions and so on.
 
-The **use cases** section is where you can add trivial or real-world implementations of the pattern. Every implementation file should be given as a JavaScript file in the same folder the `README.md` file of the pattern exists. Each file should have a name with all characters in lowercase and words separated by hyphens, like `parallel-reducer.js`. If no implementation is provide this section should be skipped.
+The **use cases** section is where you can add trivial or real-world implementations of the pattern. Every implementation file should be given as a JavaScript file next to the `README.md` file. Each file should have a name with all characters in lowercase and words separated by hyphens, like `parallel-reducer.js`. If no implementation is provide this section should be skipped.
 
-Overall try to not describe everything to the reader, for instance reading about the parallel execution pattern may not be the right time and place to explain the internals of the Promise. Is expected that the reader has already a good background of JavaScript reading this book, so don't explain everything to him.
+Overall try to not describe everything to the reader, for instance reading about the parallel execution pattern may not be the right time and place to explain the internals of the Promise. Expected is that the reader has already a good background of JavaScript reading this book, so don't explain everything to him.
 
 ## Fix typos
 
@@ -61,7 +61,7 @@ In case you are about to submit a PR for typo fixes, please consider in doing th
 
 ## Work in progress
 
-The current edition of this content is pushed in the default branch and must considered as a work **in progress**. While this content is in progress, contributions are welcome, but it's impossible to turn back in 1st edition while I'm still working on this current version.
+The current edition of this content is pushed in the default branch and must be considered as a work **in progress**. While this content is in progress, contributions are welcome, but it's impossible to turn back in 1st edition while I'm still working on this current version.
 
 Please note that I **am not accepting any contributions** for 1st edition any more.
 
@@ -88,6 +88,6 @@ Issue: #13
 Add free text here...
 ```
 
-Where `Category` and `Pattern` must referring to the category and the name of the design pattern which this PR is fixing, adding, modifying, etc. The `Label` should be a single keyword indicating the purpose of this contribution, for instance adding a new pattern the label is expected to be given as `Feature` (see github issues labels). Last but not least the `Issue` line, which is optional and required only if this PR is attached to a specific issue created in the issues page.
+Where `Category` and `Pattern` must referring to the category and the name of the design pattern which this PR is fixing, adding, modifying, etc. The `Label` should be a single keyword indicating the purpose of this contribution, for instance adding a new pattern the label is expected to be given as `Feature` (see github issues labels). Last but not least the `Issue` line, which is optional and required only if this PR is related to a specific issue created in the issues page.
 
 After adding the previous information you can use more lines in free text to describe what this PR is for and provide as much context as possible including perhaps code snippets and links.
