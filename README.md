@@ -27,7 +27,7 @@ Below you can find reference books and sources about design patterns and best pr
 
 You are welcome to contribute to the quality of this content by submitting PRs for improvements to code snippets, explanations, additions, etc. Your effort to contribute to this content is of course greatly appreciated.
 
-But **PLEASE** read the [Contributions Guidelines](contribute.md) carefully before submitting a PR.
+But **PLEASE** read the [Contributions Guidelines](CONTRIBUTE.md) carefully before submitting a PR.
 
 ## License & Copyright
 
