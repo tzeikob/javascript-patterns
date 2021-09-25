@@ -242,7 +242,7 @@ class Observable {
 
 ### Get access to the observable within listeners
 
-A really reasonable request could be to give access to the observable's state within the code of each registered listener. We can do this by just calling each listener with the `this` like so.
+A really reasonable request could be to give access to the observable's state within the code of each registered listener. We can do this by just calling each listener with the `this`, like so:
 
 ```javascript
 class Observable {

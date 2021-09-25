@@ -107,7 +107,7 @@ execution(tasks, (error, results) => {
 });
 ```
 
-> Note that we don't take special care here, but in real-world it's reasonable to store the results in the order each task has been given.
+> We don't take special care here, but in real-world it's reasonable to store the results in the order each task has been given.
 
 On thing to keep in mind is that, which one of the tasks will call the completion callback is subject to a situation called **competitive race**, once this callback called the execution should be considered as completed.
 
@@ -136,7 +136,7 @@ Promise.all(promises)
   });
 ```
 
-> Note we skip any promise rejection within asynchronous tasks for brevity, but you always have to take care of rejections.
+> We skip any promise rejection within asynchronous tasks for brevity, but you always have to take care of rejections.
 
 ### Parallel execution with async/await
 
@@ -156,7 +156,7 @@ async function execution (tasks) {
 
 > Any rejection occurred by a task will cause the execution to reject as well.
 
-Having the collection of tasks we can invoke the execution like so.
+Having the collection of tasks we can invoke the execution, like so:
 
 ```javascript
 // A collection of trivially implemented asynchronous tasks

@@ -76,7 +76,7 @@ const results = operation(values, (value) => {
 
 ### Error handling in a callback
 
-One important thing with callbacks is to be consistent with error handling, that's it we should take care of any thrown errors either in synchronous or asynchronous operations. In case an `error` is thrown the `callback` has always to be immediately called back given that error as the **first** and only argument. In synchronous operations the error handling could be done like so.
+One important thing with callbacks is to be consistent with error handling, that's it we should take care of any thrown errors either in synchronous or asynchronous operations. In case an `error` is thrown the `callback` has always to be immediately called back given that error as the **first** and only argument. In synchronous operations the error handling could be done, like so:
 
 ```javascript
 function operation (input, callback) {
@@ -149,7 +149,7 @@ function operation (input, callback) {
 
 > As we took of in another call stack, no error will be caught here.
 
-So the right way to handle thrown errors from an asynchronous code is to move the `try/catch` within the same call stack like so.
+So the right way to handle thrown errors from an asynchronous code is to move the `try/catch` within the same call stack, like so:
 
 ```javascript
 function operation (input, callback) {
@@ -167,7 +167,7 @@ function operation (input, callback) {
 
 ### Unpredictable synchronous or asynchronous behavior
 
-Try to avoid inconsistencies in the behavior of a function which is using a callback, either the callback should always be called synchronously or asynchronously. It is considered very bad practice to have a function behave unpredictably mixing synchronous and asynchronous calls to the given callback. Let's say we have a `cache` map object and an asynchronous `factorial` function:
+Try to avoid inconsistencies in the behavior of a function which is using a callback, either the callback should always be called synchronously or asynchronously. It is considered very bad practice to have a function behave unpredictably mixing synchronous and asynchronous calls to the given callback. Let's say we have a `cache` map object and an asynchronous `factorial` function, like so:
 
 ```javascript
 import { factorial } from "math";

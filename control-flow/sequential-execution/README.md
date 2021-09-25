@@ -60,7 +60,7 @@ function task3 (input, callback) {
 
 > Splitting each task in a separate named function will give us a cleaner and well structured code.
 
-Now let's launch the execution.
+Now let's launch the execution, like so:
 
 ```javascript
 execution(input, (error, result) => {
@@ -116,7 +116,7 @@ const task2 = (input) => operationB(input);
 const task3 = (input) => operationC(input);
 ```
 
-The execution of those tasks in sequential flow could be done within an async function called `execution` like so.
+The execution of those tasks in sequential flow could be done within an async function called `execution`, like so:
 
 ```javascript
 async function execution (input) {

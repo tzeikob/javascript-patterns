@@ -66,7 +66,7 @@ execution(tasks, input, (error, result) => {
 });
 ```
 
-> Note that within each task we skip both any business logic and error handling only for brevity.
+> Within each task we skip both any business logic and error handling only for brevity.
 
 ### Sequential iteration with promises
 
@@ -168,7 +168,7 @@ Even though using recursion in the iteration pattern might seem so powerful, you
 
 ### Avoid the anti-pattern use of async/await
 
-One common pitfall using await expressions when we need to call a collection of tasks in sequential way is to use the `Array.prototype.forEach` method like so.
+One common pitfall using await expressions when we need to call a collection of tasks in sequential way is to use the `Array.prototype.forEach` method, like so:
 
 
 ```javascript

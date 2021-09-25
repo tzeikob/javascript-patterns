@@ -24,7 +24,7 @@ function execution (tasks, concurrency, callback) {
 }
 ```
 
-> The result of each task will be collected via closure into the `results` variable.
+> The result of each task will be collected via closures into the `results` variable.
 
 Now as you can see here we have the same `done` helper function we've used in parallel execution pattern. This function is passed as the callback to each task's invocation, but here has a slightly different behavior. When a task calls the done callback at completion, we have to count down the `running` variable in order to inform the execution that a task has finished and there is now room for another task to check in. The last thing to do is to call for another iteration by invoking the `next` function again, so other tasks can have the chance in execution.
 
@@ -132,7 +132,7 @@ function execution (tasks, concurrency, callback) {
 }
 ```
 
-Having a collection of asynchronous tasks is now easy to execute them in parallel like so.
+Having a collection of asynchronous tasks is now easy to execute them in parallel, like so:
 
 ```javascript
 // A collection of trivially implemented asynchronous tasks
@@ -151,7 +151,7 @@ execution(tasks, concurrency, (error, results) => {
 });
 ```
 
-> Note that we skip error handling within async tasks for brevity, but you always have take care of thrown errors.
+> We skip error handling within async tasks for brevity, but you always have take care of thrown errors.
 
 ### Limited parallel execution with promises
 
@@ -264,7 +264,7 @@ execution(tasks, concurrency)
   });
 ```
 
-> Note we skip any promise rejection within asynchronous tasks for brevity, but you always have to take care of rejections.
+> We skip any promise rejection within asynchronous tasks for brevity, but you always have to take care of rejections.
 
 ### Limited parallel execution with async/await
 
@@ -336,7 +336,7 @@ async function execution (tasks, concurrency) {
 
 > Any error thrown within the execution will be caught via the `catch` method of the returning promise.
 
-Assuming we have a list of asynchronous tasks we can launch the execution like so.
+Assuming we have a list of asynchronous tasks we can launch the execution, like so:
 
 ```javascript
 // A collection of trivially implemented asynchronous tasks
