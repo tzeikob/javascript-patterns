@@ -12,6 +12,8 @@ This is a digital book diving deep into the field of design patterns and best pr
   * [Sequential Iteration](control-flow/sequential-iteration/)
   * [Parallel Execution](control-flow/parallel-execution/)
   * [Limited Parallel Execution](control-flow/limited-parallel-execution/)
+* Streaming
+  * [Late Piping](streaming/late-piping/)
 * Behavioral
   * [Observer](behavioral/observer/)
 
